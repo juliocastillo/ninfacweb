@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="VsDatabaseDiagrams" table="vs_database_diagrams">
+    <id name="name" type="string" column="name" length="80">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="diadata" type="text" column="diadata" nullable="true"/>
+    <field name="comment" type="string" column="comment" length="1022" nullable="true"/>
+    <field name="preview" type="text" column="preview" nullable="true"/>
+    <field name="lockinfo" type="string" column="lockinfo" length="80" nullable="true"/>
+    <field name="locktime" type="datetimetz" column="locktime" nullable="true"/>
+    <field name="version" type="string" column="version" length="80" nullable="true"/>
+  </entity>
+</doctrine-mapping>

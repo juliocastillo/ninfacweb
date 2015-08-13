@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CtlCliente" table="ctl_cliente">
+    <indexes>
+      <index name="IDX_232B3B66325E299" columns="id_departamento"/>
+      <index name="IDX_232B3B67EAD49C7" columns="id_municipio"/>
+      <index name="IDX_232B3B646D7FEF9" columns="id_user_add"/>
+      <index name="IDX_232B3B6AC39DE56" columns="id_user_mod"/>
+      <index name="IDX_232B3B62CA6181C" columns="id_zona"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="100" nullable="false"/>
+    <field name="nombreComercial" type="string" column="nombre_comercial" length="100" nullable="false"/>
+    <field name="giro" type="string" column="giro" length="100" nullable="false"/>
+    <field name="nit" type="string" column="nit" length="25" nullable="false"/>
+    <field name="nrc" type="string" column="nrc" length="25" nullable="false"/>
+    <field name="direccion" type="string" column="direccion" length="100" nullable="false"/>
+    <field name="telefono" type="string" column="telefono" length="25" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="true"/>
+    <field name="email" type="string" column="email" length="100" nullable="true"/>
+    <field name="exento" type="boolean" column="exento" nullable="false"/>
+    <many-to-one field="idZona" target-entity="CtlZona">
+      <join-columns>
+        <join-column name="id_zona" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idMunicipio" target-entity="CtlMunicipio">
+      <join-columns>
+        <join-column name="id_municipio" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idDepartamento" target-entity="CtlDepartamento">
+      <join-columns>
+        <join-column name="id_departamento" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

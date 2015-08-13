@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="InvNotaenvio" table="inv_notaenvio">
+    <indexes>
+      <index name="IDX_EC796C792A813255" columns="id_cliente"/>
+      <index name="IDX_EC796C7946D7FEF9" columns="id_user_add"/>
+      <index name="IDX_EC796C79AC39DE56" columns="id_user_mod"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <field name="estado" type="string" column="estado" length="2044" nullable="false"/>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="numero" type="integer" column="numero" nullable="false"/>
+    <field name="ventaTotal" type="decimal" column="venta_total" precision="10" scale="2" nullable="false"/>
+    <field name="observacion" type="string" column="observacion" length="2044" nullable="false"/>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCliente" target-entity="CtlCliente">
+      <join-columns>
+        <join-column name="id_cliente" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,6 @@
+services:
+    bundles_cxc.admin.mnt_empleado_zona:
+        class: Bundles\CxcBundle\Admin\MntEmpleadoZonaAdmin
+        arguments: [~, Bundles\CxcBundle\Entity\MntEmpleadoZona, BundlesCxcBundle:MntEmpleadoZonaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Mantenimiento, label: Vendedor por zona}

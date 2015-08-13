@@ -1,0 +1,68 @@
+bundles_factura:
+    resource: "@BundlesFacturaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+bundles_cxc:
+    resource: "@BundlesCxcBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+bundles_catalogos:
+    resource: "@BundlesCatalogosBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+# app/config/routing.yml
+root:
+    pattern: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path:  /admin/login
+        permanent: true
+ 
+# Sonata AdminBundle
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+ 
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+ 
+# Sonata CacheBundle
+sonata_cache_cache:
+    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
+    prefix: /
+ 
+# Sonata UserBundle
+sonata_user_security:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
+ 
+sonata_user_resetting:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_resetting_1.xml"
+    prefix: /resetting
+ 
+sonata_user_profile:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
+    prefix: /profile
+ 
+sonata_user_register:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_registration_1.xml"
+    prefix: /register
+ 
+sonata_user_change_password:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
+    prefix: /profile
+ 
+sonata_user:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+ 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+# para hacer select anidados
+shtumi_useful:
+    resource: '@ShtumiUsefulBundle/Resources/config/routing.xml'   

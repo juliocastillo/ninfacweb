@@ -1,0 +1,59 @@
+services:
+#    bundles_catalogos.admin.ctl_cliente:
+#        class: Bundles\CatalogosBundle\Admin\CtlClienteAdmin
+#        arguments: [~, Bundles\CatalogosBundle\Entity\CtlCliente, SonataAdminBundle:CRUD]
+#        tags:
+#            - {name: sonata.admin, manager_type: orm, group: admin, label: CtlCliente}
+    bundles_catalogos.admin.ctl_cliente:
+        class: Bundles\CatalogosBundle\Admin\CtlClienteAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlCliente, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Clientes}
+
+    bundles_catalogos.admin.ctl_zona:
+        class: Bundles\CatalogosBundle\Admin\CtlZonaAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlZona, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Zonas}
+
+    bundles_catalogos.admin.ctl_estado:
+        class: Bundles\CatalogosBundle\Admin\CtlEstadoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlEstado, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Estados de proceso}
+
+    bundles_catalogos.admin.ctl_banco:
+        class: Bundles\CatalogosBundle\Admin\CtlBancoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlBanco, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Bancos}
+
+    bundles_catalogos.admin.ctl_cargofuncional:
+        class: Bundles\CatalogosBundle\Admin\CtlCargofuncionalAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlCargofuncional, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Cargo funcional}
+
+    bundles_catalogos.admin.ctl_empleado:
+        class: Bundles\CatalogosBundle\Admin\CtlEmpleadoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlEmpleado, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Empleados}
+
+    bundles_catalogos.admin.ctl_categoria:
+        class: Bundles\CatalogosBundle\Admin\CtlCategoriaAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlCategoria, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Categoría productos}
+
+    bundles_catalogos.admin.ctl_unidad:
+        class: Bundles\CatalogosBundle\Admin\CtlUnidadAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlUnidad, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Unidades productos}
+
+    bundles_catalogos.admin.ctl_producto:
+        class: Bundles\CatalogosBundle\Admin\CtlProductoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlProducto, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Productos}

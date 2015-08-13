@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CxcCobro" table="cxc_cobro">
+    <indexes>
+      <index name="IDX_8D545D8B995BA0E1" columns="id_banco"/>
+      <index name="IDX_8D545D8B890253C7" columns="id_empleado"/>
+      <index name="IDX_8D545D8BB1476DEC" columns="id_forma_pago"/>
+      <index name="IDX_8D545D8B27760979" columns="id_factura"/>
+      <index name="IDX_8D545D8B46D7FEF9" columns="id_user_add"/>
+      <index name="IDX_8D545D8BAC39DE56" columns="id_user_mod"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="numeroRecibo" type="integer" column="numero_recibo" nullable="false"/>
+    <field name="numeroCheque" type="string" column="numero_cheque" length="2044" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="monto" type="decimal" column="monto" precision="10" scale="2" nullable="false"/>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idFactura" target-entity="FacFactura">
+      <join-columns>
+        <join-column name="id_factura" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idFormaPago" target-entity="CtlFormapago">
+      <join-columns>
+        <join-column name="id_forma_pago" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEmpleado" target-entity="CtlEmpleado">
+      <join-columns>
+        <join-column name="id_empleado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idBanco" target-entity="CtlBanco">
+      <join-columns>
+        <join-column name="id_banco" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

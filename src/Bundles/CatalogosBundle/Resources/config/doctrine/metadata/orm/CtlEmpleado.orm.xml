@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CtlEmpleado" table="ctl_empleado">
+    <indexes>
+      <index name="IDX_B02953844D9AE085" columns="id_cargofuncional"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombres" type="string" column="nombres" length="50" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="apellidos" type="string" column="apellidos" length="2044" nullable="false"/>
+    <field name="dui" type="string" column="dui" length="25" nullable="false"/>
+    <field name="nit" type="string" column="nit" length="25" nullable="false"/>
+    <field name="direccion" type="string" column="direccion" length="100" nullable="false"/>
+    <many-to-one field="idCargofuncional" target-entity="CtlCargofuncional">
+      <join-columns>
+        <join-column name="id_cargofuncional" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="InvNotaenviodetalle" table="inv_notaenviodetalle">
+    <indexes>
+      <index name="IDX_EE945AD793BCA8A7" columns="id_notaenvio"/>
+      <index name="IDX_EE945AD7F760EA80" columns="id_producto"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="cantidad" type="decimal" column="cantidad" precision="10" scale="2" nullable="false"/>
+    <field name="precioUnitario" type="decimal" column="precio_unitario" precision="10" scale="2" nullable="false"/>
+    <field name="total" type="decimal" column="total" precision="10" scale="2" nullable="false"/>
+    <many-to-one field="idProducto" target-entity="CtlProducto">
+      <join-columns>
+        <join-column name="id_producto" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idNotaenvio" target-entity="InvNotaenvio">
+      <join-columns>
+        <join-column name="id_notaenvio" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

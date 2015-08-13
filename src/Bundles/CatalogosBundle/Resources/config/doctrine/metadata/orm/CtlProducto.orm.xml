@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CtlProducto" table="ctl_producto">
+    <indexes>
+      <index name="IDX_CE4BEAC3CE25AE0A" columns="id_categoria"/>
+      <index name="IDX_CE4BEAC3D5D165C2" columns="id_unidad"/>
+      <index name="IDX_CE4BEAC346D7FEF9" columns="id_user_add"/>
+      <index name="IDX_CE4BEAC3AC39DE56" columns="id_user_mod"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="100" nullable="false"/>
+    <field name="presentacion" type="string" column="presentacion" length="100" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <field name="existencia" type="decimal" column="existencia" precision="10" scale="2" nullable="false"/>
+    <field name="existenciaMaxima" type="decimal" column="existencia_maxima" precision="10" scale="2" nullable="false"/>
+    <field name="existenciaMinima" type="decimal" column="existencia_minima" precision="10" scale="2" nullable="false"/>
+    <field name="precioCosto" type="decimal" column="precio_costo" precision="10" scale="2" nullable="false"/>
+    <field name="precioVenta" type="decimal" column="precio_venta" precision="10" scale="2" nullable="false"/>
+    <field name="reservado" type="decimal" column="reservado" precision="10" scale="2" nullable="false"/>
+    <field name="codigo" type="string" column="codigo" length="25" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUnidad" target-entity="CtlUnidad">
+      <join-columns>
+        <join-column name="id_unidad" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCategoria" target-entity="CtlCategoria">
+      <join-columns>
+        <join-column name="id_categoria" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

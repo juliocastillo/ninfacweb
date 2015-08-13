@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="FacFactura" table="fac_factura">
+    <indexes>
+      <index name="IDX_60ACA1A52A813255" columns="id_cliente"/>
+      <index name="IDX_60ACA1A538BCA62A" columns="id_condicionpago"/>
+      <index name="IDX_60ACA1A58D737C65" columns="id_tipofactura"/>
+      <index name="IDX_60ACA1A546D7FEF9" columns="id_user_add"/>
+      <index name="IDX_60ACA1A5AC39DE56" columns="id_user_mod"/>
+      <index name="IDX_60ACA1A5890253C7" columns="id_empleado"/>
+      <index name="IDX_60ACA1A56A540E" columns="id_estado"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="numero" type="integer" column="numero" nullable="false"/>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <field name="iva" type="decimal" column="iva" precision="10" scale="2" nullable="false"/>
+    <field name="ivaRetenido" type="decimal" column="iva_retenido" precision="10" scale="2" nullable="false"/>
+    <field name="subtotal" type="decimal" column="subtotal" precision="10" scale="2" nullable="false"/>
+    <field name="ventaTotal" type="decimal" column="venta_total" precision="10" scale="2" nullable="false"/>
+    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="false"/>
+    <many-to-one field="idEmpleado" target-entity="CtlEmpleado">
+      <join-columns>
+        <join-column name="id_empleado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEstado" target-entity="CtlEstado">
+      <join-columns>
+        <join-column name="id_estado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCondicionpago" target-entity="CtlCondicionpago">
+      <join-columns>
+        <join-column name="id_condicionpago" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idTipofactura" target-entity="CtlTipofactura">
+      <join-columns>
+        <join-column name="id_tipofactura" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCliente" target-entity="CtlCliente">
+      <join-columns>
+        <join-column name="id_cliente" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

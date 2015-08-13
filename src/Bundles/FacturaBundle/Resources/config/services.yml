@@ -1,0 +1,12 @@
+services:
+    bundles_factura.admin.fac_factura:
+        class: Bundles\FacturaBundle\Admin\FacFacturaAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacFactura, BundlesFacturaBundle:FacFacturaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Factura, label: Facturar}
+
+    bundles_factura.admin.fac_facturadetalle:
+        class: Bundles\FacturaBundle\Admin\FacFacturadetalleAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacFacturadetalle, BundlesFacturaBundle:FacFacturadetalleAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false}

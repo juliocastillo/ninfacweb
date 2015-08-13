@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AclObjectIdentities" table="acl_object_identities">
+    <indexes>
+      <index name="idx_9407e54977fa751a" columns="parent_object_identity_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="uniq_9407e5494b12ad6ea000b10" columns="object_identifier,class_id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="classId" type="integer" column="class_id" nullable="false"/>
+    <field name="objectIdentifier" type="string" column="object_identifier" length="100" nullable="false"/>
+    <field name="entriesInheriting" type="boolean" column="entries_inheriting" nullable="false"/>
+    <many-to-one field="parentObjectentity" target-entity="AclObjectIdentities">
+      <join-columns>
+        <join-column name="parent_object_identity_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-many field="ancestor" target-entity="AclObjectIdentities" inversed-by="objectentity">
+      <join-table name="acl_object_identity_ancestors">
+        <join-columns>
+          <join-column name="object_identity_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="ancestor_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

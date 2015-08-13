@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CtlEstado" table="ctl_estado">
+    <unique-constraints>
+      <unique-constraint name="unique_abreviatura" columns="abreviatura"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="25" nullable="false"/>
+    <field name="abreviatura" type="string" column="abreviatura" length="5" nullable="false"/>
+    <field name="descripcion" type="string" column="descripcion" length="100" nullable="true"/>
+  </entity>
+</doctrine-mapping>

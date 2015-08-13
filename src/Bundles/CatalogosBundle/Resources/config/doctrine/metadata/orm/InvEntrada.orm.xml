@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="InvEntrada" table="inv_entrada">
+    <indexes>
+      <index name="IDX_D4AA0BAD96F5D4E9" columns="id_proveedor"/>
+      <index name="IDX_D4AA0BADBDD17E18" columns="id_tipoentrada"/>
+      <index name="IDX_D4AA0BAD46D7FEF9" columns="id_user_add"/>
+      <index name="IDX_D4AA0BADAC39DE56" columns="id_user_mod"/>
+      <index name="IDX_D4AA0BAD6A540E" columns="id_estado"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <field name="numero" type="integer" column="numero" nullable="false"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <many-to-one field="idEstado" target-entity="CtlEstado">
+      <join-columns>
+        <join-column name="id_estado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idTipoentrada" target-entity="CtlTipoentrada">
+      <join-columns>
+        <join-column name="id_tipoentrada" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idProveedor" target-entity="CtlProveedor">
+      <join-columns>
+        <join-column name="id_proveedor" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

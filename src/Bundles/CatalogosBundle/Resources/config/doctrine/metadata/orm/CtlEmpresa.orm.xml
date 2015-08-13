@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CtlEmpresa" table="ctl_empresa">
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="direccion" type="string" column="direccion" length="100" nullable="false"/>
+    <field name="giro" type="string" column="giro" length="100" nullable="false"/>
+    <field name="nit" type="string" column="nit" length="25" nullable="false"/>
+    <field name="nombre" type="string" column="nombre" length="100" nullable="false"/>
+    <field name="nombreComercial" type="string" column="nombre_comercial" length="100" nullable="false"/>
+    <field name="nrc" type="string" column="nrc" length="25" nullable="false"/>
+    <field name="telefono" type="string" column="telefono" length="25" nullable="false"/>
+  </entity>
+</doctrine-mapping>
