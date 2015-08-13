@@ -74,14 +74,16 @@ class FacFacturadetalleAdmin extends Admin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
-//        $showMapper
-//            ->add('id')
+        $showMapper
+            ->add('id')
 //            ->add('descripcion')
-//            ->add('cantidad')
+            ->add('idProducto')
+            ->add('cantidad')
+            
 //            ->add('precioUnitario')
 //            ->add('ventasExentas')
 //            ->add('ventasGravadas')
 //            ->add('ventasNosujetas')
-//        ;
+        ;
     }
 }

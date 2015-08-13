@@ -69,7 +69,7 @@ class ReporteController extends Controller {
                     'margin-left' => '10',
                     'margin-bottom' => '10',
                     'print-media-type' => true,
-                    'title' => 'zzzzzzzzz',
+                    'title' => 'Factura_000',
                     'enable-javascript' => true,
                     'javascript-delay' => 500,
                     'no-pdf-compression' => true)), 200, array(

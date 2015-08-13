@@ -279,4 +279,8 @@ class FacFacturadetalle
     {
         return $this->idFactura;
     }
+    
+    public function __toString() {
+        return $this->idProducto;
+    }
 }
