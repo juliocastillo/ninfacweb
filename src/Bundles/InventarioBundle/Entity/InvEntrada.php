@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundles\CatalogosBundle\Entity;
+namespace Bundles\InventarioBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -39,7 +39,7 @@ class InvEntrada
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_mod", type="date", nullable=false)
+     * @ORM\Column(name="date_mod", type="date", nullable=true)
      */
     private $dateMod;
 
@@ -58,9 +58,9 @@ class InvEntrada
     private $activo;
 
     /**
-     * @var \CtlProveedor
+     * @var \Bundles\CatalogosBundle\Entity\CtlProveedor
      *
-     * @ORM\ManyToOne(targetEntity="CtlProveedor")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlProveedor")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id")
      * })
@@ -68,9 +68,9 @@ class InvEntrada
     private $idProveedor;
 
     /**
-     * @var \CtlTipoentrada
+     * @var \Bundles\CatalogosBundle\Entity\CtlTipoentrada
      *
-     * @ORM\ManyToOne(targetEntity="CtlTipoentrada")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlTipoentrada")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_tipoentrada", referencedColumnName="id")
      * })
@@ -78,9 +78,9 @@ class InvEntrada
     private $idTipoentrada;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_add", referencedColumnName="id")
      * })
@@ -88,9 +88,9 @@ class InvEntrada
     private $idUserAdd;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_mod", referencedColumnName="id")
      * })
@@ -98,15 +98,22 @@ class InvEntrada
     private $idUserMod;
 
     /**
-     * @var \CtlEstado
+     * @var \Bundles\CatalogosBundle\Entity\\CtlEstado
      *
-     * @ORM\ManyToOne(targetEntity="CtlEstado")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEstado")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_estado", referencedColumnName="id")
      * })
      */
     private $idEstado;
 
+    
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="InvEntradadetalle", mappedBy="idEntrada", cascade={"all"}, orphanRemoval=true)
+     *
+     */
+    private $entradaDetalle;
 
 
     /**
@@ -283,10 +290,10 @@ class InvEntrada
     /**
      * Set idUserAdd
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserAdd
      * @return InvEntrada
      */
-    public function setIdUserAdd(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd = null)
+    public function setIdUserAdd(\Application\Sonata\UserBundle\Entity\User $idUserAdd = null)
     {
         $this->idUserAdd = $idUserAdd;
 
@@ -296,7 +303,7 @@ class InvEntrada
     /**
      * Get idUserAdd
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -306,10 +313,10 @@ class InvEntrada
     /**
      * Set idUserMod
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserMod
      * @return InvEntrada
      */
-    public function setIdUserMod(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod = null)
+    public function setIdUserMod(\Application\Sonata\UserBundle\Entity\User $idUserMod = null)
     {
         $this->idUserMod = $idUserMod;
 
@@ -319,7 +326,7 @@ class InvEntrada
     /**
      * Get idUserMod
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserMod()
     {
@@ -347,5 +354,49 @@ class InvEntrada
     public function getIdEstado()
     {
         return $this->idEstado;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->entradaDetalle = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add entradaDetalle
+     *
+     * @param \Bundles\InventarioBundle\Entity\InvEntradadetalle $entradaDetalle
+     * @return InvEntrada
+     */
+    public function addEntradaDetalle(\Bundles\InventarioBundle\Entity\InvEntradadetalle $entradaDetalle)
+    {
+        $this->entradaDetalle[] = $entradaDetalle;
+
+        return $this;
+    }
+
+    /**
+     * Remove entradaDetalle
+     *
+     * @param \Bundles\InventarioBundle\Entity\InvEntradadetalle $entradaDetalle
+     */
+    public function removeEntradaDetalle(\Bundles\InventarioBundle\Entity\InvEntradadetalle $entradaDetalle)
+    {
+        $this->entradaDetalle->removeElement($entradaDetalle);
+    }
+
+    /**
+     * Get entradaDetalle
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEntradaDetalle()
+    {
+        return $this->entradaDetalle;
+    }
+    
+    public function __toString() {
+        return $this->idTipoentrada.' '.$this->numero;
     }
 }

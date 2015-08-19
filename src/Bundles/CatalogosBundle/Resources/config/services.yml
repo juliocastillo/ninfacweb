@@ -50,10 +50,22 @@ services:
         class: Bundles\CatalogosBundle\Admin\CtlUnidadAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlUnidad, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Unidades productos}
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Cantidad Unitaria}
 
     bundles_catalogos.admin.ctl_producto:
         class: Bundles\CatalogosBundle\Admin\CtlProductoAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlProducto, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Productos}
+
+    bundles_catalogos.admin.ctl_tipoentrada:
+        class: Bundles\CatalogosBundle\Admin\CtlTipoentradaAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlTipoentrada, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Tipo de entrada}
+
+    bundles_catalogos.admin.ctl_proveedor:
+        class: Bundles\CatalogosBundle\Admin\CtlProveedorAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlProveedor, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Proveedores}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundles\CatalogosBundle\Entity;
+namespace Bundles\FacturaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -39,7 +39,7 @@ class FacNotaremision
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_mod", type="date", nullable=false)
+     * @ORM\Column(name="date_mod", type="date", nullable=true)
      */
     private $dateMod;
 
@@ -65,9 +65,9 @@ class FacNotaremision
     private $ventaTotal;
 
     /**
-     * @var \CtlCliente
+     * @var \Bundles\CatalogosBundle\Entity\CtlCliente
      *
-     * @ORM\ManyToOne(targetEntity="CtlCliente")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlCliente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
      * })
@@ -75,9 +75,9 @@ class FacNotaremision
     private $idCliente;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_add", referencedColumnName="id")
      * })
@@ -85,9 +85,9 @@ class FacNotaremision
     private $idUserAdd;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_mod", referencedColumnName="id")
      * })
@@ -95,9 +95,9 @@ class FacNotaremision
     private $idUserMod;
 
     /**
-     * @var \CtlCondicionpago
+     * @var \Bundles\CatalogosBundle\Entity\CtlCondicionpago
      *
-     * @ORM\ManyToOne(targetEntity="CtlCondicionpago")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlCondicionpago")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_condicionpago", referencedColumnName="id")
      * })
@@ -105,16 +105,23 @@ class FacNotaremision
     private $idCondicionpago;
 
     /**
-     * @var \CtlEstado
+     * @var \Bundles\CatalogosBundle\Entity\CtlEstado
      *
-     * @ORM\ManyToOne(targetEntity="CtlEstado")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEstado")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_estado", referencedColumnName="id")
      * })
      */
     private $idEstado;
 
-
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="FacNotaremisiondetalle", mappedBy="idNotaremision", cascade={"all"}, orphanRemoval=true)
+     *
+     */
+    private $facnotaremisionDetalle;
+    
+    
 
     /**
      * Get id
@@ -290,10 +297,10 @@ class FacNotaremision
     /**
      * Set idUserAdd
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserAdd
      * @return FacNotaremision
      */
-    public function setIdUserAdd(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd = null)
+    public function setIdUserAdd(\Bundles\FacturaBundle\Entity\FosUserUser $idUserAdd = null)
     {
         $this->idUserAdd = $idUserAdd;
 
@@ -303,7 +310,7 @@ class FacNotaremision
     /**
      * Get idUserAdd
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -313,10 +320,10 @@ class FacNotaremision
     /**
      * Set idUserMod
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserMod
      * @return FacNotaremision
      */
-    public function setIdUserMod(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod = null)
+    public function setIdUserMod(\Application\Sonata\UserBundle\Entity\User $idUserMod = null)
     {
         $this->idUserMod = $idUserMod;
 
@@ -326,7 +333,7 @@ class FacNotaremision
     /**
      * Get idUserMod
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User 
      */
     public function getIdUserMod()
     {
@@ -377,5 +384,49 @@ class FacNotaremision
     public function getIdEstado()
     {
         return $this->idEstado;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->facnotaremisionDetalle = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add facnotaremisionDetalle
+     *
+     * @param \Bundles\FacturaBundle\Entity\FacNotaremisiondetalle $facnotaremisionDetalle
+     * @return FacNotaremision
+     */
+    public function addFacnotaremisionDetalle(\Bundles\FacturaBundle\Entity\FacNotaremisiondetalle $facnotaremisionDetalle)
+    {
+        $this->facnotaremisionDetalle[] = $facnotaremisionDetalle;
+
+        return $this;
+    }
+
+    /**
+     * Remove facnotaremisionDetalle
+     *
+     * @param \Bundles\FacturaBundle\Entity\FacNotaremisiondetalle $facnotaremisionDetalle
+     */
+    public function removeFacnotaremisionDetalle(\Bundles\FacturaBundle\Entity\FacNotaremisiondetalle $facnotaremisionDetalle)
+    {
+        $this->facnotaremisionDetalle->removeElement($facnotaremisionDetalle);
+    }
+
+    /**
+     * Get facnotaremisionDetalle
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFacnotaremisionDetalle()
+    {
+        return $this->facnotaremisionDetalle;
+    }
+    
+    public function __toString() {
+        return $this->numero;
     }
 }

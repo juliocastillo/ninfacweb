@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundles\CatalogosBundle\Entity;
+namespace Bundles\FacturaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,7 +46,7 @@ class FacNotaremisiondetalle
     /**
      * @var \FacNotaremision
      *
-     * @ORM\ManyToOne(targetEntity="FacNotaremision")
+     * @ORM\ManyToOne(targetEntity="FacNotaremision", inversedBy="facnotaremisionDetalle")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_notaremision", referencedColumnName="id")
      * })
@@ -54,9 +54,9 @@ class FacNotaremisiondetalle
     private $idNotaremision;
 
     /**
-     * @var \CtlProducto
+     * @var \Bundles\CatalogosBundle\Entity\CtlProducto
      *
-     * @ORM\ManyToOne(targetEntity="CtlProducto")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlProducto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
      * })
@@ -147,10 +147,10 @@ class FacNotaremisiondetalle
     /**
      * Set idNotaremision
      *
-     * @param \Bundles\CatalogosBundle\Entity\FacNotaremision $idNotaremision
+     * @param \Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision
      * @return FacNotaremisiondetalle
      */
-    public function setIdNotaremision(\Bundles\CatalogosBundle\Entity\FacNotaremision $idNotaremision = null)
+    public function setIdNotaremision(\Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision = null)
     {
         $this->idNotaremision = $idNotaremision;
 
@@ -160,7 +160,7 @@ class FacNotaremisiondetalle
     /**
      * Get idNotaremision
      *
-     * @return \Bundles\CatalogosBundle\Entity\FacNotaremision 
+     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
      */
     public function getIdNotaremision()
     {
@@ -187,6 +187,10 @@ class FacNotaremisiondetalle
      */
     public function getIdProducto()
     {
+        return $this->idProducto;
+    }
+    
+    public function __toString() {
         return $this->idProducto;
     }
 }

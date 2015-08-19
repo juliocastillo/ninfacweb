@@ -103,9 +103,9 @@ class CtlProveedor
     private $idPais;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_add", referencedColumnName="id")
      * })
@@ -113,9 +113,9 @@ class CtlProveedor
     private $idUserAdd;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_mod", referencedColumnName="id")
      * })
@@ -390,10 +390,10 @@ class CtlProveedor
     /**
      * Set idUserAdd
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserAdd
      * @return CtlProveedor
      */
-    public function setIdUserAdd(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd = null)
+    public function setIdUserAdd(\Application\Sonata\UserBundle\Entity\User $idUserAdd = null)
     {
         $this->idUserAdd = $idUserAdd;
 
@@ -403,7 +403,7 @@ class CtlProveedor
     /**
      * Get idUserAdd
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -413,10 +413,10 @@ class CtlProveedor
     /**
      * Set idUserMod
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserMod
      * @return CtlProveedor
      */
-    public function setIdUserMod(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod = null)
+    public function setIdUserMod(\Application\Sonata\UserBundle\Entity\User $idUserMod = null)
     {
         $this->idUserMod = $idUserMod;
 
@@ -426,7 +426,7 @@ class CtlProveedor
     /**
      * Get idUserMod
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserMod()
     {

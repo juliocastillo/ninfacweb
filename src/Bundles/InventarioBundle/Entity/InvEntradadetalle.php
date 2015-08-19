@@ -1,13 +1,13 @@
 <?php
 
-namespace Bundles\CatalogosBundle\Entity;
+namespace Bundles\InventarioBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * InvEntradadetalle
  *
- * @ORM\Table(name="inv_entradadetalle", indexes={@ORM\Index(name="IDX_5F2397A417D40B04", columns={"id_entrada"})})
+ * @ORM\Table(name="inv_entradadetalle", indexes={@ORM\Index(name="IDX_5F2397A417D40B04", columns={"id_entrada"}), @ORM\Index(name="IDX_5F2397A4F760EA80", columns={"id_producto"})})
  * @ORM\Entity
  */
 class InvEntradadetalle
@@ -39,14 +39,14 @@ class InvEntradadetalle
     /**
      * @var string
      *
-     * @ORM\Column(name="serie", type="string", length=50, nullable=false)
+     * @ORM\Column(name="serie", type="string", length=50, nullable=true)
      */
     private $serie;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="modelo", type="string", length=50, nullable=false)
+     * @ORM\Column(name="modelo", type="string", length=50, nullable=true)
      */
     private $modelo;
 
@@ -67,19 +67,29 @@ class InvEntradadetalle
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_vencimiento", type="date", nullable=false)
+     * @ORM\Column(name="fecha_vencimiento", type="date", nullable=true)
      */
     private $fechaVencimiento;
 
     /**
      * @var \InvEntrada
      *
-     * @ORM\ManyToOne(targetEntity="InvEntrada")
+     * @ORM\ManyToOne(targetEntity="InvEntrada", inversedBy="entradaDetalle")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_entrada", referencedColumnName="id")
      * })
      */
     private $idEntrada;
+
+    /**
+     * @var \Bundles\CatalogosBundle\Entity\CtlProducto
+     *
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlProducto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     * })
+     */
+    private $idProducto;
 
 
 
@@ -257,10 +267,10 @@ class InvEntradadetalle
     /**
      * Set idEntrada
      *
-     * @param \Bundles\CatalogosBundle\Entity\InvEntrada $idEntrada
+     * @param \Bundles\InventarioBundle\Entity\InvEntrada $idEntrada
      * @return InvEntradadetalle
      */
-    public function setIdEntrada(\Bundles\CatalogosBundle\Entity\InvEntrada $idEntrada = null)
+    public function setIdEntrada(\Bundles\InventarioBundle\Entity\InvEntrada $idEntrada = null)
     {
         $this->idEntrada = $idEntrada;
 
@@ -270,10 +280,37 @@ class InvEntradadetalle
     /**
      * Get idEntrada
      *
-     * @return \Bundles\CatalogosBundle\Entity\InvEntrada 
+     * @return \Bundles\InventarioBundle\Entity\InvEntrada 
      */
     public function getIdEntrada()
     {
         return $this->idEntrada;
+    }
+
+    /**
+     * Set idProducto
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlProducto $idProducto
+     * @return InvEntradadetalle
+     */
+    public function setIdProducto(\Bundles\CatalogosBundle\Entity\CtlProducto $idProducto = null)
+    {
+        $this->idProducto = $idProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProducto
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlProducto 
+     */
+    public function getIdProducto()
+    {
+        return $this->idProducto;
+    }
+    
+    public function __toString() {
+        return $this->idProducto;
     }
 }

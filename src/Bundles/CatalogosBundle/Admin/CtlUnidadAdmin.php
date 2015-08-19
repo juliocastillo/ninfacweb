@@ -35,7 +35,8 @@ class CtlUnidadAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                )
+                    'delete' => array(),
+                    )
             ))
         ;
     }
@@ -47,7 +48,6 @@ class CtlUnidadAdmin extends Admin
     {
         $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
         $id = $entity->getId();
-
         $formMapper
             ->add('nombre')
             ->add('activo');

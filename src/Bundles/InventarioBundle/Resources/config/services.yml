@@ -1,0 +1,12 @@
+services:
+    bundles_inventario.admin.inv_entrada:
+        class: Bundles\InventarioBundle\Admin\InvEntradaAdmin
+        arguments: [~, Bundles\InventarioBundle\Entity\InvEntrada, BundlesInventarioBundle:InvEntradaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Entradas}
+
+    bundles_inventario.admin.inv_entradadetalle:
+        class: Bundles\InventarioBundle\Admin\InvEntradadetalleAdmin
+        arguments: [~, Bundles\InventarioBundle\Entity\InvEntradadetalle, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false}

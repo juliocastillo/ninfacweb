@@ -54,7 +54,7 @@ class AppKernel extends Kernel
             new Bundles\CxcBundle\BundlesCxcBundle(),
             new Bundles\FacturaBundle\BundlesFacturaBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),  // vendor para generar pdf
-                    
+            new Bundles\InventarioBundle\BundlesInventarioBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
