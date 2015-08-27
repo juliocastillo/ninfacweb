@@ -4,6 +4,12 @@ namespace Bundles\FacturaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
+
 /**
  * FacFacturadetalle
  *
@@ -33,6 +39,11 @@ class FacFacturadetalle
      * @var string
      *
      * @ORM\Column(name="cantidad", type="decimal", precision=10, scale=2, nullable=false)
+     * 
+     * @Assert\NotNull()
+     * @Assert\Range(
+     *      min = "0.01",
+     * )
      */
     private $cantidad;
 

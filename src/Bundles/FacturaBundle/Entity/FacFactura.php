@@ -4,11 +4,19 @@ namespace Bundles\FacturaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 /**
  * FacFactura
  *
- * @ORM\Table(name="fac_factura", indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A56A540E", columns={"id_estado"})})
+ * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero","tipoFactura"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A56A540E", columns={"id_estado"})})
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"numero", "idTipofactura"},
+ *     message="Ya existe este numero de factura"
+ *  )
  */
 class FacFactura
 {
@@ -26,6 +34,8 @@ class FacFactura
      * @var integer
      *
      * @ORM\Column(name="numero", type="integer", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\Range(min="1")
      */
     private $numero;
 
@@ -33,6 +43,7 @@ class FacFactura
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="date", nullable=false)
+     * @Assert\NotNull()
      */
     private $fecha;
 
@@ -107,6 +118,7 @@ class FacFactura
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
      * })
+     * @Assert\NotNull()
      */
     private $idCliente;
 
@@ -117,6 +129,7 @@ class FacFactura
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_condicionpago", referencedColumnName="id")
      * })
+     * @Assert\NotNull()
      */
     private $idCondicionpago;
 
@@ -127,6 +140,7 @@ class FacFactura
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_tipofactura", referencedColumnName="id")
      * })
+     * @Assert\NotNull()
      */
     private $idTipofactura;
 
@@ -157,18 +171,16 @@ class FacFactura
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
      * })
+     * @Assert\NotNull()
      */
     private $idEmpleado;
 
-    /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlEstado
+     /**
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEstado")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_estado", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="estado", type="string", length=5, nullable=false)
      */
-    private $idEstado;
+    private $estado;
 
 
     /**
@@ -586,26 +598,26 @@ class FacFactura
     }
 
     /**
-     * Set idEstado
+     * Set estado
      *
-     * @param \Bundles\CatalogosBundle\Entity\CtlEstado $idEstado
+     * @param string $estado
      * @return FacFactura
      */
-    public function setIdEstado(\Bundles\CatalogosBundle\Entity\CtlEstado $idEstado = null)
+    public function setEstado($estado)
     {
-        $this->idEstado = $idEstado;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get idEstado
+     * Get estado
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlEstado 
+     * @return string
      */
-    public function getIdEstado()
+    public function getEstado()
     {
-        return $this->idEstado;
+        return $this->estado;
     }
     /**
      * Constructor
@@ -646,5 +658,9 @@ class FacFactura
     public function getFacturaDetalle()
     {
         return $this->facturaDetalle;
+    }
+    
+    public function __toString() {
+        return $this->numero .' ' . $this->idTipofactura;
     }
 }

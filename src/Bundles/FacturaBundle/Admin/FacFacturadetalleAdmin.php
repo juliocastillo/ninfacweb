@@ -8,13 +8,12 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class FacFacturadetalleAdmin extends Admin
-{
+class FacFacturadetalleAdmin extends Admin {
+
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
 //        $datagridMapper
 //            ->add('id')
 //            ->add('descripcion')
@@ -29,8 +28,7 @@ class FacFacturadetalleAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper) {
 //        $listMapper
 //            ->add('id')
 //            ->add('descripcion')
@@ -52,19 +50,19 @@ class FacFacturadetalleAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-            ->add('cantidad',null,array(
-                    'required'=>FALSE,
-                    'attr' => array('style'=>'width:100px', 'maxlength' => '25'),
+                ->add('cantidad', null, array(
+                    'required' => FALSE,
+                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
                 ))
-            ->add('idProducto',NULL,array(
-                'label'=>'Producto',
-                'attr' => array('style'=>'width:600px'),))
-            ->add('precioUnitario',null,array(
-                    'required'=>FALSE,
-                    'attr' => array('style'=>'width:100px', 'maxlength' => '25'),
+                ->add('idProducto', NULL, array(
+                    'empty_value' => '...Seleccione...',
+                    'label' => 'Producto',
+                    'attr' => array('style' => 'width:600px'),))
+                ->add('precioUnitario', null, array(
+                    'required' => FALSE,
+                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
                 ))
         ;
     }
@@ -72,18 +70,18 @@ class FacFacturadetalleAdmin extends Admin
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
+    protected function configureShowFields(ShowMapper $showMapper) {
         $showMapper
-            ->add('id')
+                ->add('id')
 //            ->add('descripcion')
-            ->add('idProducto')
-            ->add('cantidad')
-            
+                ->add('idProducto')
+                ->add('cantidad')
+
 //            ->add('precioUnitario')
 //            ->add('ventasExentas')
 //            ->add('ventasGravadas')
 //            ->add('ventasNosujetas')
         ;
     }
+
 }

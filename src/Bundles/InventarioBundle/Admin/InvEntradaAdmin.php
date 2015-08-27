@@ -53,27 +53,33 @@ class InvEntradaAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('numero')
-            ->add('idTipoentrada')
-            ->add('idProveedor')
-            ->add('fecha', null, array('label' => 'Fecha', 'disabled' => false, 
-                  'widget' => 'single_text',  // un sólo input para la fecha, no tres.
-                  'format' => 'dd/MM/y',
-                  'attr'=> array('class'=>'bootstrap-datepicker now')))    
-                
-//            ->add('fecha','date',array(
-//                                'widget' => 'single_text',
-//                                'format' => 'dd-MM-yyyy',
-//                                'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
-//                ))
+            ->tab('Datos generales')
+                ->with('', array('class'=>'col-md-6'))
+                ->add('numero')
+                ->add('idTipoentrada')
+                ->add('idProveedor')
+                ->add('fecha', null, array('label' => 'Fecha', 'disabled' => false,
+                      'read_only'=>TRUE,
+                      'widget' => 'single_text',  // un sólo input para la fecha, no tres.
+                      'format' => 'dd/MM/y',
+                      'attr'=> array('class'=>'bootstrap-datepicker now')))    
+
+    //            ->add('fecha','date',array(
+    //                                'widget' => 'single_text',
+    //                                'format' => 'dd-MM-yyyy',
+    //                                'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
+    //                ))
+                ->end()
             ->end()
-            ->with('Elementos de la entrada')
+            ->tab('D e t a l l e')
+            ->with('')
                 ->add('entradaDetalle','sonata_type_collection',array(
                                                                     'label' =>'Items'),
                                                                         array(
                                                                             'edit' => 'inline', 
                                                                             'inline' => 'table'
                                                                      ))
+            ->end()
             ->end()
                 ;
     }

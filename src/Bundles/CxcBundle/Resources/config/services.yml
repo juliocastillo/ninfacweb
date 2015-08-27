@@ -3,4 +3,10 @@ services:
         class: Bundles\CxcBundle\Admin\MntEmpleadoZonaAdmin
         arguments: [~, Bundles\CxcBundle\Entity\MntEmpleadoZona, BundlesCxcBundle:MntEmpleadoZonaAdmin]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Mantenimiento, label: Vendedor por zona}
+            - {name: sonata.admin, manager_type: orm, group: CXC, label: Vendedor por zona}
+
+    bundles_cxc.admin.cxc_cobro:
+        class: Bundles\CxcBundle\Admin\CxcCobroAdmin
+        arguments: [~, Bundles\CxcBundle\Entity\CxcCobro, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: CXC, label: Cobros}

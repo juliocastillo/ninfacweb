@@ -1,14 +1,23 @@
 <?php
 
-namespace Bundles\CatalogosBundle\Entity;
+namespace Bundles\CxcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * CxcCobro
  *
- * @ORM\Table(name="cxc_cobro", indexes={@ORM\Index(name="IDX_8D545D8B995BA0E1", columns={"id_banco"}), @ORM\Index(name="IDX_8D545D8B890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_8D545D8BB1476DEC", columns={"id_forma_pago"}), @ORM\Index(name="IDX_8D545D8B27760979", columns={"id_factura"}), @ORM\Index(name="IDX_8D545D8B46D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_8D545D8BAC39DE56", columns={"id_user_mod"})})
+ * @ORM\Table(name="cxc_cobro", uniqueConstraints={@ORM\UniqueConstraint(name="uk_numero_fecha", columns={"numero_recibo","fecha"})}, indexes={@ORM\Index(name="IDX_8D545D8B890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_8D545D8BB1476DEC", columns={"id_forma_pago"}), @ORM\Index(name="IDX_8D545D8B27760979", columns={"id_factura"}), @ORM\Index(name="IDX_8D545D8B46D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_8D545D8BAC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_8D545D8B995BA0E1", columns={"id_banco"})})
  * @ORM\Entity
+ * 
+ * @UniqueEntity(
+ *     fields={"numeroRecibo", "fecha"},
+ *     message="Ya existe este recibo en la base de datos"
+ *  )
  */
 class CxcCobro
 {
@@ -26,6 +35,7 @@ class CxcCobro
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="date", nullable=false)
+     * 
      */
     private $fecha;
 
@@ -33,13 +43,16 @@ class CxcCobro
      * @var integer
      *
      * @ORM\Column(name="numero_recibo", type="integer", nullable=false)
+     * 
+     * @Assert\Range(min="1")
      */
     private $numeroRecibo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_cheque", type="string", length=2044, nullable=false)
+     * @ORM\Column(name="numero_cheque", type="string", length=25, nullable=true)
+     * 
      */
     private $numeroCheque;
 
@@ -53,7 +66,7 @@ class CxcCobro
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_mod", type="date", nullable=false)
+     * @ORM\Column(name="date_mod", type="date", nullable=true)
      */
     private $dateMod;
 
@@ -68,33 +81,29 @@ class CxcCobro
      * @var string
      *
      * @ORM\Column(name="monto", type="decimal", precision=10, scale=2, nullable=false)
+     * 
+     * @Assert\Range(
+     *      min = "0.01",
+     * )
      */
     private $monto;
 
     /**
-     * @var \CtlBanco
+     * @var \Bundles\CatalogosBundle\Entity\CtlEmpleado
      *
-     * @ORM\ManyToOne(targetEntity="CtlBanco")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_banco", referencedColumnName="id")
-     * })
-     */
-    private $idBanco;
-
-    /**
-     * @var \CtlEmpleado
-     *
-     * @ORM\ManyToOne(targetEntity="CtlEmpleado")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEmpleado")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
      * })
+     * 
+     * @Assert\NotNull()
      */
     private $idEmpleado;
 
     /**
-     * @var \CtlFormapago
+     * @var \Bundles\CatalogosBundle\Entity\CtlFormapago
      *
-     * @ORM\ManyToOne(targetEntity="CtlFormapago")
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlFormapago")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_forma_pago", referencedColumnName="id")
      * })
@@ -102,9 +111,9 @@ class CxcCobro
     private $idFormaPago;
 
     /**
-     * @var \FacFactura
+     * @var \Bundles\FacturaBundle\Entity\FacFactura
      *
-     * @ORM\ManyToOne(targetEntity="FacFactura")
+     * @ORM\ManyToOne(targetEntity="\Bundles\FacturaBundle\Entity\FacFactura")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_factura", referencedColumnName="id")
      * })
@@ -112,9 +121,9 @@ class CxcCobro
     private $idFactura;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_add", referencedColumnName="id")
      * })
@@ -122,14 +131,24 @@ class CxcCobro
     private $idUserAdd;
 
     /**
-     * @var \FosUserUser
+     * @var \Application\Sonata\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="FosUserUser")
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user_mod", referencedColumnName="id")
      * })
      */
     private $idUserMod;
+
+    /**
+     * @var \Bundles\CatalogosBundle\Entity\CtlBanco
+     *
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlBanco")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_banco", referencedColumnName="id")
+     * })
+     */
+    private $idBanco;
 
 
 
@@ -305,29 +324,6 @@ class CxcCobro
     }
 
     /**
-     * Set idBanco
-     *
-     * @param \Bundles\CatalogosBundle\Entity\CtlBanco $idBanco
-     * @return CxcCobro
-     */
-    public function setIdBanco(\Bundles\CatalogosBundle\Entity\CtlBanco $idBanco = null)
-    {
-        $this->idBanco = $idBanco;
-
-        return $this;
-    }
-
-    /**
-     * Get idBanco
-     *
-     * @return \Bundles\CatalogosBundle\Entity\CtlBanco 
-     */
-    public function getIdBanco()
-    {
-        return $this->idBanco;
-    }
-
-    /**
      * Set idEmpleado
      *
      * @param \Bundles\CatalogosBundle\Entity\CtlEmpleado $idEmpleado
@@ -376,10 +372,10 @@ class CxcCobro
     /**
      * Set idFactura
      *
-     * @param \Bundles\CatalogosBundle\Entity\FacFactura $idFactura
+     * @param \Bundles\FacturaBundle\Entity\FacFactura $idFactura
      * @return CxcCobro
      */
-    public function setIdFactura(\Bundles\CatalogosBundle\Entity\FacFactura $idFactura = null)
+    public function setIdFactura(\Bundles\FacturaBundle\Entity\FacFactura $idFactura = null)
     {
         $this->idFactura = $idFactura;
 
@@ -399,10 +395,10 @@ class CxcCobro
     /**
      * Set idUserAdd
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserAdd
      * @return CxcCobro
      */
-    public function setIdUserAdd(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserAdd = null)
+    public function setIdUserAdd(\Application\Sonata\UserBundle\Entity\User $idUserAdd = null)
     {
         $this->idUserAdd = $idUserAdd;
 
@@ -412,7 +408,7 @@ class CxcCobro
     /**
      * Get idUserAdd
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User 
      */
     public function getIdUserAdd()
     {
@@ -422,10 +418,10 @@ class CxcCobro
     /**
      * Set idUserMod
      *
-     * @param \Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod
+     * @param \Application\Sonata\UserBundle\Entity\User $idUserMod
      * @return CxcCobro
      */
-    public function setIdUserMod(\Bundles\CatalogosBundle\Entity\FosUserUser $idUserMod = null)
+    public function setIdUserMod(\Application\Sonata\UserBundle\Entity\User $idUserMod = null)
     {
         $this->idUserMod = $idUserMod;
 
@@ -435,10 +431,37 @@ class CxcCobro
     /**
      * Get idUserMod
      *
-     * @return \Bundles\CatalogosBundle\Entity\FosUserUser 
+     * @return \Application\Sonata\UserBundle\Entity\User 
      */
     public function getIdUserMod()
     {
         return $this->idUserMod;
+    }
+
+    /**
+     * Set idBanco
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlBanco $idBanco
+     * @return CxcCobro
+     */
+    public function setIdBanco(\Bundles\CatalogosBundle\Entity\CtlBanco $idBanco = null)
+    {
+        $this->idBanco = $idBanco;
+
+        return $this;
+    }
+
+    /**
+     * Get idBanco
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlBanco 
+     */
+    public function getIdBanco()
+    {
+        return $this->idBanco;
+    }
+    
+    public function __toString() {
+        return 'Recibo: '.$this->numeroRecibo;
     }
 }
