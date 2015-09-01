@@ -427,6 +427,6 @@ class FacNotaremision
     }
     
     public function __toString() {
-        return $this->numero;
+        return 'NR#: '.$this->numero;
     }
 }

@@ -74,6 +74,13 @@ class CtlEmpleado
      */
     private $idCargofuncional;
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="Bundles\CxcBundle\Entity\MntEmpleadoZona", mappedBy="idEmpleado", cascade={"all"}, orphanRemoval=true)
+     *
+     */
+    private $empleadoZona;
+
 
 
     /**
@@ -250,5 +257,46 @@ class CtlEmpleado
     
     public function __toString() {
         return $this->nombres.' '.$this->apellidos;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->empleadoZona = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add empleadoZona
+     *
+     * @param \Bundles\CxcBundle\Entity\MntEmpleadoZona $empleadoZona
+     * @return CtlEmpleado
+     */
+    public function addEmpleadoZona(\Bundles\CxcBundle\Entity\MntEmpleadoZona $empleadoZona)
+    {
+        $this->empleadoZona[] = $empleadoZona;
+
+        return $this;
+    }
+
+    /**
+     * Remove empleadoZona
+     *
+     * @param \Bundles\CxcBundle\Entity\MntEmpleadoZona $empleadoZona
+     */
+    public function removeEmpleadoZona(\Bundles\CxcBundle\Entity\MntEmpleadoZona $empleadoZona)
+    {
+        $this->empleadoZona->removeElement($empleadoZona);
+    }
+
+    /**
+     * Get empleadoZona
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmpleadoZona()
+    {
+        return $this->empleadoZona;
     }
 }

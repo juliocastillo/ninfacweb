@@ -44,10 +44,15 @@ class MntEmpleadoZonaAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $_route = $this->getConfigurationPool()->getContainer()->get('request')->attributes->get('_route');
+
+        if ($_route === 'admin_bundles_cxc_mntempleadozona_create' || $_route === 'admin_bundles_cxc_mntempleadozona_edit') {
+            $formMapper
+                ->add('idEmpleado',null,array('label'=>'Vendedor','required'=>'true'))
+            ;
+        }
+
         $formMapper
-            ->add('idEmpleado',null,array(
-                'label'=>'Vendedor',
-                'required'=>'true'))
             ->add('idZona',null,array(
                 'label'=>'Zona',
                 'required'=>'true'))

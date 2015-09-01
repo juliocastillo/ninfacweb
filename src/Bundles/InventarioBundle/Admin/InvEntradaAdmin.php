@@ -137,6 +137,14 @@ class InvEntradaAdmin extends Admin
         
     }
 
-    
-    
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'edit':
+                return 'BundlesInventarioBundle:CRUD:InvEntrada/edit.html.twig';
+                break;
+            default:
+                return parent::getTemplate($name);
+                break;
+        }
+    }
 }

@@ -1,0 +1,33 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var select2Options = {
+            placeholder: 'Seleccionar...',
+            allowClear: true,
+            containerCss: {
+                'width': '100%'
+            }
+        };
+
+        $(document).ready(function() {
+            /*
+             * Declaracion de Varibles
+             */
+            $sexo = $('#{{ admin.uniqid ~ "_sexo" }}');
+        });
+    </script>
+{% endblock %}

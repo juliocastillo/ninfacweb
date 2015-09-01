@@ -55,14 +55,38 @@ class FacNotaremisionAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
-            ->add('activo')
-            ->add('dateAdd')
-            ->add('dateMod')
-            ->add('fecha')
-            ->add('numero')
-            ->add('ventaTotal')
+            ->tab('DATOS GENERALES')
+                ->with('')
+            ->add('numero', null, array(
+                    'label' => 'Número',
+                    'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                ))
+            ->add('fecha', null, array(
+                        'label' => 'Fecha',
+                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr' => array(
+                            'class' => 'bootstrap-datepicker now',
+                            'style' => 'width:300px', 'maxlength' => '25'
+                        )))
+            ->add('idCliente','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Cliente',
+                    'btn_add' => FALSE,
+                    'btn_list' => 'Buscar cliente',
+                    'btn_delete' => FALSE,
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                ))
+                ->end()
+                ->with('$')                    
+                ->add('ventaTotal', null, array(
+                    'read_only' => TRUE,
+                    'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                    ))
             ->end()
+            ->end()
+            ->tab('D E T A L L E')
             ->with('Elementos del Catalogo')
                 ->add('facnotaremisionDetalle','sonata_type_collection',array('label' =>'Elemento'),
                                                                  array('edit' => 'inline', 'inline' => 'table'))
@@ -90,4 +114,33 @@ class FacNotaremisionAdmin extends Admin
             ->end()
         ;
     }
+    
+    public function prePersist($notaremision) {
+        // llenar campos de auditoria
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $notaremision->setIdUserAdd($user);
+        $notaremision->setDateAdd(new \DateTime());
+
+        foreach ($notaremision->getFacturaDetalle() as $notaremisionDetalle) {
+            $notaremisionDetalle->setIdFactura($notaremision);
+            $notaremisionDetalle->setTotal($notaremisionDetalle->getCantidad($notaremision) * $notaremisionDetalle->getPrecioUnitario($notaremision));
+        }
+        // dejar la factura creada como activa
+        $notaremision->setActivo(TRUE);
+        $notaremision->setEstado('PEND');
+    }
+
+    public function preUpdate($notaremision) {
+        // llenar campos de auditoria
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $notaremision->setIdUserAdd($user);
+        $notaremision->setDateAdd(new \DateTime());
+
+        foreach ($notaremision->getFacturaDetalle() as $notaremisionDetalle) {
+            $notaremisionDetalle->setIdFactura($notaremision);
+            $notaremisionDetalle->setTotal($notaremisionDetalle->getCantidad($notaremision) * $notaremisionDetalle->getPrecioUnitario($notaremision));
+        }
+    }
+
+    
 }

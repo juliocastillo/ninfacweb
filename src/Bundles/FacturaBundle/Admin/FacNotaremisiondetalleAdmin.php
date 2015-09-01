@@ -49,10 +49,18 @@ class FacNotaremisiondetalleAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
-            ->add('cantidad')
-            ->add('precioUnitario')
-            ->add('total')
+                ->add('cantidad', null, array(
+                    'required' => FALSE,
+                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
+                ))
+                ->add('idProducto', NULL, array(
+                    'empty_value' => '...Seleccione...',
+                    'label' => 'Producto',
+                    'attr' => array('style' => 'width:600px'),))
+                ->add('precioUnitario', null, array(
+                    'required' => FALSE,
+                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
+                ))
         ;
     }
 
@@ -68,4 +76,6 @@ class FacNotaremisiondetalleAdmin extends Admin
             ->add('total')
         ;
     }
+    
+    
 }

@@ -78,6 +78,10 @@ class CtlEmpleadoAdmin extends Admin
             $formMapper
                     ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
         }
+
+        $formMapper
+            ->add('empleadoZona','sonata_type_collection',array('label' =>'Zona'),
+                                                                 array('edit' => 'inline', 'inline' => 'table'))
         ;
     }
 
@@ -95,5 +99,17 @@ class CtlEmpleadoAdmin extends Admin
             ->add('nit')
             ->add('direccion')
         ;
+    }
+
+    public function prePersist($empleado) {
+        foreach ($empleado->getEmpleadoZona() as $empleadoZona) {
+            $empleadoZona->setIdEmpleado($empleado);
+        }
+    }
+ 
+    public function preUpdate($empleado) {
+        foreach ($empleado->getEmpleadoZona() as $empleadoZona) {
+            $empleadoZona->setIdEmpleado($empleado);
+        }
     }
 }

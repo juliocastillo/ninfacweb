@@ -81,9 +81,9 @@ class FacFacturaAdmin extends Admin {
                         )))
                 ->add('idCliente','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Cliente',
-                    'btn_add' => FALSE,
+                    'btn_add' => 'Agregar',
                     'btn_list' => 'Buscar cliente',
-                    'btn_delete' => FALSE,
+                    'btn_delete' => 'Borrar',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
                     'placeholder' => '*****'
@@ -106,7 +106,8 @@ class FacFacturaAdmin extends Admin {
 //                    'disabled'=>TRUE,
 //                    'attr' => array('style'=>'width:300px'),))
                 ->end()
-                ->with('$')                    ->add('sumas', null, array(
+                ->with('$')                    
+                ->add('sumas', null, array(
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))

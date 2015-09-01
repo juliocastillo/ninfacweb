@@ -35,7 +35,7 @@ class MntEmpleadoMmZona
     /**
      * @var \CtlEmpleado
      *
-     * @ORM\ManyToOne(targetEntity="CtlEmpleado")
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlEmpleado", inversedBy="empleadoZona")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
      * })
@@ -98,5 +98,13 @@ class MntEmpleadoMmZona
     public function getIdEmpleado()
     {
         return $this->idEmpleado;
+    }
+
+    public function __toString() {
+        return $this->id ? $this->idZona->getNombre() : '';
+    }
+
+    public function getNombreEmpleadoZona() {
+        return $this->id ? $this->idEmpleado->getNombres().' '.$this->idEmpleado->getApellidos().' - '.$this->idZona->getNombre() : '';
     }
 }
