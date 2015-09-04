@@ -68,7 +68,7 @@ class InvEntradadetalleAdmin extends Admin
                                 'format' => 'dd-MM-yyyy',
                                 'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
                 ))
-            ->add('comentario')               
+            ->add('comentario')
         ;
     }
 

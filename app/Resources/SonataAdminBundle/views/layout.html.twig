@@ -1,0 +1,16 @@
+{% extends "SonataAdminBundle::standard_layout.html.twig"%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/catalogos/vendors/bootstrap-datepicker/css/bootstrap-.min.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bundlescatalogos/js/funciones_generales.js') }}" </script>
+    <script src="{{ asset('bundles/bundlescatalogos/js/corelayout.js') }}" </script>
+    <script src="{{ asset('bundles/bundlescatalogos/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" </script>
+    <script src="{{ asset('bundles/bundlescatalogos/vendors/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" </script>
+    
+{% endblock %}

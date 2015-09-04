@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * FacFactura
  *
  * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero","tipoFactura"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A56A540E", columns={"id_estado"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bundles\FacturaBundle\Repository\FacFacturaRepository")
  * @UniqueEntity(
  *     fields={"numero", "idTipofactura"},
  *     message="Ya existe este numero de factura"
@@ -190,7 +190,14 @@ class FacFactura
      */
     private $facturaDetalle;    
     
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cobro_total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $cobroTotal;
+
     
     
 
@@ -663,4 +670,29 @@ class FacFactura
     public function __toString() {
         return $this->numero .' ' . $this->idTipofactura;
     }
+    
+    
+    /**
+     * Set cobroTotal
+     *
+     * @param string $cobroTotal
+     * @return FacFactura
+     */
+    public function setCobroTotal($cobroTotal)
+    {
+        $this->cobroTotal = $cobroTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroTotal
+     *
+     * @return string 
+     */
+    public function getCobroTotal()
+    {
+        return $this->cobroTotal;
+    }
+    
 }

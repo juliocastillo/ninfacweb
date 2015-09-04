@@ -20,7 +20,6 @@ class CxcCobroAdmin extends Admin
         $datagridMapper
             ->add('fecha')
             ->add('numeroRecibo')
-            ->add('activo')
         ;
     }
 
@@ -30,11 +29,20 @@ class CxcCobroAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('fecha')
-            ->add('numeroRecibo')
-            ->add('numeroCheque')
-            ->add('activo')
+            ->add('fecha','date',array(
+                                'widget' => 'single_text',
+                                'format' => 'd/m/Y',
+                                'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
+                ))
+            ->add('numeroRecibo','integer',array(
+                'label'=> 'Número de Recibo',
+                'attr' => array(
+                    'style'=>'width:100px'
+                    )))
+            ->add('monto')
+            ->add('idFactura',null, array(    // permitir buscar un item de un catalogo
+                    'label'=>'Número de Factura'
+                    ))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -124,6 +132,7 @@ class CxcCobroAdmin extends Admin
         $cobro->setDateAdd(new \DateTime());
        
         $cobro->setActivo(TRUE);
+        
     }
  
     public function preUpdate($cobro) {
@@ -131,11 +140,25 @@ class CxcCobroAdmin extends Admin
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $cobro->setIdUserMod($user);
         $cobro->setDateMod(new \DateTime());
-        
-    }
 
-    
-     /*
+        //accediendo al objeto de una entidad a través del EntityManager
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+
+        
+        $idFactura = $cobro->getIdFactura()->getId();
+        // actualizando campo pagoTotal en la factura
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
+        
+        //accediendo al objeto de una entidad a través del EntityManager
+//        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+//        $factura = $cobro->getIdFactura();
+//        $factura->setCobroTotal(21);
+//        $em->persist($factura);
+    }
+            
+
+
+    /*
      * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
      */
     

@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 
 class FacFacturaAdmin extends Admin {
@@ -25,10 +26,9 @@ class FacFacturaAdmin extends Admin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('numero')
                 ->add('idTipofactura')
+                ->add('numero')
                 ->add('fecha')
-                ->add('activo')
         ;
     }
 
@@ -37,12 +37,21 @@ class FacFacturaAdmin extends Admin {
      */
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('id')
+                ->add('idTipofactura', NULL, array(
+                    'label' => 'Tipo de factura',
+                    'empty_value' => '...Seleccione...',
+                    'attr' => array(
+                        'style' => 'width:300px'
+                    ),))
                 ->add('numero')
-                ->add('idTipofactura')
-                ->add('fecha', 'date')
+                ->add('fecha','date',array(
+                                    'widget' => 'single_text',
+                                    'format' => 'd/m/Y',
+                                    'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
+                    ))
                 ->add('idCliente')
                 ->add('ventaTotal')
+                ->add('estado')
                 ->add('_action', 'actions', array(
                     'actions' => array(
                         'show' => array(),
@@ -257,5 +266,16 @@ class FacFacturaAdmin extends Admin {
                 break;
         }
     }
-
+    
+    
+    /**
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list') {
+        $query = parent::createQuery($context);
+        return new ProxyQuery(
+                $query
+                        ->where($query->getRootAlias() . '.activo = TRUE')
+        );
+    }
 }

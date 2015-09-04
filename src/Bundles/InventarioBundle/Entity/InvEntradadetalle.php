@@ -311,6 +311,6 @@ class InvEntradadetalle
     }
     
     public function __toString() {
-        return $this->idProducto;
+        return ''.$this->idProducto;
     }
 }

@@ -10,6 +10,7 @@ imports:
     - { resource: bundles/sonata_core.yml }
     - { resource: bundles/sonata_user.yml }
     - { resource: bundles/sonata_formatter.yml }
+    - { resource: bundles/shtumi.yml }
     
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -90,15 +91,3 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-
-shtumi_useful :
-    dependent_filtered_entities:
-        muni_por_depto:
-            class: BundlesCatalogosBundle:CtlMunicipio
-            parent_property: idDepartamento
-            property: nombre
-            role: ROLE_USER
-            no_result_msg: 'No hay municipios encontrados'
-            order_property: nombre
-            order_direction: ASC
