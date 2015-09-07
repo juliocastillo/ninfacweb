@@ -130,9 +130,9 @@ class CxcCobroAdmin extends Admin
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $cobro->setIdUserAdd($user);
         $cobro->setDateAdd(new \DateTime());
-       
-        $cobro->setActivo(TRUE);
         
+        $cobro->setActivo(TRUE);
+
     }
  
     public function preUpdate($cobro) {
@@ -142,26 +142,40 @@ class CxcCobroAdmin extends Admin
         $cobro->setDateMod(new \DateTime());
 
         //accediendo al objeto de una entidad a través del EntityManager
-        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
-
-        
-        $idFactura = $cobro->getIdFactura()->getId();
-        // actualizando campo pagoTotal en la factura
-        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
-        
-        //accediendo al objeto de una entidad a través del EntityManager
 //        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
 //        $factura = $cobro->getIdFactura();
 //        $factura->setCobroTotal(21);
 //        $em->persist($factura);
     }
-            
+    
+    public function postPersist($cobro) {
+        //accediendo al objeto de una entidad a través del EntityManager
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+        $idFactura = $cobro->getIdFactura()->getId();
+        // actualizando campo pago_total en la factura
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
+        
+        // actualizar estado en caso que la factura sea liquidada
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
+    }
 
-
+    public function postUpdate($cobro) {
+        //accediendo al objeto de una entidad a través del EntityManager
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+        $idFactura = $cobro->getIdFactura()->getId();
+        // actualizando campo pago_total en la factura
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
+        
+        // actualizar estado en caso que la factura sea liquidada
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
+    }
+    
+    
+    
+    
     /*
      * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
      */
-    
     public function validate(ErrorElement $errorElement, $cobro) {
         if ($cobro->getIdFormaPago()->getId()==2) { // evaluar si es pago con cheque
             $errorElement->with('numeroCheque')

@@ -78,6 +78,7 @@ class FacNotaremisionAdmin extends Admin
                         ), array(
                     'placeholder' => '*****'
                 ))
+            ->add('idCondicionpago')
                 ->end()
                 ->with('$')                    
                 ->add('ventaTotal', null, array(
@@ -121,13 +122,14 @@ class FacNotaremisionAdmin extends Admin
         $notaremision->setIdUserAdd($user);
         $notaremision->setDateAdd(new \DateTime());
 
-        foreach ($notaremision->getFacturaDetalle() as $notaremisionDetalle) {
-            $notaremisionDetalle->setIdFactura($notaremision);
+        foreach ($notaremision->getFacnotaremisionDetalle() as $notaremisionDetalle) {
+            $notaremisionDetalle->setIdNotaremision($notaremision);
             $notaremisionDetalle->setTotal($notaremisionDetalle->getCantidad($notaremision) * $notaremisionDetalle->getPrecioUnitario($notaremision));
+            $sumas = $sumas + $notaremisionDetalle->getTotal();
         }
         // dejar la factura creada como activa
         $notaremision->setActivo(TRUE);
-        $notaremision->setEstado('PEND');
+        $notaremision->setEstado('PENDIENTE');
     }
 
     public function preUpdate($notaremision) {
@@ -136,10 +138,13 @@ class FacNotaremisionAdmin extends Admin
         $notaremision->setIdUserAdd($user);
         $notaremision->setDateAdd(new \DateTime());
 
-        foreach ($notaremision->getFacturaDetalle() as $notaremisionDetalle) {
-            $notaremisionDetalle->setIdFactura($notaremision);
+        $sumas = 0;
+        foreach ($notaremision->getFacnotaremisionDetalle() as $notaremisionDetalle) {
+            $notaremisionDetalle->setIdNotaremision($notaremision);
             $notaremisionDetalle->setTotal($notaremisionDetalle->getCantidad($notaremision) * $notaremisionDetalle->getPrecioUnitario($notaremision));
+            $sumas = $sumas + $notaremisionDetalle->getTotal();
         }
+    $notaremision->setVentaTotal($sumas);
     }
 
     

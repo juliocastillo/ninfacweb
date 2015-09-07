@@ -86,7 +86,7 @@ class FacFacturadetalle
     private $idProducto;
 
      /**
-     * @var \CtlCatalogo
+     * @var \FacFactura
      *
      * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facturaDetalle")
      * @ORM\JoinColumns({

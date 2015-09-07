@@ -57,6 +57,15 @@ class CtlCliente
      */
     private $nrc;
 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=25, nullable=true)
+     */
+    private $codigo;
+
+    
     /**
      * @var string
      *
@@ -237,6 +246,32 @@ class CtlCliente
         return $this->giro;
     }
 
+    
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     * @return CtlCliente
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+    
+    
+    
     /**
      * Set nit
      *

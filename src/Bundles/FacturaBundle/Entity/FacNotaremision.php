@@ -104,15 +104,14 @@ class FacNotaremision
      */
     private $idCondicionpago;
 
-    /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlEstado
+    
+     /**
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEstado")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_estado", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="estado", type="string", length=5, nullable=false)
      */
-    private $idEstado;
+    private $estado;
+
 
     /**
      *
@@ -300,7 +299,7 @@ class FacNotaremision
      * @param \Application\Sonata\UserBundle\Entity\User $idUserAdd
      * @return FacNotaremision
      */
-    public function setIdUserAdd(\Bundles\FacturaBundle\Entity\FosUserUser $idUserAdd = null)
+    public function setIdUserAdd(\Application\Sonata\UserBundle\Entity\User $idUserAdd = null)
     {
         $this->idUserAdd = $idUserAdd;
 
@@ -364,27 +363,28 @@ class FacNotaremision
     }
 
     /**
-     * Set idEstado
+     * Set estado
      *
-     * @param \Bundles\CatalogosBundle\Entity\CtlEstado $idEstado
-     * @return FacNotaremision
+     * @param string $estado
+     * @return FacFactura
      */
-    public function setIdEstado(\Bundles\CatalogosBundle\Entity\CtlEstado $idEstado = null)
+    public function setEstado($estado)
     {
-        $this->idEstado = $idEstado;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get idEstado
+     * Get estado
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlEstado 
+     * @return string
      */
-    public function getIdEstado()
+    public function getEstado()
     {
-        return $this->idEstado;
+        return $this->estado;
     }
+    
     /**
      * Constructor
      */

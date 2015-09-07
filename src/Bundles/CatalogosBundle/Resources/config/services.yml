@@ -69,3 +69,38 @@ services:
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlProveedor, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Proveedores}
+
+
+
+    # services para activar menu personalizados
+    # -inicio
+
+    bundles_catalogos.menus_builder:
+        class: Bundles\CatalogosBundle\Menu\MenusBuilder
+        arguments: ["@knp_menu.factory"]
+
+    bundles_catalogos.menu.main:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: bundles_catalogos.menus_builder
+        factory_method: createMainMenu
+        arguments: ["@request"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+           
+    bundles_catalogos.menu.sidebar:
+        class: Knp\Menu\MenuItem
+        factory_service: bundles_catalogos.menus_builder
+        factory_method: createSidebarMenu
+        arguments: ["@request"]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: sidebar } # Named "sidebar" this time  
+            
+        # fin de service para activar menu personalizados
+
+    bundles_catalogos.admin.cfg_formato_documento:
+        class: Bundles\CatalogosBundle\Admin\CfgFormatoDocumentoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CfgFormatoDocumento, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: CfgFormatoDocumento}

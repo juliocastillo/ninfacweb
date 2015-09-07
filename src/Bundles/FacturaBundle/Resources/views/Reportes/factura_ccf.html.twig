@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        <style type="text/css">
+
+            html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
+            div .table-responsive {overflow: visible !important; border-style: none !important}
+
+            .panel{ margin: 8px;}
+            .panel-info > .panel-heading,.titulo_vista {
+                background-color: white;
+                font-size: 12px;
+                border-color: black;
+                color: black;
+                font-weight: bold;
+                border-style: none !important;
+                padding: 2px 5px;
+            }
+            table{font-size: 10px!important;}
+            .panel-body, .vista_paciente{font-size: 10px; border-style: none !important;}
+            td,th {padding: 2px 5px;}
+            .panel-info{border-color:black}
+            table {width: 100%}
+
+        </style>
+    </head>
+    <body >
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila1col1 }}">{{ factura.fecha | date('d-m-Y') }}</td>
+                <td width="{{ formato.fila1col2 }}">{{ cliente.nrc }}</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila2col1 }}">{{ cliente.nombre}}</td>
+                <td width="{{ formato.fila2col2 }}">{{ cliente.nit }}</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila3col1 }}">{{ cliente.direccion}}</td>
+                <td width="{{ formato.fila3col2 }}">{{ cliente.giro }}</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila4col1 }}">&nbsp;</td>
+                <td width="{{ formato.fila4col2 }}">&nbsp;</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila5col1 }}">{{ cliente.iddepartamento}}</td>
+                <td width="{{ formato.fila5col2 }}">{{ cliente.codigo }}</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila6col1 }}">{{ factura.idempleado }}</td>
+                <td width="{{ formato.fila6col2 }}">{{ factura.idcondicionpago }}</td></tr></table>
+        <table width="100%" style="border-collapse: collapse;"><tr>
+                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila7col1 }}">{% if notaremision.numero is defined %} {{ notaremision.fecha | date('d-m-Y') }} {% endif %}&nbsp;</td>
+                <td width="{{ formato.fila7col2 }}">{% if notaremision.numero is defined %} {{ notaremision.numero }}{% endif %}</td></tr></table>
+        
+        
+        {# detalle de la factura #}
+        <table width="100%">
+            <tr>
+                <td width="{{ formato.detallexcol1 }}" style="text-align: center;">&nbsp;</td>
+                <td width="{{ formato.detallexcol2 }}">&nbsp;</td>
+                <td width="{{ formato.detallexcol3 }}" style="text-align: center;">&nbsp;</td>
+                <td width="{{ formato.detallexcol4 }}" style="text-align: center;">&nbsp;</td>
+                <td width="{{ formato.detallexcol5 }}" style="text-align: center;">&nbsp;</td>
+                <td width="{{ formato.detallexcol6 }}" style="text-align: center;">&nbsp;</td>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    <td style="height:{{ formato.detalleinterlineado }}" style="text-align: right;">{{ item.cantidad }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" >{{ item.idproducto }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" style="text-align: right;">{{ item.preciounitario }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" style="text-align: right;">{{ item.ventasnosujetas }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" style="text-align: right;">{{ item.ventasexentas }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" style="text-align: right;">{{ item.ventasgravadas }}</td>
+                </tr>
+            {% endfor %}
+            {% for i in numItems .. formato.detallenumeroitems - 1 %}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            </table>
+            
+            {# pie de pagina #}
+            <table width="100%">
+                <tr>
+                    <td width=" {{ formato.piexcol1 }} " style="text-align: right;">&nbsp;</td>
+                    <td width=" {{ formato.piexcol2 }} " style="text-align: right;">{{ factura.sumas }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
+                    <td width="8%" style="text-align: right;">{{ factura.iva }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;"></td>
+                    <td width="8%" style="text-align: right;">{{ factura.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
+                    <td width="8%" style="text-align: right;">{{ factura.ivaretenido }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
+                    <td width="8%" style="text-align: right;">{{ factura.ventasnosujetas }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
+                    <td width="8%" style="text-align: right;">{{ factura.ventasexentas }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
+                    <td width="8%" style="text-align: right;">{{ factura.ventatotal }}</td>
+                </tr>
+            </table>
+
+</body>
+</html>

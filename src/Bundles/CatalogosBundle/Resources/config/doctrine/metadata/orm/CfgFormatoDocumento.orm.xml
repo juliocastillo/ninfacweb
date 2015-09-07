@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="CfgFormatoDocumento" table="cfg_formato_documento">
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="detalleInterlineado" type="string" column="detalle_interlineado" length="5" nullable="false"/>
+    <field name="detalleNumeroItems" type="string" column="detalle_numero_items" length="5" nullable="false"/>
+    <field name="detalleXCol1" type="string" column="detalle_x_col1" length="5" nullable="false"/>
+    <field name="detalleY" type="string" column="detalle_y" length="5" nullable="false"/>
+    <field name="fial1Col1" type="string" column="fial1_col1" length="5" nullable="false"/>
+    <field name="fila1Col2" type="string" column="fila1_col2" length="5" nullable="false"/>
+    <field name="fila2Col1" type="string" column="fila2_col1" length="5" nullable="true"/>
+    <field name="fila2Col2" type="string" column="fila2_col2" length="5" nullable="true"/>
+    <field name="fila3Col1" type="string" column="fila3_col1" length="5" nullable="true"/>
+    <field name="fila3Col2" type="string" column="fila3_col2" length="5" nullable="true"/>
+    <field name="fila4Col1" type="string" column="fila4_col1" length="5" nullable="true"/>
+    <field name="fila4Col2" type="string" column="fila4_col2" length="5" nullable="true"/>
+    <field name="fila5Col1" type="string" column="fila5_col1" length="5" nullable="true"/>
+    <field name="fila5Col2" type="string" column="fila5_col2" length="5" nullable="true"/>
+    <field name="fila6Col1" type="string" column="fila6_col1" length="5" nullable="true"/>
+    <field name="fila6Col2" type="string" column="fila6_col2" length="5" nullable="true"/>
+    <field name="fila7Col1" type="string" column="fila7_col1" length="5" nullable="true"/>
+    <field name="fila7Col2" type="string" column="fila7_col2" length="5" nullable="true"/>
+    <field name="margenDerecho" type="string" column="margen_derecho" length="5" nullable="false"/>
+    <field name="margenInferior" type="string" column="margen_inferior" length="5" nullable="false"/>
+    <field name="margenIzquierdo" type="string" column="margen_izquierdo" length="5" nullable="false"/>
+    <field name="margenSuperior" type="string" column="margen_superior" length="5" nullable="false"/>
+    <field name="nombre" type="string" column="nombre" length="100" nullable="false"/>
+    <field name="detalleXCol2" type="string" column="detalle_x_col2" length="5" nullable="true"/>
+    <field name="detalleXCol3" type="string" column="detalle_x_col3" length="5" nullable="true"/>
+    <field name="detalleXCol4" type="string" column="detalle_x_col4" length="5" nullable="true"/>
+    <field name="detalleXCol5" type="string" column="detalle_x_col5" length="5" nullable="true"/>
+    <field name="pieY" type="string" column="pie_y" length="5" nullable="true"/>
+    <field name="pieXCol1" type="string" column="pie_x_col1" length="5" nullable="true"/>
+    <field name="pieXCol2" type="string" column="pie_x_col2" length="5" nullable="true"/>
+    <field name="detalleXCol6" type="string" column="detalle_x_col6" length="5" nullable="false"/>
+  </entity>
+</doctrine-mapping>

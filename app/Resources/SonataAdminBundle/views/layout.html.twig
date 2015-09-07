@@ -14,3 +14,16 @@
     <script src="{{ asset('bundles/bundlescatalogos/vendors/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" </script>
     
 {% endblock %}
+
+
+{% block side_bar_nav %}
+    {{ parent() }}
+    {# codigo para activar menu estatico #}
+    {# {{ knp_menu_render('main') }}
+
+    {% block custom_menu %}                                          
+       {% set cus_menu = knp_menu_get('BundlesCatalogosBundle:Builder:mainMenu', [], {'admin': admin_pool.dashboardgroups, 'user':app.user}) %}
+       {{ knp_menu_render(cus_menu, {'currentClass': 'active', 'template': 'BundlesCatalogosBundle:Menu:knp_menu.html.twig'}) }}
+   {% endblock %}
+   #}
+{% endblock %}    

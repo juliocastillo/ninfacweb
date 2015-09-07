@@ -10,6 +10,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
+use Sonata\AdminBundle\Validator\ErrorElement;
+
 
 class FacFacturaAdmin extends Admin {
 
@@ -80,7 +82,7 @@ class FacFacturaAdmin extends Admin {
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                 ))
                 ->add('fecha', null, array(
-                        'label' => 'Fecha de la venta',
+                        'label' => 'Fecha de la factura',
                         'read_only' => TRUE,
                         'widget' => 'single_text', // un sólo input para la fecha, no tres.
                         'format' => 'dd/MM/y',
@@ -105,10 +107,19 @@ class FacFacturaAdmin extends Admin {
                     'empty_value' => '...Seleccione...',
                     'label' => 'Condición de pago',
                     'attr' => array('style' => 'width:300px'),))
+                ->add('fechaPago', null, array(
+                        'label' => 'Fecha de pago crédito',
+                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr' => array(
+                            'class' => 'bootstrap-datepicker',
+                            'style' => 'width:300px', 'maxlength' => '25'
+                        )))
                 ->add('idEmpleado', NULL, array(
                     'empty_value' => '...Seleccione...',
                     'label' => 'Venta a cuenta',
                 ))
+                ->add('idNotaremision')
 //                ->add('idEstado','entity', array(
 //                    'class'=>'BundlesCatalogosBundle:CtlEstado',
 //                    'label'=>'Estado',
@@ -203,14 +214,15 @@ class FacFacturaAdmin extends Admin {
         $factura->setIvaRetenido(0);
         $factura->setVentasGravadas(0);
         
+        if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
+            $factura->setEstado('PAGADO');
+            $factura->setFechaPago($factura->getFecha());
+        } elseif ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3){ //Evaluar si es pago en efectivo
+            $factura->setEstado('PENDIENTE');
+        }
+        
         // dejar la factura creada como activa
         $factura->setActivo(TRUE);
-        if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
-            $factura->setEstado('CERR');
-        } elseif ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3){ //Evaluar si es pago en efectivo
-            $factura->setEstado('PEND');
-        }
-
     }
 
     public function preUpdate($factura) {
@@ -247,6 +259,12 @@ class FacFacturaAdmin extends Admin {
 
         $factura->setIvaRetenido(0);
         $factura->setVentasGravadas(0);
+        
+        if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
+            $factura->setEstado('PAGADO');
+            $factura->setFechaPago($factura->getFecha());
+        }
+        
     }
 
     /*
@@ -275,7 +293,46 @@ class FacFacturaAdmin extends Admin {
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
-                        ->where($query->getRootAlias() . '.activo = TRUE')
+                        ->where($query->getRootAlias() . ".activo = TRUE")
+                        //->where($query->getRootAlias() . ".estado != 'PAGADO'")
         );
     }
+    
+    
+    /*
+     * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
+     */
+    public function validate(ErrorElement $errorElement, $factura) {
+        if ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3) { // evaluar si es credito
+            $errorElement->with('fechaPago')
+                    ->assertNotBlank()
+                    ->assertNotNull()
+                    ->end();
+            
+            if ($factura->getFechaPago() < $factura->getFecha($factura)) {
+            $errorElement->with('fechaPago')
+                    ->addViolation('La Fecha de Pago debe ser mayor o igual a la fecha de facturación')
+                    ->end();
+            }
+        }  
+
+//            if (is_null($cobro->getIdBanco($cobro))) {
+//                $errorElement->with('idBanco')
+//                        ->addViolation('El banco es obligatorio')
+//                        ->end();
+//            }
+//        } elseif($cobro->getIdFormaPago()->getId()==1) {
+//            if (!is_null($cobro->getNumeroCheque($cobro))) {
+//                $errorElement->with('numeroCheque')
+//                        ->addViolation('Si el pago es efectivo no ingrese número de cheque')
+//                        ->end();
+//            }
+//            if (!is_null($cobro->getIdBanco($cobro))) {
+//                $errorElement->with('idBanco')
+//                        ->addViolation('Si el pago es efectivo no seleccione el banco')
+//                        ->end();
+//            }
+            
+    }
+ 
 }

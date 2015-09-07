@@ -111,6 +111,23 @@ class FacFactura
      */
     private $ventasGravadas;
 
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="ventas_nosujetas", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $ventasNosujetas;
+    
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="ventas_exentas", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $ventasExentas;
+    
+    
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlCliente
      *
@@ -198,9 +215,28 @@ class FacFactura
      */
     private $cobroTotal;
 
-    
-    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_pago", type="date", nullable=true)
+     * 
+     */
+    private $fechaPago;
 
+    
+    /**
+     * @var \FacNotaremision
+     *
+     * @ORM\ManyToOne(targetEntity="FacNotaremision")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_notaremision", referencedColumnName="id")
+     * })
+     */
+    private $idNotaremision;
+    
+    
+    
+    
     /**
      * Get id
      *
@@ -257,6 +293,31 @@ class FacFactura
         return $this->fecha;
     }
 
+    
+    /**
+     * Set fechaPago
+     *
+     * @param \DateTime $fechaPago
+     * @return FacFactura
+     */
+    public function setFechaPago($fechaPago)
+    {
+        $this->fechaPago = $fechaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPago
+     *
+     * @return \DateTime 
+     */
+    public function getFechaPago()
+    {
+        return $this->fechaPago;
+    }
+    
+    
     /**
      * Set activo
      *
@@ -441,6 +502,53 @@ class FacFactura
         return $this->ventasGravadas;
     }
     
+    
+    /**
+     * Set ventasNosujetas
+     *
+     * @param string $ventasNosujetas
+     * @return FacFactura
+     */
+    public function setVentasNosujetas($ventasNosujetas)
+    {
+        $this->ventasNosujetas = $ventasNosujetas;
+
+        return $this;
+    }
+
+    /**
+     * Get ventasNosujetas
+     *
+     * @return string 
+     */
+    public function getVentasNosujetas()
+    {
+        return $this->ventasNosujetas;
+    }    
+    
+    /**
+     * Set ventasExentas
+     *
+     * @param string $ventasExentas
+     * @return FacFactura
+     */
+    public function setVentasExentas($ventasExentas)
+    {
+        $this->ventasExentas = $ventasExentas;
+
+        return $this;
+    }
+
+    /**
+     * Get ventasExentas
+     *
+     * @return string 
+     */
+    public function getVentasExentas()
+    {
+        return $this->ventasExentas;
+    }        
+    
     /**
      * Set sumas
      *
@@ -464,6 +572,31 @@ class FacFactura
         return $this->sumas;
     }
 
+    
+     /**
+     * Set idNotaremision
+     *
+     * @param \Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision
+     * @return FacNotaremisiondetalle
+     */
+    public function setIdNotaremision(\Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision = null)
+    {
+        $this->idNotaremision = $idNotaremision;
+
+        return $this;
+    }
+
+    /**
+     * Get idNotaremision
+     *
+     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
+     */
+    public function getIdNotaremision()
+    {
+        return $this->idNotaremision;
+    }
+    
+    
     
 
     /**
@@ -626,6 +759,8 @@ class FacFactura
     {
         return $this->estado;
     }
+    
+    
     /**
      * Constructor
      */

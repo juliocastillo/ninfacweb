@@ -44,6 +44,23 @@ class ReporteController extends Controller {
         
         /* buscar el registro padre a traves de id */
         $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->find($id);
+        
+        $idCliente = $factura->getIdCliente();
+        $idNotaremision = $factura->getIdNotaremision();
+        
+        if (is_null($idNotaremision)){
+            $idNotaremision = 0;
+        }
+
+        /* buscar el registro padre a traves de id */
+        $cliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($idCliente);
+        $notaremision = $em->getRepository('BundlesFacturaBundle:FacNotaremision')->find($idNotaremision);
+        $items = $em->getRepository('BundlesFacturaBundle:FacFacturaDetalle')->findBy(array('idFactura'=>$id));
+        
+        $numItems = count($items);
+        
+        $formato = $em->getRepository('BundlesCatalogosBundle:CfgFormatoDocumento')->find(1);
+        
         /* buscar los registros hijos a traves del id padre y otros filtros */
         //$muni = $em->getRepository('MinsalCatalogosBundle:Muni')->findBy(array('depto'=>$id,'activo'=>TRUE));
        
@@ -54,22 +71,27 @@ class ReporteController extends Controller {
         
         
         // renderizar la vista con los array de las consualtas
-        $vistaParaImpresion = $this->renderView('BundlesFacturaBundle:Reportes:factura_000.html.twig', array(
+        $vistaParaImpresion = $this->renderView('BundlesFacturaBundle:Reportes:factura_ccf.html.twig', array(
             'id'=>$id,
-            'factura'=>$factura
+            'factura'=>$factura,
+            'cliente'=>$cliente,
+            'notaremision'=>$notaremision,
+            'items'=>$items,
+            'formato'=>$formato,
+            'numItems'=>$numItems
                 )
         );
 
         // invocar la libreria knp_snappy para generar el PDF
         return new Response(
                 $this->get('knp_snappy.pdf')->getOutputFromHtml($vistaParaImpresion, array(
-                    'page-size' => 'Letter',
-                    'margin-top' => '10',
-                    'margin-right' => '10',
-                    'margin-left' => '10',
-                    'margin-bottom' => '10',
+                    'page-size' => $formato->getPapel(),
+                    'margin-top' => $formato->getMargenSuperior(),
+                    'margin-right' => $formato->getMargenDerecho(),
+                    'margin-left' => $formato->getMargenIzquierdo(),
+                    'margin-bottom' => $formato->getMargenInferior(),
                     'print-media-type' => true,
-                    'title' => 'Factura_000',
+                    'title' => 'Factura_ccf',
                     'enable-javascript' => true,
                     'javascript-delay' => 500,
                     'no-pdf-compression' => true)), 200, array(
