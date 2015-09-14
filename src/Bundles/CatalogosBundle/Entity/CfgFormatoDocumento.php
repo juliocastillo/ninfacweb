@@ -21,6 +21,17 @@ class CfgFormatoDocumento
      * @ORM\SequenceGenerator(sequenceName="cfg_formato_documento_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
+    
+    
+    /**
+     * @var \CfgPlantilla
+     *
+     * @ORM\ManyToOne(targetEntity="CfgPlantilla")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_plantilla", referencedColumnName="id")
+     * })
+     */
+    private $idPlantilla;
 
     /**
      * @var string
@@ -266,6 +277,31 @@ class CfgFormatoDocumento
         return $this->id;
     }
 
+    
+    /**
+     * Set idPlantilla
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CfgPlantilla $idPlantilla
+     * @return CfgPlantilla
+     */
+    public function setIdPlantilla(\Bundles\CatalogosBundle\Entity\CfgPlantilla $idPlantilla = null)
+    {
+        $this->idPlantilla = $idPlantilla;
+
+        return $this;
+    }
+
+    /**
+     * Get idPlantilla
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CfgPlantilla
+     */
+    public function getIdPlantilla()
+    {
+        return $this->idPlantilla;
+    }
+    
+    
     /**
      * Set detalleInterlineado
      *

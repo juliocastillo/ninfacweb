@@ -16,13 +16,8 @@ class FacNotaremisionAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('activo')
-            ->add('dateAdd')
-            ->add('dateMod')
-            ->add('fecha')
             ->add('numero')
-            ->add('ventaTotal')
+            ->add('fecha')
         ;
     }
 
@@ -32,12 +27,8 @@ class FacNotaremisionAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('activo')
-            ->add('dateAdd')
-            ->add('dateMod')
-            ->add('fecha')
             ->add('numero')
+            ->add('fecha')
             ->add('ventaTotal')
             ->add('_action', 'actions', array(
                 'actions' => array(

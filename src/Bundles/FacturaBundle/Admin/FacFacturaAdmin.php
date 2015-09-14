@@ -71,6 +71,11 @@ class FacFacturaAdmin extends Admin {
         $formMapper
                 ->tab('DATOS GENERALES')
                 ->with('')
+                ->add('idFormatoDocumento', NULL, array(
+                    'label' => 'Formato de la Factura',
+                    'attr' => array(
+                        'style' => 'width:600px'
+                    ),))
                 ->add('idTipofactura', NULL, array(
                     'label' => 'Tipo de factura',
                     'empty_value' => '...Seleccione...',
@@ -94,7 +99,7 @@ class FacFacturaAdmin extends Admin {
                     'label'=>'Cliente',
                     'btn_add' => 'Agregar',
                     'btn_list' => 'Buscar cliente',
-                    'btn_delete' => 'Borrar',
+                    'btn_delete' => 'Limpiar campo',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
                     'placeholder' => '*****'
@@ -119,12 +124,15 @@ class FacFacturaAdmin extends Admin {
                     'empty_value' => '...Seleccione...',
                     'label' => 'Venta a cuenta',
                 ))
-                ->add('idNotaremision')
-//                ->add('idEstado','entity', array(
-//                    'class'=>'BundlesCatalogosBundle:CtlEstado',
-//                    'label'=>'Estado',
-//                    'disabled'=>TRUE,
-//                    'attr' => array('style'=>'width:300px'),))
+                ->add('idNotaremision','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Nota de remisión',
+                    'btn_add' => NULL,
+                    'btn_list' => 'Buscar #NR',
+                    'btn_delete' => 'Limpar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                ))
                 ->end()
                 ->with('$')                    
                 ->add('sumas', null, array(
@@ -150,8 +158,8 @@ class FacFacturaAdmin extends Admin {
                 ->add('facturaDetalle', 'sonata_type_collection', array(
                     'label' => 'Items'), array(
                     'edit' => 'inline',
-                    'inline' => 'table'
-                ))
+                    'inline' => 'standard'
+                ))                
                 ->end()
                 ->end()
         ;

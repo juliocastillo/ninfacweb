@@ -56,6 +56,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),  // vendor para generar pdf
             new Bundles\InventarioBundle\BundlesInventarioBundle(),
             
+            new Mesd\Jasper\ReportBundle\MesdJasperReportBundle(), //activar jasperreport
+            
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -33,7 +33,8 @@
         "knplabs/knp-snappy-bundle": "dev-master",
         "knplabs/knp-snappy": "^0.4.0",
         "shtumi/useful-bundle": "dev-master",
-        "knplabs/knp-menu-bundle": "~1.1"
+        "knplabs/knp-menu-bundle": "~1.1",
+        "mesd/jasper-report-bundle": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

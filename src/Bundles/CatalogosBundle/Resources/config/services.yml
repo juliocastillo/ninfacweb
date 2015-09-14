@@ -103,4 +103,10 @@ services:
         class: Bundles\CatalogosBundle\Admin\CfgFormatoDocumentoAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CfgFormatoDocumento, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: admin, label: CfgFormatoDocumento}
+            - {name: sonata.admin, manager_type: orm, group: Admin, label: CfgFormatoDocumento}
+
+    bundles_catalogos.admin.cfg_plantilla:
+        class: Bundles\CatalogosBundle\Admin\CfgPlantillaAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CfgPlantilla, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Admin, label: CfgPlantilla}

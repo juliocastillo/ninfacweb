@@ -21,7 +21,7 @@ class CfgFormatoDocumentoAdmin extends Admin
             ->add('detalleNumeroItems')
             ->add('detalleXCol1')
             ->add('detalleY')
-            ->add('fial1Col1')
+            ->add('fila1Col1')
             ->add('fila1Col2')
             ->add('fila2Col1')
             ->add('fila2Col2')
@@ -58,7 +58,8 @@ class CfgFormatoDocumentoAdmin extends Admin
     {
         $listMapper
             ->add('id')
-             ->add('nombre')
+            ->add('nombre')
+            ->add('idPlantilla')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -78,6 +79,7 @@ class CfgFormatoDocumentoAdmin extends Admin
             ->tab('Página')
                 ->with('')
             ->add('nombre')
+            ->add('idPlantilla')
             ->add('margenDerecho')
             ->add('margenIzquierdo')
             ->add('margenSuperior')

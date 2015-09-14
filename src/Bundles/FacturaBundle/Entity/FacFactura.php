@@ -139,6 +139,19 @@ class FacFactura
      */
     private $idCliente;
 
+    
+     /**
+     * @var \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento
+     *
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CfgFormatoDocumento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_formato_documento", referencedColumnName="id")
+     * })
+     * @Assert\NotNull()
+     */
+    private $idFormatoDocumento;
+    
+    
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlCondicionpago
      *
@@ -594,6 +607,31 @@ class FacFactura
     public function getIdNotaremision()
     {
         return $this->idNotaremision;
+    }
+
+    
+    
+     /**
+     * Set idFormatoDocumento
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento
+     * @return FacFormatoDocumento
+     */
+    public function setIdFormatoDocumento(\Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento = null)
+    {
+        $this->idFormatoDocumento = $idFormatoDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get idFormatoDocumento
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento 
+     */
+    public function getIdFormatoDocumento()
+    {
+        return $this->idFormatoDocumento;
     }
     
     

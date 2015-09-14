@@ -52,6 +52,7 @@ class FacFacturadetalleAdmin extends Admin {
      */
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
+                ->with('================================================================================================')
                 ->add('cantidad', null, array(
                     'required' => FALSE,
                     'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
@@ -60,10 +61,16 @@ class FacFacturadetalleAdmin extends Admin {
                     'empty_value' => '...Seleccione...',
                     'label' => 'Producto',
                     'attr' => array('style' => 'width:600px'),))
+                ->add('descripcion','textarea', array(
+                    'required' => FALSE,
+                    'attr' => array(
+                        'style'=>'width:600px'
+                        )))
                 ->add('precioUnitario', null, array(
                     'required' => FALSE,
                     'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
                 ))
+                ->end();
         ;
     }
 

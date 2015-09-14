@@ -29,25 +29,19 @@
     <body >
         <table width="100%" style="border-collapse: collapse;"><tr>
                 <td style="height:{{ formato.interlineado }}" width="{{ formato.fila1col1 }}">{{ factura.fecha | date('d-m-Y') }}</td>
-                <td width="{{ formato.fila1col2 }}">{{ cliente.nrc }}</td></tr></table>
+                <td width="{{ formato.fila1col2 }}">{{ cliente.nit }}</td></tr></table>
         <table width="100%" style="border-collapse: collapse;"><tr>
                 <td style="height:{{ formato.interlineado }}" width="{{ formato.fila2col1 }}">{{ cliente.nombre}}</td>
-                <td width="{{ formato.fila2col2 }}">{{ cliente.nit }}</td></tr></table>
+                <td width="{{ formato.fila2col2 }}"></td></tr></table>
         <table width="100%" style="border-collapse: collapse;"><tr>
                 <td style="height:{{ formato.interlineado }}" width="{{ formato.fila3col1 }}">{{ cliente.direccion}}</td>
-                <td width="{{ formato.fila3col2 }}">{{ cliente.giro }}</td></tr></table>
+                <td width="{{ formato.fila3col2 }}"></td></tr></table>
         <table width="100%" style="border-collapse: collapse;"><tr>
                 <td style="height:{{ formato.interlineado }}" width="{{ formato.fila4col1 }}">&nbsp;</td>
-                <td width="{{ formato.fila4col2 }}">&nbsp;</td></tr></table>
-        <table width="100%" style="border-collapse: collapse;"><tr>
-                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila5col1 }}">{{ cliente.iddepartamento}}</td>
-                <td width="{{ formato.fila5col2 }}">{{ cliente.codigo }}</td></tr></table>
+                <td width="{{ formato.fila4col2 }}">{{ cliente.codigo }}&nbsp;</td></tr></table>
         <table width="100%" style="border-collapse: collapse;"><tr>
                 <td style="height:{{ formato.interlineado }}" width="{{ formato.fila6col1 }}">{{ factura.idempleado }}</td>
                 <td width="{{ formato.fila6col2 }}">{{ factura.idcondicionpago }}</td></tr></table>
-        <table width="100%" style="border-collapse: collapse;"><tr>
-                <td style="height:{{ formato.interlineado }}" width="{{ formato.fila7col1 }}">{% if notaremision.numero is defined %} {{ notaremision.fecha | date('d-m-Y') }} {% endif %}&nbsp;</td>
-                <td width="{{ formato.fila7col2 }}">{% if notaremision.numero is defined %} {{ notaremision.numero }}{% endif %}</td></tr></table>
         
         
         {# detalle de la factura #}
@@ -62,12 +56,12 @@
             </tr>
             {% for item in items %}
                 <tr>
-                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.cantidad }}</td>
-                    <td style="height:{{ formato.detalleinterlineado }}" >{{ item.idproducto }}</td>
-                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.preciounitario }}</td>
-                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.ventasnosujetas }}</td>
-                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.ventasexentas }}</td>
-                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.ventasgravadas }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right top; vertical-align: top ">{{ item.cantidad }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}" ><textarea rows="{{ formato.detalleinterlineado }}" style="border: none; width:100%;">{{ item.descripcion }}</textarea></td>
+                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right; vertical-align: top">{{ item.preciounitario }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right; vertical-align: top">{{ item.ventasnosujetas }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right; vertical-align: top">{{ item.ventasexentas }}</td>
+                    <td style="height:{{ formato.detalleinterlineado }}; text-align: right; vertical-align: top">{{ item.ventasgravadas }}</td>
                 </tr>
             {% endfor %}
             {% for i in numItems .. formato.detallenumeroitems - 1 %}
@@ -90,23 +84,19 @@
                 </tr>
                 <tr>
                     <td style="text-align: right;">&nbsp;</td>
-                    <td width="8%" style="text-align: right;">{{ factura.iva }}</td>
+                    <td width="8%" style="text-align: right;"></td>
                 </tr>
                 <tr>
                     <td style="text-align: right;"></td>
+                    <td width="8%" style="text-align: right;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">&nbsp;</td>
                     <td width="8%" style="text-align: right;">{{ factura.subtotal }}</td>
                 </tr>
                 <tr>
                     <td style="text-align: right;">&nbsp;</td>
-                    <td width="8%" style="text-align: right;">{{ factura.ivaretenido }}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: right;">&nbsp;</td>
-                    <td width="8%" style="text-align: right;">{{ factura.ventasnosujetas }}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: right;">&nbsp;</td>
-                    <td width="8%" style="text-align: right;">{{ factura.ventasexentas }}</td>
+                    <td width="8%" style="text-align: right;"></td>
                 </tr>
                 <tr>
                     <td style="text-align: right;">&nbsp;</td>
