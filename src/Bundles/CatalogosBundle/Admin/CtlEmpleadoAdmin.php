@@ -17,10 +17,10 @@ class CtlEmpleadoAdmin extends Admin
     {
         $datagridMapper
             ->add('nombres')
-            ->add('activo')
             ->add('apellidos')
             ->add('dui')
             ->add('nit')
+            ->add('activo')
         ;
     }
 
@@ -30,12 +30,8 @@ class CtlEmpleadoAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombres')
             ->add('apellidos')
-            ->add('dui')
-            ->add('nit')
-            ->add('direccion')
             ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(

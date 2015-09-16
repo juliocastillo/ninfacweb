@@ -57,18 +57,36 @@ class InvEntradadetalleAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('idProducto')
-            ->add('lote')
-            ->add('serie')
-            ->add('modelo')
-            ->add('cantidad')
-            ->add('precioUnitario')
-            ->add('fechaVencimiento','date',array(
-                                'widget' => 'single_text',
-                                'format' => 'dd-MM-yyyy',
-                                'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
-                ))
-            ->add('comentario')
+            ->with('=============================================================')
+                ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Nombre del producto',
+                    'btn_add' => FALSE,
+                    'btn_list' => 'Buscar producto',
+                    'btn_delete' => 'Limpiar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                    ))
+                ->add('cantidad',null, array(
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('precioUnitario',null, array(
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('fechaVencimiento', null, array(
+                        'label' => 'Fecha de vencimiento',
+                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr' => array(
+                            'class' => 'bootstrap-datepicker',
+                            'style' => 'width:300px', 'maxlength' => '25'
+                        )))
+                ->add('lote',null, array(
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('serie',null, array(
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('modelo',null, array(
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('comentario')
+            ->end()
         ;
     }
 

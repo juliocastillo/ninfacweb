@@ -21,3 +21,6 @@ app/config/parameters.yml
  
 #Carpeta de configuración del proyecto de NetBeans
 nbproject/
+
+#knp_snappy
+app/config/bundles/knp_snappy.yml

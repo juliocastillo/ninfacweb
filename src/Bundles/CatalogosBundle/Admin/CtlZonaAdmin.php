@@ -16,7 +16,6 @@ class CtlZonaAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
             ->add('nombre')
             ->add('activo')
         ;
@@ -28,7 +27,6 @@ class CtlZonaAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombre')
             ->add('activo')
             ->add('_action', 'actions', array(
@@ -49,7 +47,6 @@ class CtlZonaAdmin extends Admin
         $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
         $id = $entity->getId();
         $formMapper
-            ->add('id')
             ->add('nombre');
         if ($id) {  // cuando se edite el registro
             if ($entity->getActivo() == TRUE) { // si el registro esta activo

@@ -103,7 +103,7 @@ services:
         class: Bundles\CatalogosBundle\Admin\CfgFormatoDocumentoAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CfgFormatoDocumento, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Admin, label: Formatos de documentos}
+            - {name: sonata.admin, manager_type: orm, group: Admin, label: Formatos}
 
     bundles_catalogos.admin.cfg_plantilla:
         class: Bundles\CatalogosBundle\Admin\CfgPlantillaAdmin
@@ -115,7 +115,7 @@ services:
         class: Bundles\CatalogosBundle\Admin\CtlFontNameAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlFontName, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Admin, label: Nombres de tipos de letras}
+            - {name: sonata.admin, manager_type: orm, group: Admin, label: Tipos de letras}
 
     bundles_catalogos.admin.ctl_font_size:
         class: Bundles\CatalogosBundle\Admin\CtlFontSizeAdmin

@@ -16,11 +16,11 @@ class CtlProveedorAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('activo')
-             ->add('nit')
             ->add('nombre')
             ->add('nombreComercial')
+             ->add('nit')
             ->add('nrc')
+            ->add('activo')
         ;
     }
 
@@ -30,15 +30,10 @@ class CtlProveedorAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('activo')
-            ->add('direccion')
-            ->add('email')
-            ->add('nit')
             ->add('nombre')
             ->add('nombreComercial')
-            ->add('nrc')
             ->add('telefono')
+            ->add('activo')
              ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

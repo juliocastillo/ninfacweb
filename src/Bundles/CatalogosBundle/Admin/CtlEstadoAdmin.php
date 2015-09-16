@@ -27,7 +27,6 @@ class CtlEstadoAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombre')
             ->add('abreviatura')
             ->add('descripcion')

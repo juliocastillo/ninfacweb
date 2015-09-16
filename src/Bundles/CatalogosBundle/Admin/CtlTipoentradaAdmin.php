@@ -27,7 +27,6 @@ class CtlTipoentradaAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombre')
             ->add('activo')
             ->add('_action', 'actions', array(

@@ -16,7 +16,6 @@ class InvEntradaAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
             ->add('fecha')
              ->add('numero')
             ->add('activo')
@@ -29,13 +28,12 @@ class InvEntradaAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('numero')
             ->add('fecha','date',array(
                                 'widget' => 'single_text',
-                                'format' => 'dd-MM-yyyy',
+                                'format' => 'd-m-Y',
                                 'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))
-            ->add('numero')
             ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -54,32 +52,43 @@ class InvEntradaAdmin extends Admin
     {
         $formMapper
             ->tab('Datos generales')
-                ->with('', array('class'=>'col-md-6'))
-                ->add('numero')
-                ->add('idTipoentrada')
-                ->add('idProveedor')
+                ->with('')
+                ->add('numero','integer', array(
+                        'attr' => array(
+                            'style' => 'width:200px'
+                        )))
                 ->add('fecha', null, array('label' => 'Fecha', 'disabled' => false,
                       'read_only'=>TRUE,
                       'widget' => 'single_text',  // un sólo input para la fecha, no tres.
                       'format' => 'dd/MM/y',
-                      'attr'=> array('class'=>'bootstrap-datepicker now')))    
+                      'attr'=> array(
+                          'class'=>'bootstrap-datepicker now',
+                          'style' => 'width:200px')))    
+                ->add('idTipoentrada',null, array(
+                    'label'=>'Tipo de entrada'
+                ))
+                ->add('idProveedor','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Proveedor',
+                    'btn_add' => 'Agregar',
+                    'btn_list' => 'Buscar proveedor',
+                    'btn_delete' => 'Limpiar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                ))
 
-    //            ->add('fecha','date',array(
-    //                                'widget' => 'single_text',
-    //                                'format' => 'dd-MM-yyyy',
-    //                                'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
-    //                ))
                 ->end()
             ->end()
-            ->tab('D e t a l l e')
+            ->tab('D E T A L L E')
             ->with('')
-                ->add('entradaDetalle','sonata_type_collection',array(
-                                                                    'label' =>'Items'),
-                                                                        array(
-                                                                            'edit' => 'inline', 
-                                                                            'inline' => 'table'
-                                                                     ))
-            ->end()
+                ->add('entradaDetalle','sonata_type_collection',
+                        array(
+                            'label' =>'Items'),
+                                array(
+                                    'edit' => 'inline', 
+                                    'inline' => 'standard'
+                             ))
+                ->end()
             ->end()
                 ;
     }
