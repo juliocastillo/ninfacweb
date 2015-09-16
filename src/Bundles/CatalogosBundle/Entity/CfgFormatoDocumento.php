@@ -33,6 +33,30 @@ class CfgFormatoDocumento
      */
     private $idPlantilla;
 
+    
+     /**
+     * @var \CtlFontName
+     *
+     * @ORM\ManyToOne(targetEntity="CtlFontName")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_font_name", referencedColumnName="id")
+     * })
+     */
+    private $idFontName;
+
+    
+     /**
+     * @var \CtlFontSize
+     *
+     * @ORM\ManyToOne(targetEntity="CtlFontSize")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_font_size", referencedColumnName="id")
+     * })
+     */
+    private $idFontSize;
+    
+    
+    
     /**
      * @var string
      *
@@ -300,6 +324,57 @@ class CfgFormatoDocumento
     {
         return $this->idPlantilla;
     }
+
+    
+    /**
+     * Set idFontName
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CfgPlantilla $idFontName
+     * @return CfgPlantilla
+     */
+    public function setIdFontName(\Bundles\CatalogosBundle\Entity\CtlFontName $idFontName = null)
+    {
+        $this->idFontName = $idFontName;
+
+        return $this;
+    }
+
+    /**
+     * Get idFontName
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlFontName
+     */
+    public function getIdFontName()
+    {
+        return $this->idFontName;
+    }
+    
+    
+    /**
+     * Set idFontSize
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CfgPlantilla $idFontSize
+     * @return CfgPlantilla
+     */
+    public function setIdFontSize(\Bundles\CatalogosBundle\Entity\CtlFontSize $idFontSize = null)
+    {
+        $this->idFontSize = $idFontSize;
+
+        return $this;
+    }
+
+    /**
+     * Get idFontSize
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlFontSize
+     */
+    public function getIdFontSize()
+    {
+        return $this->idFontSize;
+    }
+    
+    
+    
     
     
     /**

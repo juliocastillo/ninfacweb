@@ -11,6 +11,7 @@ imports:
     - { resource: bundles/sonata_user.yml }
     - { resource: bundles/sonata_formatter.yml }
     - { resource: bundles/shtumi.yml }
+    - { resource: bundles/knp_snappy.yml }
     
 
 # Put parameters here that don't need to change on each machine where the app is deployed

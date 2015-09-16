@@ -80,6 +80,8 @@ class CfgFormatoDocumentoAdmin extends Admin
                 ->with('')
             ->add('nombre')
             ->add('idPlantilla')
+            ->add('idFontName')
+            ->add('idFontSize')
             ->add('margenDerecho')
             ->add('margenIzquierdo')
             ->add('margenSuperior')

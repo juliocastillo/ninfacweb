@@ -53,18 +53,24 @@ class FacFacturadetalleAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
                 ->with('================================================================================================')
+                ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Nombre del producto',
+                    'btn_add' => FALSE,
+                    'btn_list' => 'Buscar producto',
+                    'btn_delete' => 'Limpiar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                    ))
                 ->add('cantidad', null, array(
                     'required' => FALSE,
                     'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
                 ))
-                ->add('idProducto', NULL, array(
-                    'empty_value' => '...Seleccione...',
-                    'label' => 'Producto',
-                    'attr' => array('style' => 'width:600px'),))
                 ->add('descripcion','textarea', array(
+                    'label'=>'Descripción del producto (sólo para formato detalle manual)',
                     'required' => FALSE,
                     'attr' => array(
-                        'style'=>'width:600px'
+                        'style'=>'width:500px'
                         )))
                 ->add('precioUnitario', null, array(
                     'required' => FALSE,
