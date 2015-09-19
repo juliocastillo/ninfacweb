@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class CtlFontSizeAdmin extends Admin
+class CtlTipoClienteAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -16,7 +16,7 @@ class CtlFontSizeAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('size')
+            ->add('nombre')
         ;
     }
 
@@ -26,7 +26,7 @@ class CtlFontSizeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('size')
+            ->add('nombre')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -43,7 +43,9 @@ class CtlFontSizeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('size')
+            ->add('nombre','text', array(
+                'label'=>'Tipo de cliente'
+            ))
         ;
     }
 
@@ -54,7 +56,7 @@ class CtlFontSizeAdmin extends Admin
     {
         $showMapper
             ->add('id')
-            ->add('size')
+            ->add('nombre')
         ;
     }
 }

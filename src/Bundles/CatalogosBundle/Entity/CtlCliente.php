@@ -115,6 +115,18 @@ class CtlCliente
      */
     private $exento;
 
+    
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="agente_retencion", type="boolean", nullable=true)
+     */
+    private $agenteRetencion;
+    
+      
+    
+    
     /**
      * @var \CtlDepartamento
      *
@@ -125,6 +137,19 @@ class CtlCliente
      */
     private $idDepartamento;
 
+    
+    /**
+     * @var \CtlTipoCliente
+     *
+     * @ORM\ManyToOne(targetEntity="CtlTipoCliente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipo_cliente", referencedColumnName="id")
+     * })
+     */
+    private $idTipoCliente;
+    
+    
+    
     /**
      * @var \CtlMunicipio
      *
@@ -479,6 +504,33 @@ class CtlCliente
         return $this->exento;
     }
 
+    
+     /**
+     * Set agenteRetencion
+     *
+     * @param boolean $agenteRetencion
+     * @return CtlCliente
+     */
+    public function setAgenteRetencion($agenteRetencion)
+    {
+        $this->exento = $agenteRetencion;
+
+        return $this;
+    }
+
+    /**
+     * Get agenteRetencion
+     *
+     * @return boolean 
+     */
+    public function getAgenteRetencion()
+    {
+        return $this->agenteRetencion;
+    }
+    
+    
+    
+    
     /**
      * Set idDepartamento
      *
@@ -515,6 +567,31 @@ class CtlCliente
         return $this;
     }
 
+    
+    /**
+     * Get idTipoCliente
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlTipoCliente
+     */
+    public function getIdTipoCliente()
+    {
+        return $this->idTipoCliente;
+    }
+
+    /**
+     * Set idTipoCliente
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlTipoCliente $idTipoCliente
+     * @return CtlCliente
+     */
+    public function setIdTipoCliente(\Bundles\CatalogosBundle\Entity\CtlTipoCliente $idTipoCliente = null)
+    {
+        $this->idTipoCliente = $idTipoCliente;
+
+        return $this;
+    }    
+    
+    
     /**
      * Get idMunicipio
      *

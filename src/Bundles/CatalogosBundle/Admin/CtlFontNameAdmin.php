@@ -16,7 +16,6 @@ class CtlFontNameAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
             ->add('nombre')
         ;
     }
@@ -27,7 +26,6 @@ class CtlFontNameAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombre')
             ->add('_action', 'actions', array(
                 'actions' => array(

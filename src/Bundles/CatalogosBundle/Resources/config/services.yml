@@ -122,3 +122,15 @@ services:
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlFontSize, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Admin, label: Tamaño de letra}
+
+    bundles_catalogos.admin.ctl_almacen:
+        class: Bundles\CatalogosBundle\Admin\CtlAlmacenAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlAlmacen, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Almacen}
+
+    bundles_catalogos.admin.ctl_tipo_cliente:
+        class: Bundles\CatalogosBundle\Admin\CtlTipoClienteAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlTipoCliente, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Tipo Cliente}

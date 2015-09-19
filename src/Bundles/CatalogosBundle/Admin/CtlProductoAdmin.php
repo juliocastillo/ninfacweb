@@ -31,6 +31,8 @@ class CtlProductoAdmin extends Admin
             ->add('codigo')
             ->add('nombre')
             ->add('presentacion')
+            ->add('precioVenta')
+            ->add('existencia')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

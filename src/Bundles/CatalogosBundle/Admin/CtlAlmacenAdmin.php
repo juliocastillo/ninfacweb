@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class CtlFontSizeAdmin extends Admin
+class CtlAlmacenAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -16,7 +16,8 @@ class CtlFontSizeAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('size')
+            ->add('nombre')
+            ->add('activo')
         ;
     }
 
@@ -26,7 +27,8 @@ class CtlFontSizeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('size')
+            ->add('nombre')
+            ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -42,9 +44,23 @@ class CtlFontSizeAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
+        $id = $entity->getId();
         $formMapper
-            ->add('size')
-        ;
+            ->add('nombre');
+            if ($id) {  // cuando se edite el registro
+                if ($entity->getActivo() == TRUE) { // si el registro esta activo
+                    $formMapper
+                            ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
+                } else { // si el registro esta inactivo
+                    $formMapper
+                            ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE));
+                }
+            } else { // cuando se crea el registro
+                $formMapper
+                        ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
+            }
+
     }
 
     /**
@@ -54,7 +70,8 @@ class CtlFontSizeAdmin extends Admin
     {
         $showMapper
             ->add('id')
-            ->add('size')
+            ->add('nombre')
+            ->add('activo')
         ;
     }
 }

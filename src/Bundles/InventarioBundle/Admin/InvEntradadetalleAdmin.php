@@ -68,8 +68,10 @@ class InvEntradadetalleAdmin extends Admin
                     'placeholder' => '*****'
                     ))
                 ->add('cantidad',null, array(
+                    'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('precioUnitario',null, array(
+                    'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('fechaVencimiento', null, array(
                         'label' => 'Fecha de vencimiento',
@@ -80,6 +82,7 @@ class InvEntradadetalleAdmin extends Admin
                             'style' => 'width:300px', 'maxlength' => '25'
                         )))
                 ->add('lote',null, array(
+                    'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('serie',null, array(
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))

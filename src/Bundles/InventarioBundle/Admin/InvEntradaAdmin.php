@@ -34,6 +34,9 @@ class InvEntradaAdmin extends Admin
                                 'format' => 'd-m-Y',
                                 'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))
+            ->add('idProveedor',null, array(
+                'label'=>'Proveedor'
+            ))
             ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -65,8 +68,10 @@ class InvEntradaAdmin extends Admin
                           'class'=>'bootstrap-datepicker now',
                           'style' => 'width:200px')))    
                 ->add('idTipoentrada',null, array(
-                    'label'=>'Tipo de entrada'
-                ))
+                    'label'=>'Tipo de entrada',
+                    'attr'=> array(
+                          'style' => 'width:400px'
+                        )))
                 ->add('idProveedor','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Proveedor',
                     'btn_add' => 'Agregar',
@@ -76,7 +81,12 @@ class InvEntradaAdmin extends Admin
                         ), array(
                     'placeholder' => '*****'
                 ))
-
+                ->add('idAlmacen',null, array(
+                    'required'=>TRUE,
+                    'label'=>'Almacen que recibe',
+                    'attr'=> array(
+                          'style' => 'width:400px'
+                        )))
                 ->end()
             ->end()
             ->tab('D E T A L L E')

@@ -16,7 +16,6 @@ class CfgFormatoDocumentoAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
             ->add('detalleInterlineado')
             ->add('detalleNumeroItems')
             ->add('detalleXCol1')
@@ -57,7 +56,6 @@ class CfgFormatoDocumentoAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('nombre')
             ->add('idPlantilla')
             ->add('_action', 'actions', array(

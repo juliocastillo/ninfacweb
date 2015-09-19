@@ -566,7 +566,7 @@ class CtlProducto
     }
     
     public function __toString() {
-        return $this->nombre.', '.$this->presentacion.' Pr: '.$this->precioVenta;
+        return $this->nombre;
     }
 
 }

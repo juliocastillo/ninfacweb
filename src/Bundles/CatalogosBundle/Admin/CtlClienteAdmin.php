@@ -56,6 +56,10 @@ class CtlClienteAdmin extends Admin
         $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
         $id = $entity->getId();
         $formMapper
+            ->add('idTipoCliente','entity', array(
+                      'class'=>'BundlesCatalogosBundle:CtlTipoCliente',
+                      'label'=>'Tipo de cliente',
+                      'attr' => array('style'=>'width:300px'),))
             ->add('nombre','text', array(
                 'max_length'=>'100',
                 ))
@@ -89,7 +93,8 @@ class CtlClienteAdmin extends Admin
                 'attr' => array('style'=>'width:300px'),))
                 
             ->add('email')
-            ->add('exento',NULL,array('label'=>'Exento de IVA'))
+            ->add('agenteRetencion', NULL, array('label'=>'Retencion de retencion'))
+            ->add('exento', NULL, array('label'=>'Exento de IVA'))
             ->add('activo');
         if ($id) {  // cuando se edite el registro
             if ($entity->getActivo() == TRUE) { // si el registro esta activo

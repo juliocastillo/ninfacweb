@@ -68,6 +68,17 @@ class InvEntrada
     private $idProveedor;
 
     /**
+     * @var \Bundles\CatalogosBundle\Entity\CtlAlmacen
+     *
+     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlAlmacen")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_almacen", referencedColumnName="id")
+     * })
+     */
+    private $idAlmacen;
+    
+    
+    /**
      * @var \Bundles\CatalogosBundle\Entity\CtlTipoentrada
      *
      * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlTipoentrada")
@@ -264,6 +275,31 @@ class InvEntrada
         return $this->idProveedor;
     }
 
+    
+    /**
+     * Set idAlmacen
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlAlmacen $idAlmacen
+     * @return InvEntrada
+     */
+    public function setIdAlmacen(\Bundles\CatalogosBundle\Entity\CtlAlmacen $idAlmacen = null)
+    {
+        $this->idAlmacen = $idAlmacen;
+
+        return $this;
+    }
+
+    /**
+     * Get idAlmacen
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlAlmacen 
+     */
+    public function getIdAlmacen()
+    {
+        return $this->idAlmacen;
+    }    
+    
+    
     /**
      * Set idTipoentrada
      *

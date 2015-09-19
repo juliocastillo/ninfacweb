@@ -92,3 +92,9 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+services:
+    jasper.build.reports:
+        class: Bundles\CatalogosBundle\Service\JasperReportService\JasperReportService
+        arguments: [%jasper_username%, %jasper_password%, %jasper_url%]
