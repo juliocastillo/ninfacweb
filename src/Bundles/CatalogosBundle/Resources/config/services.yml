@@ -134,3 +134,9 @@ services:
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlTipoCliente, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Tipo Cliente}
+
+    bundles_catalogos.admin.ctl_marca:
+        class: Bundles\CatalogosBundle\Admin\CtlMarcaAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlMarca, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Marcas}

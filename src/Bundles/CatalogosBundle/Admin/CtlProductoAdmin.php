@@ -59,11 +59,29 @@ class CtlProductoAdmin extends Admin
             ->add('presentacion','text', array(
                     'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))
-            ->add('idUnidad',NULL,array(
-                      'label'=>'Unidad de medida',
-                      'attr' => array('style'=>'width:300px'),))
-            ->add('idCategoria')
-            ->add('idMarca')
+                
+            ->add('idUnidad','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Unidad de medida',
+                    'btn_add' => 'Agregar',
+                    'btn_list' => 'Buscar UM',
+                    'btn_delete' => 'Limpiar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                ))
+            ->add('idCategoria',NULL, array(
+                    'label'=>'Categoría de producto',
+                    'attr' => array('style'=>'width:300px'),
+            ))
+            ->add('idMarca','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                    'label'=>'Marca',
+                    'btn_add' => 'Agregar',
+                    'btn_list' => 'Buscar marca',
+                    'btn_delete' => 'Limpiar campo',
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => '*****'
+                ))
             ->add('existencia','text', array(
                     'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))

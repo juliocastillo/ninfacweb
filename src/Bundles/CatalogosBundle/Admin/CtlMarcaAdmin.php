@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class CtlCategoriaAdmin extends Admin
+class CtlMarcaAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -61,6 +61,7 @@ class CtlCategoriaAdmin extends Admin
             $formMapper
                     ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
         }
+
     }
 
     /**
