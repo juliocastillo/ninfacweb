@@ -145,5 +145,27 @@ class ReporteController extends Controller {
         );
         
     }
+    
+     
+     /**
+     * @Route("/build/report/{name}/{format}/{path}/", name="build_report", options={"expose"=true})
+     * @Method("GET")
+     *
+     */
+    public function buildReportAction($name, $format, $path ) {
 
+        $parameters = array();
+        
+        $path = urldecode("%2F".$path."%2F");
+        $request = $this->getRequest();
+        $jasperReport = $this->container->get('jasper.build.reports');
+        $jasperReport->setReportName($name);
+        $jasperReport->setReportFormat(strtoupper($format));
+        $jasperReport->setReportPath(urldecode($path));
+        $jasperReport->setReportParams($parameters);
+        return $jasperReport->buildReport();
+    }
+    
+    
+    
 }

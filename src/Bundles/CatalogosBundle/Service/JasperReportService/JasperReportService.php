@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\CoreBundle\Service\JasperReportService;
+namespace Bundles\CatalogosBundle\Service\JasperReportService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Application\CoreBundle\Service\JasperReportService\JasperClient as JasperClient;
+use Bundles\CatalogosBundle\Service\JasperReportService\JasperClient as JasperClient;
 
 class JasperReportService extends Controller {
   private $jasper_username;

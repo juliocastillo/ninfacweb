@@ -1,5 +1,5 @@
 <?php
-namespace Application\CoreBundle\Service\JasperReportService;
+namespace Bundles\CatalogosBundle\Service\JasperReportService;
 
 class DIMERecord {
 

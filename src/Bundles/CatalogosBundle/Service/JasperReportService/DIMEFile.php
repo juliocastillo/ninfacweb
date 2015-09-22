@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CoreBundle\Service\JasperReportService;
+namespace Bundles\CatalogosBundle\Service\JasperReportService;
 class DIMEFile {
 
     public $type_format;
