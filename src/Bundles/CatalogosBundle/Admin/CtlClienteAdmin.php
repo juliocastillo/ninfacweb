@@ -158,6 +158,15 @@ class CtlClienteAdmin extends Admin
         $val->setDateMod(new \DateTime());
     }
     
-    
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'list':
+                return 'BundlesCatalogosBundle:CtlClienteAdmin:list.html.twig';
+                break;
+            default :
+                return parent::getTemplate($name);
+                break;
+        }
+    }
     
 }

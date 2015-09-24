@@ -142,6 +142,10 @@
                 <source>form.password_confirmation</source>
                 <target>Verificar contraseña</target>
             </trans-unit>
+            <trans-unit id="print_to_pdf">
+                <source>print_to_pdf</source>
+                <target>Imprimir a PDF</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
