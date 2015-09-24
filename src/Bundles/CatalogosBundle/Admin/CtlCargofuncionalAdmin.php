@@ -44,10 +44,22 @@ class CtlCargofuncionalAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
+        $id = $entity->getId();
         $formMapper
-            ->add('nombre')
-            ->add('activo')
-        ;
+            ->add('nombre');
+        if ($id) {  // cuando se edite el registro
+            if ($entity->getActivo() == TRUE) { // si el registro esta activo
+                $formMapper
+                        ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
+            } else { // si el registro esta inactivo
+                $formMapper
+                        ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE));
+            }
+        } else { // cuando se crea el registro
+            $formMapper
+                    ->add('activo', null, array('label' => 'Registro activo', 'required' => FALSE, 'attr' => array('checked' => 'checked')));
+        }
     }
 
     /**
