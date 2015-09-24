@@ -60,8 +60,30 @@ class CtlEmpleadoAdmin extends Admin
                     'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))
             ->add('direccion')
-            ->add('idCargofuncional')
-            ->add('activo');
+            ->add('telefono','text', array(
+                    'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
+                ))
+            ->add('idCargofuncional',NULL,array(
+                'label'=>'Cargo que desempeña en la empresa',
+                'attr'=>array('style'=>'width:300px')
+            ))
+            ->add('fechaIngreso', null, array(
+                    'label' => 'Fecha de Ingreso',
+                    'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                    'format' => 'dd/MM/y',
+                    'attr' => array(
+                        'class' => 'bootstrap-datepicker',
+                        'style' => 'width:300px', 'maxlength' => '25'
+                    )))
+            ->add('activo')
+            ->add('fechaRetiro', null, array(
+                    'label' => 'Fecha de retiro de la empresa',
+                    'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                    'format' => 'dd/MM/y',
+                    'attr' => array(
+                        'class' => 'bootstrap-datepicker',
+                        'style' => 'width:300px', 'maxlength' => '25'
+                    )));
         if ($id) {  // cuando se edite el registro
             if ($entity->getActivo() == TRUE) { // si el registro esta activo
                 $formMapper
@@ -76,7 +98,7 @@ class CtlEmpleadoAdmin extends Admin
         }
 
         $formMapper
-            ->add('empleadoZona','sonata_type_collection',array('label' =>'Zona'),
+            ->add('empleadoZona','sonata_type_collection',array('label' =>'Asignación de zonas de venta'),
                                                                  array('edit' => 'inline', 'inline' => 'table'))
         ;
     }

@@ -39,7 +39,7 @@ class CtlEmpleado
     /**
      * @var string
      *
-     * @ORM\Column(name="apellidos", type="string", length=2044, nullable=false)
+     * @ORM\Column(name="apellidos", type="string", length=50, nullable=false)
      */
     private $apellidos;
 
@@ -81,7 +81,31 @@ class CtlEmpleado
      */
     private $empleadoZona;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono", type="string", length=25, nullable=false)
+     */
+    private $telefono;
+    
+    
+    
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_ingreso", type="date", nullable=false)
+     */
+    private $fechaIngreso;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_retiro", type="date", nullable=true)
+     */
+    private $fechaRetiro;
+    
+    
 
     /**
      * Get id
@@ -232,6 +256,31 @@ class CtlEmpleado
     }
 
     /**
+     * Set telefono
+     *
+     * @param string $telefono
+     * @return CtlCliente
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string 
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+    
+   
+   
+    /**
      * Set idCargofuncional
      *
      * @param \Bundles\CatalogosBundle\Entity\CtlCargofuncional $idCargofuncional
@@ -299,4 +348,54 @@ class CtlEmpleado
     {
         return $this->empleadoZona;
     }
+    
+    /**
+     * Set fechaIngreso
+     *
+     * @param \DateTime $fechaIngreso
+     * @return CtlEmpleado
+     */
+    public function setFechaIngreso($fechaIngreso)
+    {
+        $this->fechaIngreso = $fechaIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaIngreso
+     *
+     * @return \DateTime 
+     */
+    public function getFechaIngreso()
+    {
+        return $this->fechaIngreso;
+    }
+
+    
+    /**
+     * Set fechaRetiro
+     *
+     * @param \DateTime $fechaRetiro
+     * @return CtlEmpleado
+     */
+    public function setFechaRetiro($fechaRetiro)
+    {
+        $this->fechaRetiro = $fechaRetiro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRetiro
+     *
+     * @return \DateTime 
+     */
+    public function getFechaRetiro()
+    {
+        return $this->fechaRetiro;
+    }
+
+    
+    
 }
