@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 use Sonata\AdminBundle\Validator\ErrorElement;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class CxcCobroAdmin extends Admin
 {
@@ -18,8 +19,9 @@ class CxcCobroAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('fecha')
             ->add('numeroRecibo')
+            ->add('fecha')
+            
         ;
     }
 
@@ -29,20 +31,23 @@ class CxcCobroAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('fecha','date',array(
-                                'widget' => 'single_text',
-                                'format' => 'd/m/Y',
-                                'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
-                ))
             ->add('numeroRecibo','integer',array(
                 'label'=> 'Número de Recibo',
                 'attr' => array(
                     'style'=>'width:100px'
                     )))
+            ->add('fecha','date',array(
+                                'widget' => 'single_text',
+                                'format' => 'd/m/Y',
+                                'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
+                ))
+            
             ->add('monto')
             ->add('idFactura',null, array(    // permitir buscar un item de un catalogo
                     'label'=>'Número de Factura'
                     ))
+            ->add('estado')
+            ->add('activo',NULL,array('editable'=>TRUE))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -58,12 +63,12 @@ class CxcCobroAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $empleado = new \Bundles\CatalogosBundle\Entity\CtlEmpleado;
+        $banco = new \Bundles\CatalogosBundle\Entity\CtlBanco;
+        $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.idCargofuncional=1');
+        $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
+        
         $formMapper
-//            ->add('idFactura',NULL, array(
-//                    'empty_value'=>'...Seleccione...',
-//                    'class'=>'BundlesFacturaBundle:FacFactura',
-//                    'label'=>'Numero de Factura',
-//                    'attr' => array('style'=>'width:300px'),))
             ->add('idFactura','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Numero de Factura',
                     'btn_add' => FALSE,
@@ -76,12 +81,14 @@ class CxcCobroAdmin extends Admin
             ->add('numeroRecibo','integer',array(
                 'attr' => array(
                     'style'=>'width:300px', 'maxlength' => '25')))
-            ->add('fecha', null, array('label' => 'Fecha', 'disabled' => false,
-                  'widget' => 'single_text',  // un sólo input para la fecha, no tres.
-                  'format' => 'dd/MM/y',
-                  'attr'=> array('class'=>'bootstrap-datepicker now',
-                      'style'=>'width:300px', 'maxlength' => '25'
-                      )))
+            ->add('fecha', null, array(
+                    'label' => 'Fecha  (dd/mm/aaaa)',
+                    'disabled' => false,
+                    'widget' => 'single_text',  // un sólo input para la fecha, no tres.
+                    'format' => 'dd/MM/y',
+                    'attr'=> array('class'=>'bootstrap-datepicker now',
+                        'style'=>'width:300px', 'maxlength' => '25'
+                        )))
             ->add('idFormaPago','entity', array(
                     'class'=>'BundlesCatalogosBundle:CtlFormaPago',
                     'label'=>'Forma de pago',
@@ -92,20 +99,34 @@ class CxcCobroAdmin extends Admin
                 'attr' => array(
                     'style'=>'width:300px', 'maxlength' => '25'
                     )))
-            ->add('idBanco',NULL, array(
-                    'empty_value'=>'...Seleccione...',
-                    'class'=>'BundlesCatalogosBundle:CtlBanco',
-                    'label'=>'Nombre de Banco',
-                    'attr' => array('style'=>'width:300px'),))
+            ->add('idBanco','sonata_type_model', array(
+                'empty_value'=>'...ninguno...',
+                'label' => 'Nombre del banco',
+                'required' => FALSE,
+                'btn_add' => FALSE,
+                'query' => $qry_banco,
+                'attr' => array(
+                    'style'=>'width:500px', 'maxlength' => '25')))
                 
             ->add('monto','text',array(
                 'attr' => array(
                     'style'=>'width:300px', 'maxlength' => '25')))
-            ->add('idEmpleado',NULL, array(
-                    'class'=>'BundlesCatalogosBundle:CtlEmpleado',
-                    'label'=>'Vendedor',
-                    'empty_value'=>'...Seleccione...'
-                ))
+
+            ->add('idEmpleado','sonata_type_model', array(
+                'empty_value'=>'...ninguno...',
+                'label' => 'Quien realiza el cobro?',
+                'required' => TRUE,
+                'btn_add' => FALSE,
+                'query' => $qry_empleado,
+                'attr' => array(
+                    'style'=>'width:500px', 'maxlength' => '25')))
+                
+            ->add('observacion','textarea', array(
+                    'label'=>'Comentarios',
+                    'required' => FALSE,
+                    'attr' => array(
+                        'style'=>'width:500px'
+                        )))
         ;
     }
 
@@ -153,10 +174,13 @@ class CxcCobroAdmin extends Admin
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
         $idFactura = $cobro->getIdFactura()->getId();
         // actualizando campo pago_total en la factura
-        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaPagos($idFactura);
         
         // actualizar estado en caso que la factura sea liquidada
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
+        
+        // asignar el estado procesado
+        $cobro->setEstado('PROCESADO');
     }
 
     public function postUpdate($cobro) {
@@ -164,7 +188,7 @@ class CxcCobroAdmin extends Admin
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
         $idFactura = $cobro->getIdFactura()->getId();
         // actualizando campo pago_total en la factura
-        $em->getRepository('BundlesFacturaBundle:FacFactura')->sumaPagos($idFactura);
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaPagos($idFactura);
         
         // actualizar estado en caso que la factura sea liquidada
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
@@ -223,6 +247,19 @@ class CxcCobroAdmin extends Admin
             
         }
             
+    } // fin validate()
+    
+     /**
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list') {
+        $query = parent::createQuery($context);
+        return new ProxyQuery(
+                $query
+                        ->where($query->getRootAlias() . ".activo = TRUE")
+                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
+        );
     }
+
            
 }

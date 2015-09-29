@@ -22,7 +22,7 @@ class FacFacturaRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function sumaPagos($idFactura){
+    public function actualizaPagos($idFactura){
         $em = $this->getEntityManager();
         $sql = "UPDATE fac_factura SET cobro_total =
                 (SELECT sum(monto) FROM cxc_cobro WHERE id_factura = '$idFactura' GROUP BY id_factura)

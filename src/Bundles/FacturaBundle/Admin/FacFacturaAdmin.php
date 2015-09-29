@@ -28,7 +28,9 @@ class FacFacturaAdmin extends Admin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('idTipofactura')
+                ->add('idTipofactura', NULL, array(
+                    'label' => 'Tipo de factura'
+                    ))
                 ->add('numero')
                 ->add('fecha')
         ;
@@ -302,7 +304,8 @@ class FacFacturaAdmin extends Admin {
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".activo = TRUE")
-                        //->where($query->getRootAlias() . ".estado != 'PAGADO'")
+                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
+
         );
     }
     

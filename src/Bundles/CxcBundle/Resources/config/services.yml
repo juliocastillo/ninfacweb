@@ -10,3 +10,9 @@ services:
         arguments: [~, Bundles\CxcBundle\Entity\CxcCobro, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: CXC, label: Cobros}
+
+    bundles_cxc.admin.cxc_cobro_reporte:
+        class: Bundles\CxcBundle\Admin\CxcCobroReporteAdmin
+        arguments: [~, Bundles\CxcBundle\Entity\CxcCobroReporte, BundlesCxcBundle:CxcCobroReporteAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: CXC, label: Informe diario}
