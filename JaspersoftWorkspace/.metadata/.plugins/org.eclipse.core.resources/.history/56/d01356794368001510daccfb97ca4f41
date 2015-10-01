@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-10-01T07:49:16 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_listado_clientes" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e6c2433-1cd8-4dc4-8d64-6d3a077dd099">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DA_ninfac_prodylab.xml"/>
+	<queryString>
+		<![CDATA[SELECT * FROM ctl_cliente]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="nombre_comercial" class="java.lang.String"/>
+	<field name="giro" class="java.lang.String"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="nrc" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="activo" class="java.lang.Boolean"/>
+	<field name="id_departamento" class="java.lang.Integer"/>
+	<field name="id_municipio" class="java.lang.Integer"/>
+	<field name="date_add" class="java.sql.Date"/>
+	<field name="id_user_mod" class="java.lang.Integer"/>
+	<field name="id_user_add" class="java.lang.Integer"/>
+	<field name="date_mod" class="java.sql.Date"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="exento" class="java.lang.Boolean"/>
+	<field name="id_zona" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="agente_retencion" class="java.lang.Boolean"/>
+	<field name="id_tipo_cliente" class="java.lang.Integer"/>
+	<field name="estado" class="java.lang.String"/>
+	<group name="id_departamento">
+		<groupExpression><![CDATA[$F{id_departamento}]]></groupExpression>
+	</group>
+	<group name="id_tipo_cliente">
+		<groupExpression><![CDATA[$F{id_tipo_cliente}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
