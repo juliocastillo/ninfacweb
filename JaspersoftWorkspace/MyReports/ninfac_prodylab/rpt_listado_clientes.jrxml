@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-10-01T11:04:38 -->
+<!-- 2015-10-01T11:17:55 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_listado_clientes" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="107ccceb-01f0-443c-b345-48e5c17055d4">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DA_Ninfac"/>
@@ -104,6 +104,13 @@
 				<reportElement x="620" y="12" width="122" height="28" uuid="cdb097e2-d84b-446b-9158-0050e8fa58a3"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="10" y="10" width="100" height="30" uuid="938ee314-c05d-4812-a32a-b278e85e414a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninfac 2.0]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
