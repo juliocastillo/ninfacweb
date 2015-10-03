@@ -88,7 +88,7 @@ class ReportsCxcController extends Controller {
                     'margin-left' => '15',
                     'margin-bottom' => '15',
                     'print-media-type' => true,
-                    'title' => 'Informe diario de CXC',
+                    'title' => 'Reporte diario de CXC',
                     'enable-javascript' => true,
                     'javascript-delay' => 500,
                     'no-pdf-compression' => true)), 200, array(
