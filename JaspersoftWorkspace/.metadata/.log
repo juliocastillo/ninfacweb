@@ -428,3 +428,103 @@ java.lang.RuntimeException: WARNING: Prevented recursive attempt to activate par
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+!SESSION 2015-10-03 04:23:43.097 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_80
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data @noDefault
+
+!ENTRY com.jaspersoft.studio 1 0 2015-10-03 04:23:53.555
+!MESSAGE Starting JaspersoftStudio bundle - Version: 6.1.1.final
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-10-03 04:23:53.951
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.255
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.255
+!MESSAGE Conflict for 'org.eclipse.ui.edit.delete':
+HandlerActivation(commandId=org.eclipse.ui.edit.delete,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.CustomDeleteAction@2bd2657e),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.edit.delete,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.CustomDeleteAction@2bd2657e),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.256
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.256
+!MESSAGE Conflict for 'org.eclipse.gef.zoom_in':
+HandlerActivation(commandId=org.eclipse.gef.zoom_in,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.ZoomInAction@1958f567),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.gef.zoom_in,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.ZoomInAction@1958f567),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.256
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.256
+!MESSAGE Conflict for 'org.eclipse.gef.zoom_out':
+HandlerActivation(commandId=org.eclipse.gef.zoom_out,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.ZoomOutAction@378c404c),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.gef.zoom_out,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.ZoomOutAction@378c404c),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.258
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.258
+!MESSAGE Conflict for 'org.eclipse.ui.file.print':
+HandlerActivation(commandId=org.eclipse.ui.file.print,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.PrintAction@773c3b34),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.file.print,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.PrintAction@773c3b34),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.258
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.258
+!MESSAGE Conflict for 'org.eclipse.ui.edit.cut':
+HandlerActivation(commandId=org.eclipse.ui.edit.cut,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.CutAction@3d1c17dc),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.edit.cut,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.CutAction@3d1c17dc),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.259
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.259
+!MESSAGE Conflict for 'org.eclipse.ui.edit.copy':
+HandlerActivation(commandId=org.eclipse.ui.edit.copy,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.CopyAction@2a4d6470),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.edit.copy,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.CopyAction@2a4d6470),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.260
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.260
+!MESSAGE Conflict for 'org.eclipse.ui.edit.paste':
+HandlerActivation(commandId=org.eclipse.ui.edit.paste,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.PasteAction@7fea158),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.edit.paste,
+	handler=ActionHandler(com.jaspersoft.studio.editor.action.copy.PasteAction@7fea158),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.260
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-03 04:24:24.260
+!MESSAGE Conflict for 'org.eclipse.ui.edit.selectAll':
+HandlerActivation(commandId=org.eclipse.ui.edit.selectAll,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.SelectAllAction@4639485e),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)
+HandlerActivation(commandId=org.eclipse.ui.edit.selectAll,
+	handler=ActionHandler(org.eclipse.gef.ui.actions.SelectAllAction@4639485e),
+	expression=AndExpression(LegacyEditorActionBarExpression(com.jaspersoft.studio.editor.JrxmlEditor),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@18a89043)),sourcePriority=4210689)

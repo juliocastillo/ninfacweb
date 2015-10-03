@@ -122,7 +122,7 @@ class CxcCobroReporteAdmin extends Admin
                 $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
                 $id = $entity->getId();
                 if ($id)  // cuando se edite el registro
-                    return parent::getTemplate($name);
+                    return 'BundlesCxcBundle:CxcCobroReporteAdmin:edit.html.twig';
                 else
                     return 'BundlesCxcBundle:CxcCobroReporteAdmin:create.html.twig';
                 break;

@@ -24,8 +24,6 @@ use Knp\Snappy\Pdf;
 class ReporteController extends Controller {
     
      /*
-     * DESCRIPCIÓN: Método que devuelve un JSON con los departamentos de acuerdo
-     * al idPais que se envia.
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
 

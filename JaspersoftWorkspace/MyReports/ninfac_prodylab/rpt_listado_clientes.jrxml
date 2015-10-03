@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-10-02T00:31:14 -->
+<!-- 2015-10-03T07:11:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_listado_clientes" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="107ccceb-01f0-443c-b345-48e5c17055d4">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DA_Ninfac"/>
@@ -61,7 +61,7 @@
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="66" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<staticText>
 				<reportElement x="11" y="0" width="100" height="30" uuid="d4ec8d47-0e8e-4857-a0d8-65e1f1614aa6"/>
 				<text><![CDATA[codigo]]></text>
@@ -74,25 +74,25 @@
 				<reportElement x="370" y="0" width="100" height="30" uuid="6740faba-7493-47a2-accb-c0834380b425"/>
 				<text><![CDATA[nit]]></text>
 			</staticText>
-			<line>
-				<reportElement x="9" y="65" width="691" height="1" uuid="7f41504b-89c6-4845-9693-1e62fb427969"/>
-			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="40" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<textField>
-				<reportElement x="11" y="0" width="100" height="30" uuid="70655f76-d66a-4ce8-a967-5459e7a3786b"/>
+				<reportElement x="11" y="0" width="100" height="20" uuid="70655f76-d66a-4ce8-a967-5459e7a3786b"/>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="146" y="0" width="174" height="30" uuid="22146741-5e9a-41cc-91eb-8e640cef95e9"/>
+				<reportElement x="146" y="0" width="174" height="20" uuid="22146741-5e9a-41cc-91eb-8e640cef95e9"/>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="0" width="100" height="30" uuid="ace5d6a4-be1b-469b-b096-1d51701baa0f"/>
+				<reportElement x="370" y="0" width="100" height="20" uuid="ace5d6a4-be1b-469b-b096-1d51701baa0f"/>
 				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="26" width="750" height="1" uuid="7f41504b-89c6-4845-9693-1e62fb427969"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
@@ -101,7 +101,7 @@
 	<pageFooter>
 		<band height="55" splitType="Stretch">
 			<textField>
-				<reportElement x="620" y="12" width="122" height="28" uuid="cdb097e2-d84b-446b-9158-0050e8fa58a3"/>
+				<reportElement x="619" y="10" width="122" height="28" uuid="cdb097e2-d84b-446b-9158-0050e8fa58a3"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>

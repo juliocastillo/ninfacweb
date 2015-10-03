@@ -5,12 +5,12 @@ namespace Bundles\CatalogosBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CtlEmpresa
+ * CfgEmpresa
  *
- * @ORM\Table(name="ctl_empresa")
+ * @ORM\Table(name="cfg_empresa")
  * @ORM\Entity
  */
-class CtlEmpresa
+class CfgEmpresa
 {
     /**
      * @var integer
@@ -18,7 +18,7 @@ class CtlEmpresa
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="ctl_empresa_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="cfg_empresa_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -94,7 +94,7 @@ class CtlEmpresa
      * Set activo
      *
      * @param boolean $activo
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setActivo($activo)
     {
@@ -117,7 +117,7 @@ class CtlEmpresa
      * Set direccion
      *
      * @param string $direccion
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setDireccion($direccion)
     {
@@ -140,7 +140,7 @@ class CtlEmpresa
      * Set giro
      *
      * @param string $giro
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setGiro($giro)
     {
@@ -163,7 +163,7 @@ class CtlEmpresa
      * Set nit
      *
      * @param string $nit
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setNit($nit)
     {
@@ -186,7 +186,7 @@ class CtlEmpresa
      * Set nombre
      *
      * @param string $nombre
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setNombre($nombre)
     {
@@ -209,7 +209,7 @@ class CtlEmpresa
      * Set nombreComercial
      *
      * @param string $nombreComercial
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setNombreComercial($nombreComercial)
     {
@@ -232,7 +232,7 @@ class CtlEmpresa
      * Set nrc
      *
      * @param string $nrc
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setNrc($nrc)
     {
@@ -255,7 +255,7 @@ class CtlEmpresa
      * Set telefono
      *
      * @param string $telefono
-     * @return CtlEmpresa
+     * @return CfgEmpresa
      */
     public function setTelefono($telefono)
     {

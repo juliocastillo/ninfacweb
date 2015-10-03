@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        <style type="text/css">
+
+            html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
+            div .table-responsive {overflow: visible !important; border-style: none !important}
+
+            .panel{ margin: 8px;}
+            .panel-info > .panel-heading,.titulo_vista {
+                background-color: white;
+                font-size: 12px;
+                border-color: black;
+                color: black;
+                font-weight: bold;
+                border-style: none !important;
+                padding: 2px 5px;
+            }
+            table{font-size: 10px!important;}
+            .panel-body, .vista_paciente{font-size: 10px; border-style: none !important;}
+            td,th {padding: 2px 5px;}
+            .panel-info{border-color:black}
+            table {width: 100%}
+
+        </style>
+    </head>
+    <body>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte Diario de cuentas por cobrar</td>
+            </tr>
+           
+            <tr>
+                <td colspan="2">Fecha:{{ reporte.fecha | date('d-m-Y') }}</td>
+            </tr>
+            <tr>
+                <td>I N G R E S O</td><td></td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar (abonos)</td><td align="right">{{ reporte.abonos }} <br>=================</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td></td>
+                <td>RECIBO</td>
+                <td align="center">MONTO</td>
+                <td>DOCUMENTO</td>
+                <td>CLIENTE</td>
+                <td></td>
+            </tr>
+            {% for cobro in cobros %}
+            <tr>
+                <td></td>
+                <td>{{cobro.numerorecibo}}</td>
+                <td align="center">{{cobro.monto}}</td>
+                <td>{{cobro.idfactura}}</td>
+                <td>{{cobro.idfactura.idcliente}}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </table>
+                <p><br><br>Responsable: {{ reporte.idempleado}}</p>
