@@ -130,4 +130,18 @@ class CtlEmpleadoAdmin extends Admin
             $empleadoZona->setIdEmpleado($empleado);
         }
     }
+    
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'list':
+                return 'BundlesCatalogosBundle:CtlEmpleadoAdmin:list.html.twig';
+                break;
+            default :
+                return parent::getTemplate($name);
+                break;
+        }
+    }
+    
+    
+    
 }

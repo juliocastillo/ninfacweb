@@ -22,11 +22,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class ReportsCatalogosController extends Controller {
      /**
-     * @Route("/reports/catalogos/{path}/{name}/{format}/", name="reports_catalogos_clientes", options={"expose"=true})
+     * @Route("/repocatalogos/clientes/{path}/{name}/{format}/", name="reports_catalogos_clientes", options={"expose"=true})
      * @Method("GET")
      *
      */
-    public function reportsCatalogosAction($path, $name, $format) {
+    public function repocatalogosClientesAction($path, $name, $format) {
 
         $parameters = array();
         
@@ -39,4 +39,46 @@ class ReportsCatalogosController extends Controller {
         $jasperReport->setReportParams($parameters);
         return $jasperReport->buildReport();
     }
+
+     /**
+     * @Route("/repocatalogos/empleados/{path}/{name}/{format}/", name="repocatalogos_empleados", options={"expose"=true})
+     * @Method("GET")
+     *
+     */
+    public function repocatalogosEmpleadosAction($path, $name, $format) {
+
+        $parameters = array();
+        
+        $path = urldecode("%2F".$path."%2F");
+        $request = $this->getRequest();
+        $jasperReport = $this->container->get('jasper.build.reports');
+        $jasperReport->setReportName($name);
+        $jasperReport->setReportFormat(strtoupper($format));
+        $jasperReport->setReportPath(urldecode($path));
+        $jasperReport->setReportParams($parameters);
+        return $jasperReport->buildReport();
+    }
+    
+
+     /**
+     * @Route("/repocatalogos/productos/{path}/{name}/{format}/", name="repocatalogos_productos", options={"expose"=true})
+     * @Method("GET")
+     *
+     */
+    public function repocatalogosProductosAction($path, $name, $format) {
+
+        $parameters = array();
+        
+        $path = urldecode("%2F".$path."%2F");
+        $request = $this->getRequest();
+        $jasperReport = $this->container->get('jasper.build.reports');
+        $jasperReport->setReportName($name);
+        $jasperReport->setReportFormat(strtoupper($format));
+        $jasperReport->setReportPath(urldecode($path));
+        $jasperReport->setReportParams($parameters);
+        return $jasperReport->buildReport();
+    }
+    
+    
+    
 }

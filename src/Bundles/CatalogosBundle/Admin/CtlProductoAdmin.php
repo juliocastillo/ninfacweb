@@ -164,5 +164,14 @@ class CtlProductoAdmin extends Admin
         $val->setDateMod(new \DateTime());
     }
     
-    
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'list':
+                return 'BundlesCatalogosBundle:CtlProductoAdmin:list.html.twig';
+                break;
+            default :
+                return parent::getTemplate($name);
+                break;
+        }
+    }
 }

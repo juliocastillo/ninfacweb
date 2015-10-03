@@ -1,43 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-10-03T14:57:51 -->
+<!-- 2015-10-03T15:31:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_listado_clientes" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="107ccceb-01f0-443c-b345-48e5c17055d4">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DA_Ninfac"/>
 	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="jasperadmin|Ninfac"/>
-	<property name="ireport.jasperserver.report.resource" value="/reportes_ninfac/rpt_listado_clientes_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/reportes_ninfac/rpt_listado_clientes"/>
+	<property name="ireport.jasperserver.report.resource" value="/reportes_ninfac/rpt_listado_productos_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/reportes_ninfac/rpt_listado_productos"/>
 	<queryString>
-		<![CDATA[SELECT * FROM ctl_cliente]]>
+		<![CDATA[SELECT * FROM ctl_producto]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>
-	<field name="nombre_comercial" class="java.lang.String"/>
-	<field name="giro" class="java.lang.String"/>
-	<field name="nit" class="java.lang.String"/>
-	<field name="nrc" class="java.lang.String"/>
-	<field name="direccion" class="java.lang.String"/>
-	<field name="telefono" class="java.lang.String"/>
-	<field name="activo" class="java.lang.Boolean"/>
-	<field name="id_departamento" class="java.lang.Integer"/>
-	<field name="id_municipio" class="java.lang.Integer"/>
-	<field name="date_add" class="java.sql.Date"/>
-	<field name="id_user_mod" class="java.lang.Integer"/>
+	<field name="presentacion" class="java.lang.String"/>
+	<field name="id_categoria" class="java.lang.Integer"/>
 	<field name="id_user_add" class="java.lang.Integer"/>
+	<field name="id_user_mod" class="java.lang.Integer"/>
+	<field name="date_add" class="java.sql.Date"/>
 	<field name="date_mod" class="java.sql.Date"/>
-	<field name="email" class="java.lang.String"/>
-	<field name="exento" class="java.lang.Boolean"/>
-	<field name="id_zona" class="java.lang.Integer"/>
+	<field name="id_unidad" class="java.lang.Integer"/>
+	<field name="existencia" class="java.math.BigDecimal"/>
+	<field name="existencia_maxima" class="java.math.BigDecimal"/>
+	<field name="existencia_minima" class="java.math.BigDecimal"/>
+	<field name="precio_costo" class="java.math.BigDecimal"/>
+	<field name="precio_venta" class="java.math.BigDecimal"/>
+	<field name="reservado" class="java.math.BigDecimal"/>
 	<field name="codigo" class="java.lang.String"/>
-	<field name="agente_retencion" class="java.lang.Boolean"/>
-	<field name="id_tipo_cliente" class="java.lang.Integer"/>
-	<field name="estado" class="java.lang.String"/>
-	<group name="id_departamento">
-		<groupExpression><![CDATA[$F{id_departamento}]]></groupExpression>
-	</group>
-	<group name="id_tipo_cliente">
-		<groupExpression><![CDATA[$F{id_tipo_cliente}]]></groupExpression>
+	<field name="activo" class="java.lang.Boolean"/>
+	<field name="id_marca" class="java.lang.Integer"/>
+	<group name="id_categoria">
+		<groupExpression><![CDATA[$F{id_categoria}]]></groupExpression>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -49,7 +42,7 @@
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Listado Clientes]]></text>
+				<text><![CDATA[Listado Productos]]></text>
 			</staticText>
 			<textField pattern="dd/mm/yyyy">
 				<reportElement x="634" y="8" width="100" height="30" uuid="0a9ecdad-62ce-4cd6-bd7e-d79fce2aa082"/>
@@ -63,36 +56,44 @@
 	<columnHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="11" y="0" width="100" height="30" uuid="d4ec8d47-0e8e-4857-a0d8-65e1f1614aa6"/>
+				<reportElement x="13" y="0" width="100" height="30" uuid="651b9713-b9ef-46f9-999b-aed23b30f4a8"/>
 				<text><![CDATA[codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="146" y="0" width="100" height="30" uuid="95cb25c3-8ed2-4ef0-88e8-b93e21f8cd3e"/>
+				<reportElement x="127" y="0" width="100" height="30" uuid="b95ae462-b92a-4f92-ae4b-68c07efaa954"/>
 				<text><![CDATA[nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="0" width="100" height="30" uuid="6740faba-7493-47a2-accb-c0834380b425"/>
-				<text><![CDATA[nit]]></text>
+				<reportElement x="410" y="2" width="100" height="30" uuid="e29c9662-db07-49be-af7a-983e697d909a"/>
+				<text><![CDATA[presentacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="572" y="2" width="100" height="30" uuid="016746b1-caf7-470c-afae-48ea852cfcab"/>
+				<text><![CDATA[id_marca]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
-			<textField>
-				<reportElement x="20" y="0" width="100" height="20" uuid="70655f76-d66a-4ce8-a967-5459e7a3786b"/>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="155" y="0" width="174" height="20" uuid="22146741-5e9a-41cc-91eb-8e640cef95e9"/>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="379" y="0" width="100" height="20" uuid="ace5d6a4-be1b-469b-b096-1d51701baa0f"/>
-				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
-			</textField>
+		<band height="35" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="-1" width="750" height="1" uuid="7f41504b-89c6-4845-9693-1e62fb427969"/>
 			</line>
+			<textField>
+				<reportElement x="11" y="-1" width="100" height="30" uuid="10152b5b-3903-4d6d-841b-e5dd12ddf9e0"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="127" y="0" width="273" height="30" uuid="92043c63-d915-4f95-bcf0-13a1daa0c130"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="-1" width="100" height="30" uuid="99cf3c33-69d6-47f4-9000-1e66754d1e21"/>
+				<textFieldExpression><![CDATA[$F{presentacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="564" y="0" width="100" height="30" uuid="878e7d9d-3a94-4496-9897-3b8d8d0ff354"/>
+				<textFieldExpression><![CDATA[$F{id_marca}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
