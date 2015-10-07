@@ -122,9 +122,9 @@ class CxcCobroReporteAdmin extends Admin
                 $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
                 $id = $entity->getId();
                 if ($id)  // cuando se edite el registro
-                    return 'BundlesCxcBundle:CxcCobroReporteAdmin:edit.html.twig';
+                    return 'BundlesCxcBundle:CRUD/CxcCobroReporteAdmin:edit.html.twig';
                 else
-                    return 'BundlesCxcBundle:CxcCobroReporteAdmin:create.html.twig';
+                    return 'BundlesCxcBundle:CRUD/CxcCobroReporteAdmin:create.html.twig';
                 break;
 //            case 'show':
 //                return 'MinsalCatalogosBundle:CtlDiagnosticoHistopatologicoAdmin:show.html.twig';

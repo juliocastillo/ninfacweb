@@ -65,7 +65,7 @@ class CxcCobroAdmin extends Admin
     {
         $empleado = new \Bundles\CatalogosBundle\Entity\CtlEmpleado;
         $banco = new \Bundles\CatalogosBundle\Entity\CtlBanco;
-        $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.idCargofuncional=1');
+        $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.autorizarCobro=TRUE');
         $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
         
         $formMapper

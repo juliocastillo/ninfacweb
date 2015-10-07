@@ -33,6 +33,20 @@ class CfgFormatoDocumento
      */
     private $idPlantilla;
 
+    /**
+     * @var \CtlTipofactura
+     *
+     * @ORM\ManyToOne(targetEntity="CtlTipofactura")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipofactura", referencedColumnName="id")
+     * })
+     */
+    private $idTipofactura;
+
+    
+    
+    
+    
     
      /**
      * @var \CtlFontName
@@ -1145,6 +1159,34 @@ class CfgFormatoDocumento
     {
         return $this->detalleXCol6;
     }
+    
+    
+     /**
+     * Set idTipofactura
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura
+     * @return CfgFormatoDocumento
+     */
+    public function setIdTipofactura(\Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura = null)
+    {
+        $this->idTipofactura = $idTipofactura;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipofactura
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlTipofactura
+     */
+    public function getIdTipofactura()
+    {
+        return $this->idTipofactura;
+    }
+    
+       
+    
+    
     
     public function __toString() {
         return $this->nombre;

@@ -32,6 +32,8 @@ class CtlEmpleadoAdmin extends Admin
         $listMapper
             ->add('nombres')
             ->add('apellidos')
+            ->add('autorizarCobro',NULL,array('editable'=>TRUE))
+            ->add('autorizarVenta',NULL,array('editable'=>TRUE))
             ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -75,6 +77,8 @@ class CtlEmpleadoAdmin extends Admin
                         'class' => 'bootstrap-datepicker',
                         'style' => 'width:300px', 'maxlength' => '25'
                     )))
+            ->add('autorizarCobro', null, array('label' => 'Autorizado para realizar cobros', 'required' => FALSE))
+            ->add('autorizarVenta', null, array('label' => 'Autorizado para realizar ventas', 'required' => FALSE))
             ->add('activo')
             ->add('fechaRetiro', null, array(
                     'label' => 'Fecha de retiro de la empresa',

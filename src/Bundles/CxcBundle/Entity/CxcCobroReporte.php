@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * CxcCobroReporte
  *
  * @ORM\Table(name="cxc_cobro_reporte", uniqueConstraints={@ORM\UniqueConstraint(name="uk_cobro_reporte", columns={"fecha"})}, indexes={@ORM\Index(name="IDX_E3B9DC50890253C7", columns={"id_empleado"})})
+ * @ORM\Entity(repositoryClass="Bundles\CxcBundle\Repository\CxcCobroReporteRepository") 
 * @UniqueEntity(
  *     fields={"fecha"},
  *     message="Ya existe ya hay un informe en esta fecha"

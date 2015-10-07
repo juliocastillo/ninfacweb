@@ -1,0 +1,18 @@
+{# funcion de jQuery para crear el boton de imprimir #}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#print_to_pdf').on("click", function () {
+            var tipo = "";
+            var parameters = [];
+            var winParams = [];
+            winParams['method'] = "get";
+            winParams['action'] = "{{ url('imprimir_auxiliar_producto',{'id':admin.id(object)}) }}";
+            winParams['target'] = "Impresion Cobros diarios";
+            winParams['parameters'] = parameters;
+            openPostPopUpWindows(winParams);
+        });
+    });
+</script> 
+
+<a class="btn btn-success" id="print_to_pdf"  role="button" title="Imprimir">
+            <i class="fa fa-tachometer"></i> Kardex </a>

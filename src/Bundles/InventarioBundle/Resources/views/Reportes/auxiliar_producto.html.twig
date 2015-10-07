@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        <style type="text/css">
+
+            html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
+            div .table-responsive {overflow: visible !important; border-style: none !important}
+
+            .panel{ margin: 8px;}
+            .panel-info > .panel-heading,.titulo_vista {
+                background-color: white;
+                font-size: 12px;
+                border-color: black;
+                color: black;
+                font-weight: bold;
+                border-style: none !important;
+                padding: 2px 5px;
+            }
+            table{font-size: 10px!important;}
+            .panel-body, .vista_paciente{font-size: 10px; border-style: none !important;}
+            td,th {padding: 2px 5px;}
+            .panel-info{border-color:black}
+            table {width: 100%}
+
+        </style>
+    </head>
+    <body>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte Auxiliar de producto</td>
+            </tr>
+           
+            <tr>
+                <td colspan="2">PRODUCTO:  {{ producto.nombre }}</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td>FECHA</td>
+                <td>DOCUMENTO</td>
+                <td>TIPO.MOV</td>
+                <td colspan="3" align="center">ENTRADA</td>
+                <td colspan="3" align="center">SALIDA</td>
+                <td colspan="3" align="center">SALDO</td>
+            </tr>
+            <tr>
+                <td>FECHA</td>
+                <td>DOCUMENTO</td>
+                <td>TIPO.MOV</td>
+                <td>CANT</td>
+                <td>PREC</td>
+                <td>IMPORTE</td>
+                <td>CANT</td>
+                <td>PREC</td>
+                <td>IMPORTE</td>
+                <td>CANT</td>
+                <td>PREC</td>
+                <td>IMPORTE</td>
+            </tr>
+            {% set costo = 0 %}
+            {% set saldo_unidades = 0 %}
+            {% set saldo_importe = 0 %}
+            {% for mov in movimientos %}
+                {% set saldo_unidades = saldo_unidades + mov.cantidad_entrada - mov.cantidad_salida %}
+                {% set saldo_importe = saldo_importe + (mov.cantidad_entrada * mov.precio_entrada) %}
+                {% if mov.tipo_movimiento == 'Entrada' %}
+                    {% set costo = saldo_importe/saldo_unidades %}
+                {% endif %}
+                {% set entrada_importe = mov.cantidad_entrada * mov.precio_entrada %}
+                {% set salida_importe = mov.cantidad_salida * costo %}
+                {% set saldo_importe = saldo_unidades * costo %}
+                <tr>
+                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td>{{ mov.documento }}</td>
+                    <td>{{ mov.tipo_movimiento }}</td>
+                    <td>{{ mov.cantidad_entrada }}</td>
+                    <td>{{ mov.precio_entrada | number_format(2, '.', ',')}}</td>
+                    <td>{{ entrada_importe | number_format(2, '.', ',')}}</td>
+                    <td>{{ mov.cantidad_salida  | number_format(0, '.', ',') }}</td>
+                    <td>{{ costo  | number_format(2, '.', ',') }}</td>
+                    <td>{{ salida_importe  | number_format(2, '.', ',') }}</td>
+                    <td>{{ saldo_unidades }}</td>
+                    <td>{{ costo  | number_format(2, '.', ',') }}</td>
+                    <td>{{ saldo_importe  | number_format(2, '.', ',')}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

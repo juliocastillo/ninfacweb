@@ -8,3 +8,12 @@ shtumi_useful :
             no_result_msg: 'No hay municipios encontrados'
             order_property: nombre
             order_direction: ASC
+
+        formato_por_tipofactura:
+            class: BundlesCatalogosBundle:CfgFormatoDocumento
+            parent_property: idTipofactura
+            property: nombre
+            role: ROLE_USER
+            no_result_msg: 'No hay plantillas asignadas'
+            order_property: nombre
+            order_direction: ASC

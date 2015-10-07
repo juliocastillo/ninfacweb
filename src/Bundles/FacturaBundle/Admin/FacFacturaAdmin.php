@@ -73,17 +73,31 @@ class FacFacturaAdmin extends Admin {
         $formMapper
                 ->tab('DATOS GENERALES')
                 ->with('')
-                ->add('idFormatoDocumento', NULL, array(
-                    'label' => 'Formato de la Factura',
-                    'attr' => array(
-                        'style' => 'width:600px'
-                    ),))
-                ->add('idTipofactura', NULL, array(
-                    'label' => 'Tipo de factura',
-                    'empty_value' => '...Seleccione...',
-                    'attr' => array(
-                        'style' => 'width:300px'
-                    ),))
+            ->add('idTipofactura','entity', array(
+                      'class'=>'BundlesCatalogosBundle:CtlTipofactura',
+                      'label'=>'Tipo de factura',
+                      'attr' => array('style'=>'width:300px'),))
+
+            ->add('idFormatoDocumento', 'shtumi_dependent_filtered_entity', array(
+                      'label'=>'Formato de la Factura',
+                      'attr' => array('style'=>'width:500px'),
+                      'entity_alias' => 'formato_por_tipofactura',
+                      'empty_value'=> '...Seleccionar...',
+                      'parent_field'=>'idTipofactura'))                
+                
+                
+                
+//                ->add('idTipofactura', NULL, array(
+//                    'label' => 'Tipo de factura',
+//                    'empty_value' => '...Seleccione...',
+//                    'attr' => array(
+//                        'style' => 'width:300px'
+//                    ),))
+//                ->add('idFormatoDocumento', NULL, array(
+//                    'label' => 'Formato de la Factura',
+//                    'attr' => array(
+//                        'style' => 'width:600px'
+//                    ),))
                 ->add('numero', null, array(
                     'label' => 'Numero de factura',
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),

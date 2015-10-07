@@ -1,64 +1,79 @@
 BEGIN;
 
-
--- CREATE FIELD "estado" ---------------------------------------
-ALTER TABLE "public"."cxc_cobro" ADD COLUMN "estado" Character Varying( 10 );
--- -------------------------------------------------------------;
-
-COMMIT;
-
-
-BEGIN;
-
-
--- CREATE TABLE "cxc_cobro_reporte" ----------------------------
-CREATE TABLE "public"."cxc_cobro_reporte" ( 
-	"abonos" Numeric( 10, 2 ) NOT NULL, 
-	"estado" Character Varying( 2044 ) NOT NULL, 
-	"fecha" Date NOT NULL, 
-	"id" Serial NOT NULL, 
-	"id_empleado" Integer NOT NULL, 
-	"total_credito" Numeric( 10, 2 ) NOT NULL, 
-	"ventas" Numeric( 10, 2 ) NOT NULL,
- PRIMARY KEY ( "id" )
- );
--- Set comments for fields
-COMMENT ON COLUMN "public"."cxc_cobro_reporte"."abonos" IS 'cantidad recuperada por cobradores';COMMENT ON COLUMN "public"."cxc_cobro_reporte"."estado" IS 'almacena el estado PAGADO al finalizar el informe y procesarlo';COMMENT ON COLUMN "public"."cxc_cobro_reporte"."fecha" IS 'fecha de elaboracion del informe';COMMENT ON COLUMN "public"."cxc_cobro_reporte"."id_empleado" IS 'fk - ctl_empleado almacena el responsable de generar y validar el informe';COMMENT ON COLUMN "public"."cxc_cobro_reporte"."total_credito" IS 'almacena total de ingresos por cuentas por cobrar y ventas al contado';COMMENT ON COLUMN "public"."cxc_cobro_reporte"."ventas" IS 'suma total venta con facturas al contado';
--- -------------------------------------------------------------;
-
-COMMIT;
-
-
-BEGIN;
-
-
--- CREATE LINK "lnk_ctl_empleado_cxc_cobro_reporte" ------------
-ALTER TABLE "public"."cxc_cobro_reporte"   ADD CONSTRAINT "lnk_ctl_empleado_cxc_cobro_reporte"   FOREIGN KEY ( "id_empleado"	) REFERENCES   "public"."ctl_empleado"  ( "id" ) MATCH FULL ON DELETE Cascade ON UPDATE Cascade;
--- -------------------------------------------------------------;
-
-COMMIT;
-
-
-
-BEGIN;
-
-
--- CHANGE "LENGTH" OF "FIELD "estado" --------------------------
-ALTER TABLE "public"."cxc_cobro_reporte" ALTER COLUMN "estado" TYPE Character Varying( 10 ) COLLATE "pg_catalog"."default";
--- -------------------------------------------------------------;
-
-COMMIT;
-
-
-BEGIN;
-
-
--- CHANGE "UNIQUE" OF "FIELD "fecha" ---------------------------
--- Will be changed by uniques;
+-- CREATE FIELD "autorizar_cobro" ------------------------------
+ALTER TABLE "public"."ctl_empleado" ADD COLUMN "autorizar_cobro" Boolean;
 -- -------------------------------------------------------------
 
--- CREATE UNIQUE "unique_fecha" --------------------------------
-ALTER TABLE "public"."cxc_cobro_reporte" ADD CONSTRAINT "unique_fecha" UNIQUE( "fecha" );
--- -------------------------------------------------------------;
+-- CREATE FIELD "autorizar_venta" ------------------------------
+ALTER TABLE "public"."ctl_empleado" ADD COLUMN "autorizar_venta" Boolean;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+BEGIN;
+
+-- CREATE FIELD "id_tipofactura" -------------------------------
+ALTER TABLE "public"."cfg_formato_documento" ADD COLUMN "id_tipofactura" Integer;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+
+BEGIN;
+
+-- CREATE LINK "lnk_ctl_tipofactura_cfg_formato_documento" -----
+ALTER TABLE "cfg_formato_documento"
+	ADD CONSTRAINT "lnk_ctl_tipofactura_cfg_formato_documento" FOREIGN KEY ( "id_tipofactura" )
+	REFERENCES "ctl_tipofactura" ( "id" ) MATCH FULL
+	ON DELETE Cascade
+	ON UPDATE Cascade;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+
+-- despues de rellenar el id del tipo de documento
+  
+
+BEGIN;
+
+-- CREATE FIELD "codigo" ---------------------------------------
+ALTER TABLE "public"."ctl_empleado" ADD COLUMN "codigo" Character Varying( 25 ) COLLATE "pg_catalog"."default";
+-- -------------------------------------------------------------
+
+-- CREATE INDEX "index_codigo" ---------------------------------
+CREATE INDEX "index_codigo" ON "public"."ctl_empleado" USING btree( "codigo" );
+-- -------------------------------------------------------------
+
+-- CREATE UNIQUE "unique_codigo" -------------------------------
+ALTER TABLE "public"."ctl_empleado" ADD CONSTRAINT "unique_codigo" UNIQUE( "codigo" );
+-- -------------------------------------------------------------
+
+COMMIT;
+  
+
+  
+  
+  
+BEGIN;
+
+-- CHANGE "INDEXED" OF "FIELD "nombres" ------------------------
+-- Will be changed by indexes
+-- -------------------------------------------------------------
+
+-- CHANGE "INDEXED" OF "FIELD "apellidos" ----------------------
+-- Will be changed by indexes
+-- -------------------------------------------------------------
+
+-- CREATE INDEX "index_nombres" --------------------------------
+CREATE INDEX "index_nombres" ON "public"."ctl_empleado" USING btree( "nombres" );
+-- -------------------------------------------------------------
+
+-- CREATE INDEX "index_apellidos" ------------------------------
+CREATE INDEX "index_apellidos" ON "public"."ctl_empleado" USING btree( "apellidos" );
+-- -------------------------------------------------------------
 
 COMMIT;

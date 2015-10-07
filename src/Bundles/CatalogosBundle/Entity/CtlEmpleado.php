@@ -37,6 +37,22 @@ class CtlEmpleado
     private $activo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="autorizar_cobro", type="boolean", nullable=true)
+     */
+    private $autorizarCobro;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="autorizar_venta", type="boolean", nullable=true)
+     */
+    private $autorizarVenta;
+    
+    
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string", length=50, nullable=false)
@@ -153,6 +169,7 @@ class CtlEmpleado
         return $this;
     }
 
+
     /**
      * Get activo
      *
@@ -161,8 +178,59 @@ class CtlEmpleado
     public function getActivo()
     {
         return $this->activo;
+    }    
+    
+    
+    /**
+     * Get autorizarCobro
+     *
+     * @return boolean 
+     */
+    public function getAutorizarCobro()
+    {
+        return $this->autorizarCobro;
     }
 
+    /**
+     * Set autorizarCobro
+     *
+     * @param boolean $autorizarCobro
+     * @return CtlEmpleado
+     */
+    public function setAutorizarCobro($autorizarCobro)
+    {
+        $this->autorizarCobro = $autorizarCobro;
+
+        return $this;
+    }
+
+    
+    
+    /**
+     * Get autorizarVenta
+     *
+     * @return boolean 
+     */
+    public function getAutorizarVenta()
+    {
+        return $this->autorizarVenta;
+    }
+
+    /**
+     * Set autorizarVenta
+     *
+     * @param boolean $autorizarVenta
+     * @return CtlEmpleado
+     */
+    public function setAutorizarVenta($autorizarVenta)
+    {
+        $this->autorizarVenta = $autorizarVenta;
+
+        return $this;
+    }
+    
+    
+    
     /**
      * Set apellidos
      *
