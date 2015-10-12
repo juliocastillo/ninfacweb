@@ -15,16 +15,6 @@ class InvEntradadetalleAdmin extends Admin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-//        $datagridMapper
-//            ->add('id')
-//            ->add('comentario')
-//            ->add('lote')
-//            ->add('serie')
-//            ->add('modelo')
-//            ->add('cantidad')
-//            ->add('precioUnitario')
-//            ->add('fechaVencimiento')
-//        ;
     }
 
     /**
@@ -32,23 +22,6 @@ class InvEntradadetalleAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-//        $listMapper
-//            ->add('id')
-//            ->add('comentario')
-//            ->add('lote')
-//            ->add('serie')
-//            ->add('modelo')
-//            ->add('cantidad')
-//            ->add('precioUnitario')
-//            ->add('fechaVencimiento')
-//            ->add('_action', 'actions', array(
-//                'actions' => array(
-//                    'show' => array(),
-//                    'edit' => array(),
-//                    'delete' => array(),
-//                )
-//            ))
-//        ;
     }
 
     /**
@@ -65,7 +38,8 @@ class InvEntradadetalleAdmin extends Admin
                     'btn_delete' => 'Limpiar campo',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
-                    'placeholder' => '*****'
+                            'admin_code' => 'bundles_catalogos.admin.ctl_producto',
+                            'placeholder' => '*****'
                     ))
                 ->add('cantidad',null, array(
                     'required'=>FALSE,

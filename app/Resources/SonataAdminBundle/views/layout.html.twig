@@ -3,6 +3,15 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/catalogos/vendors/bootstrap-datepicker/css/bootstrap-.min.css') }}" type="text/css" media="all" />
+    <style type="text/css">
+        ul.menu_level_1.dropdown-menu {
+           background-color: #fff;  
+       }
+
+       ul.menu_level_1.dropdown-menu a {
+           color: #444444 ;
+       }
+    </style>
 {% endblock %}
 
 
@@ -15,15 +24,37 @@
     
 {% endblock %}
 
+{% block logo %}
+    {% spaceless %}
+    <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
+        {% if 'single_image' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+            {# <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}"> #}
+        {% endif %}
+        {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+            <span>{{ admin_pool.title }}</span>
+        {% endif %}
+    </a>
+    {% endspaceless %}
+{% endblock %}
+
+{#quitando la barra de busqueda de sonta admin#}
+{% block sonata_sidebar_search %}
+{% endblock sonata_sidebar_search %}
+    
 
 {% block side_bar_nav %}
-    {{ parent() }}
     {# codigo para activar menu estatico #}
-    {# {{ knp_menu_render('main') }}
+    {# {{ knp_menu_render('main') }} #}
 
     {% block custom_menu %}                                          
        {% set cus_menu = knp_menu_get('BundlesCatalogosBundle:Builder:mainMenu', [], {'admin': admin_pool.dashboardgroups, 'user':app.user}) %}
        {{ knp_menu_render(cus_menu, {'currentClass': 'active', 'template': 'BundlesCatalogosBundle:Menu:knp_menu.html.twig'}) }}
    {% endblock %}
-   #}
+   
+   {#Activar menus de los services #}
+    {{ parent() }}  
+   
+{% endblock %}    
+
+{% block side_bar_after_nav %}
 {% endblock %}    

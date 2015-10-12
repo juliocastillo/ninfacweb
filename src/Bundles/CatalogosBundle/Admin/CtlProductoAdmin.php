@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class CtlProductoAdmin extends Admin
 {
@@ -174,4 +175,11 @@ class CtlProductoAdmin extends Admin
                 break;
         }
     }
+    
+//    public function configureRoutes(RouteCollection $collection) {
+//        $collection->add('imprimir_auxiliar_producto2', $this->getRouterIdParameter().'/imprimir_auxiliar_producto2');
+//    }
+    
+    
+    
 }

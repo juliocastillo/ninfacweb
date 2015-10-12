@@ -4,12 +4,6 @@ namespace Bundles\FacturaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-
-
 /**
  * FacFacturadetalle
  *
@@ -39,11 +33,6 @@ class FacFacturadetalle
      * @var string
      *
      * @ORM\Column(name="cantidad", type="decimal", precision=10, scale=2, nullable=false)
-     * 
-     * @Assert\NotNull()
-     * @Assert\Range(
-     *      min = "0.01",
-     * )
      */
     private $cantidad;
 
@@ -78,25 +67,25 @@ class FacFacturadetalle
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlProducto
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlProducto")
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlProducto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
      * })
      */
     private $idProducto;
 
-     /**
+    /**
      * @var \FacFactura
      *
-     * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facturaDetalle")
+     * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facnotaremisionDetalle")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_factura", referencedColumnName="id")
      * })
      */
     private $idFactura;
-
-
-
+    
+    
+    
     /**
      * Get id
      *

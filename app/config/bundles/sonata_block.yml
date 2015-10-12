@@ -13,5 +13,6 @@ sonata_block:
         sonata.block.service.rss:
         
         # agregar para que buncione la busqueda en el Dashboard
-        sonata.admin.block.search_result:
-            contexts: [admin]
+        #sonata.admin.block.search_result:
+        #    contexts: [admin]
+        

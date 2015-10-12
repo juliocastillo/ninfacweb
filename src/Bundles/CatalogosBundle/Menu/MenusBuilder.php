@@ -31,7 +31,7 @@ class MenusBuilder
 
     public function createMainMenu(Request $request)
     {
-        $menu = $this->factory->createItem('root');
+        //$menu = $this->factory->createItem('root');
 
         $menu->addChild('Reporte')->setUri('#comments');
        

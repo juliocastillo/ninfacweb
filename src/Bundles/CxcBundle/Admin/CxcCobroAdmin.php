@@ -38,8 +38,8 @@ class CxcCobroAdmin extends Admin
                     )))
             ->add('fecha','date',array(
                                 'widget' => 'single_text',
-                                'format' => 'd/m/Y',
-                                'attr' => array('style'=>'width:100px', 'maxlength' => '10'),
+                                'attr' => array('style'=>'width:100px', 'maxlength' => '10',
+                                    'format' => 'Y-m-d'),
                 ))
             
             ->add('monto')

@@ -3,13 +3,17 @@
   <entity name="FacFactura" table="fac_factura">
     <indexes>
       <index name="IDX_60ACA1A52A813255" columns="id_cliente"/>
-      <index name="IDX_60ACA1A538BCA62A" columns="id_condicionpago"/>
-      <index name="IDX_60ACA1A58D737C65" columns="id_tipofactura"/>
       <index name="IDX_60ACA1A546D7FEF9" columns="id_user_add"/>
       <index name="IDX_60ACA1A5AC39DE56" columns="id_user_mod"/>
       <index name="IDX_60ACA1A5890253C7" columns="id_empleado"/>
-      <index name="IDX_60ACA1A56A540E" columns="id_estado"/>
+      <index name="IDX_60ACA1A58FB1E60D" columns="id_notaremision"/>
+      <index name="IDX_60ACA1A5E1FD3B5C" columns="id_formato_documento"/>
+      <index name="IDX_60ACA1A538BCA62A" columns="id_condicionpago"/>
+      <index name="IDX_60ACA1A58D737C65" columns="id_tipofactura"/>
     </indexes>
+    <unique-constraints>
+      <unique-constraint name="uk_tipofactura_numero" columns="numero,id_tipofactura,activo"/>
+    </unique-constraints>
     <id name="id" type="integer" column="id">
       <generator strategy="SEQUENCE"/>
     </id>
@@ -17,30 +21,21 @@
     <field name="fecha" type="date" column="fecha" nullable="false"/>
     <field name="activo" type="boolean" column="activo" nullable="false"/>
     <field name="dateAdd" type="date" column="date_add" nullable="false"/>
-    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
-    <field name="iva" type="decimal" column="iva" precision="10" scale="2" nullable="false"/>
-    <field name="ivaRetenido" type="decimal" column="iva_retenido" precision="10" scale="2" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="true"/>
+    <field name="iva" type="decimal" column="iva" precision="10" scale="2" nullable="true"/>
+    <field name="ivaRetenido" type="decimal" column="iva_retenido" precision="10" scale="2" nullable="true"/>
     <field name="subtotal" type="decimal" column="subtotal" precision="10" scale="2" nullable="false"/>
     <field name="ventaTotal" type="decimal" column="venta_total" precision="10" scale="2" nullable="false"/>
-    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="false"/>
-    <many-to-one field="idEmpleado" target-entity="CtlEmpleado">
+    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="true"/>
+    <field name="estado" type="string" column="estado" length="10" nullable="true"/>
+    <field name="sumas" type="decimal" column="sumas" precision="10" scale="2" nullable="false"/>
+    <field name="cobroTotal" type="decimal" column="cobro_total" precision="10" scale="2" nullable="true"/>
+    <field name="fechaPago" type="date" column="fecha_pago" nullable="true"/>
+    <field name="ventasNosujetas" type="decimal" column="ventas_nosujetas" precision="10" scale="2" nullable="true"/>
+    <field name="ventasExentas" type="decimal" column="ventas_exentas" precision="10" scale="2" nullable="true"/>
+    <many-to-one field="idFormatoDocumento" target-entity="CfgFormatoDocumento">
       <join-columns>
-        <join-column name="id_empleado" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="idEstado" target-entity="CtlEstado">
-      <join-columns>
-        <join-column name="id_estado" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="idUserMod" target-entity="FosUserUser">
-      <join-columns>
-        <join-column name="id_user_mod" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="idUserAdd" target-entity="FosUserUser">
-      <join-columns>
-        <join-column name="id_user_add" referenced-column-name="id"/>
+        <join-column name="id_formato_documento" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
     <many-to-one field="idCondicionpago" target-entity="CtlCondicionpago">
@@ -51,6 +46,26 @@
     <many-to-one field="idTipofactura" target-entity="CtlTipofactura">
       <join-columns>
         <join-column name="id_tipofactura" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idNotaremision" target-entity="FacNotaremision">
+      <join-columns>
+        <join-column name="id_notaremision" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEmpleado" target-entity="CtlEmpleado">
+      <join-columns>
+        <join-column name="id_empleado" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserAdd" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_add" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUserMod" target-entity="FosUserUser">
+      <join-columns>
+        <join-column name="id_user_mod" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
     <many-to-one field="idCliente" target-entity="CtlCliente">

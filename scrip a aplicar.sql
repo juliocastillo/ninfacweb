@@ -77,3 +77,32 @@ CREATE INDEX "index_apellidos" ON "public"."ctl_empleado" USING btree( "apellido
 -- -------------------------------------------------------------
 
 COMMIT;
+
+
+
+
+BEGIN;
+
+-- CREATE LINK "lnk_ctl_condicionpago_fac_factura" -------------
+ALTER TABLE "fac_factura"
+	ADD CONSTRAINT "lnk_ctl_condicionpago_fac_factura" FOREIGN KEY ( "id_condicionpago" )
+	REFERENCES "ctl_condicionpago" ( "id" ) MATCH FULL
+	ON DELETE Cascade
+	ON UPDATE Cascade;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+
+BEGIN;
+
+-- CREATE LINK "lnk_ctl_tipofactura_fac_factura" ---------------
+ALTER TABLE "fac_factura"
+	ADD CONSTRAINT "lnk_ctl_tipofactura_fac_factura" FOREIGN KEY ( "id_tipofactura" )
+	REFERENCES "ctl_tipofactura" ( "id" ) MATCH FULL
+	ON DELETE Cascade
+	ON UPDATE Cascade;
+-- -------------------------------------------------------------
+
+COMMIT;

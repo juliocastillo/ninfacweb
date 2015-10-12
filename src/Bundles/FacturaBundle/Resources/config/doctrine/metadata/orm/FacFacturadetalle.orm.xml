@@ -8,12 +8,12 @@
     <id name="id" type="integer" column="id">
       <generator strategy="SEQUENCE"/>
     </id>
-    <field name="descripcion" type="string" column="descripcion" length="2044" nullable="false"/>
+    <field name="descripcion" type="string" column="descripcion" length="2044" nullable="true"/>
     <field name="cantidad" type="decimal" column="cantidad" precision="10" scale="2" nullable="false"/>
     <field name="precioUnitario" type="decimal" column="precio_unitario" precision="10" scale="2" nullable="false"/>
-    <field name="ventasExentas" type="decimal" column="ventas_exentas" precision="10" scale="2" nullable="false"/>
-    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="false"/>
-    <field name="ventasNosujetas" type="decimal" column="ventas_nosujetas" precision="10" scale="2" nullable="false"/>
+    <field name="ventasExentas" type="decimal" column="ventas_exentas" precision="10" scale="2" nullable="true"/>
+    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="true"/>
+    <field name="ventasNosujetas" type="decimal" column="ventas_nosujetas" precision="10" scale="2" nullable="true"/>
     <many-to-one field="idFactura" target-entity="FacFactura">
       <join-columns>
         <join-column name="id_factura" referenced-column-name="id"/>

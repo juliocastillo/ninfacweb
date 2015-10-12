@@ -1,0 +1,61 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b>PRODUCTO:</b> 
+            <select id="productoseleccionado" name="id" required="required">
+                <option value="" selected="{{ id }}">...Seleccione...</option>
+                {% for producto in productos %}
+                    {% if id == producto.id %}
+                        <option value="{{ producto.id }}" selected="{{ id }}">{{ producto.nombre }}</option>
+                    {% else %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 50%; margin: 10px">
+                <tr>
+                    <td>Rango de fecha:</td>
+                    <td>desde</td>
+                    <td>
+                            <input class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:100px" required="required" name="fini">
+                        </td>
+                    <td>hasta</td>
+                    <td>
+                            <input  class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:100px" required="required" name="ffin">
+                    </td>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Filtrar"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requetvalid == TRUE %}
+            {% include 'BundlesInventarioBundle:Reportes:resultado_auxiliar_producto.html.twig' %}
+        {% endif %}
+        </div>
+{% endblock %}

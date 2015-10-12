@@ -40,7 +40,8 @@ class InvAuxiliarProductoAdmin extends Admin
             ->add('activo')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'imprimir' => array('template' => 'BundlesInventarioBundle::template_kardex_link.html.twig'),
+                    'view'=> array(),
+                    'imprimir' => array('template' => 'BundlesInventarioBundle::template_kardex_link.html.twig')
                     )))
         ;
     }
@@ -52,19 +53,23 @@ class InvAuxiliarProductoAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('codigo')
             ->add('nombre')
             ->add('presentacion')
-            ->add('dateAdd')
-            ->add('dateMod')
-            ->add('existencia')
-            ->add('existenciaMaxima')
-            ->add('existenciaMinima')
-            ->add('precioCosto')
-            ->add('precioVenta')
-            ->add('reservado')
-            ->add('codigo')
-            ->add('activo')
         ;
     }
+
+    
+//    public function getTemplates($name) {
+//        switch ($name) {
+//            case 'show':
+//                return 'BundlesInventarioBundle:CRUD:InvEntrada/edit.html.twig';
+//                break;
+//            default:
+//                return parent::getTemplate($name);
+//                break;
+//        }
+//    }
+    
+    
 }

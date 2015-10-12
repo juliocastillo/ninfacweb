@@ -1,9 +1,4 @@
 services:
-#    bundles_catalogos.admin.ctl_cliente:
-#        class: Bundles\CatalogosBundle\Admin\CtlClienteAdmin
-#        arguments: [~, Bundles\CatalogosBundle\Entity\CtlCliente, SonataAdminBundle:CRUD]
-#        tags:
-#            - {name: sonata.admin, manager_type: orm, group: admin, label: CtlCliente}
     bundles_catalogos.admin.ctl_cliente:
         class: Bundles\CatalogosBundle\Admin\CtlClienteAdmin
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlCliente, SonataAdminBundle:CRUD]

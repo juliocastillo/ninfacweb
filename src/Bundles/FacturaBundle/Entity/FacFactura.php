@@ -11,9 +11,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * FacFactura
  *
- * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero","tipoFactura"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A56A540E", columns={"id_estado"})})
- * @ORM\Entity(repositoryClass="Bundles\FacturaBundle\Repository\FacFacturaRepository")
- * @UniqueEntity(
+ * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero", "id_tipofactura", "activo"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A58FB1E60D", columns={"id_notaremision"}), @ORM\Index(name="IDX_60ACA1A5E1FD3B5C", columns={"id_formato_documento"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"})})
+ * @ORM\Entity
+  * @UniqueEntity(
  *     fields={"numero", "idTipofactura"},
  *     message="Ya existe este numero de factura"
  *  )
@@ -34,8 +34,6 @@ class FacFactura
      * @var integer
      *
      * @ORM\Column(name="numero", type="integer", nullable=false)
-     * @Assert\NotNull()
-     * @Assert\Range(min="1")
      */
     private $numero;
 
@@ -43,14 +41,13 @@ class FacFactura
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="date", nullable=false)
-     * @Assert\NotNull()
      */
     private $fecha;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     * @ORM\Column(name="activo", type="boolean", nullable=false)
      */
     private $activo;
 
@@ -85,25 +82,17 @@ class FacFactura
     /**
      * @var string
      *
-     * @ORM\Column(name="subtotal", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="subtotal", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $subtotal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="venta_total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="venta_total", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $ventaTotal;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sumas", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $sumas;
-    
-    
     /**
      * @var string
      *
@@ -111,68 +100,57 @@ class FacFactura
      */
     private $ventasGravadas;
 
-    
-     /**
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=10, nullable=true)
+     */
+    private $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sumas", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    private $sumas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cobro_total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $cobroTotal;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_pago", type="date", nullable=true)
+     */
+    private $fechaPago;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="ventas_nosujetas", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $ventasNosujetas;
-    
-    
-     /**
+
+    /**
      * @var string
      *
      * @ORM\Column(name="ventas_exentas", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $ventasExentas;
-    
-    
+
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlCliente
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlCliente")
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlCliente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_cliente", referencedColumnName="id")
      * })
-     * @Assert\NotNull()
      */
     private $idCliente;
-
-    
-     /**
-     * @var \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento
-     *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CfgFormatoDocumento")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_formato_documento", referencedColumnName="id")
-     * })
-     * @Assert\NotNull()
-     */
-    private $idFormatoDocumento;
-    
-    
-    /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlCondicionpago
-     *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlCondicionpago")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_condicionpago", referencedColumnName="id")
-     * })
-     * @Assert\NotNull()
-     */
-    private $idCondicionpago;
-
-    /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlTipofactura
-     *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlTipofactura")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_tipofactura", referencedColumnName="id")
-     * })
-     * @Assert\NotNull()
-     */
-    private $idTipofactura;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\User
@@ -197,46 +175,13 @@ class FacFactura
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlEmpleado
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlEmpleado")
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlEmpleado")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
      * })
-     * @Assert\NotNull()
      */
     private $idEmpleado;
 
-     /**
-     * @var string
-     *
-     * @ORM\Column(name="estado", type="string", length=5, nullable=false)
-     */
-    private $estado;
-
-
-    /**
-     *
-     * @ORM\OneToMany(targetEntity="FacFacturadetalle", mappedBy="idFactura", cascade={"all"}, orphanRemoval=true)
-     *
-     */
-    private $facturaDetalle;    
-    
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cobro_total", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $cobroTotal;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_pago", type="date", nullable=true)
-     * 
-     */
-    private $fechaPago;
-
-    
     /**
      * @var \FacNotaremision
      *
@@ -246,10 +191,47 @@ class FacFactura
      * })
      */
     private $idNotaremision;
+
+    /**
+     * @var \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento
+     *
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CfgFormatoDocumento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_formato_documento", referencedColumnName="id")
+     * })
+     */
+    private $idFormatoDocumento;
+
+    /**
+     * @var \Bundles\CatalogosBundle\Entity\CtlCondicionpago
+     *
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlCondicionpago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_condicionpago", referencedColumnName="id")
+     * })
+     */
+    private $idCondicionpago;
+
+    /**
+     * @var \Bundles\CatalogosBundle\Entity\CtlTipofactura
+     *
+     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlTipofactura")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipofactura", referencedColumnName="id")
+     * })
+     */
+    private $idTipofactura;
     
     
-    
-    
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="FacFacturadetalle", mappedBy="idFactura", cascade={"all"}, orphanRemoval=true)
+     *
+     */
+    private $facturaDetalle;    
+
+
+
     /**
      * Get id
      *
@@ -306,31 +288,6 @@ class FacFactura
         return $this->fecha;
     }
 
-    
-    /**
-     * Set fechaPago
-     *
-     * @param \DateTime $fechaPago
-     * @return FacFactura
-     */
-    public function setFechaPago($fechaPago)
-    {
-        $this->fechaPago = $fechaPago;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaPago
-     *
-     * @return \DateTime 
-     */
-    public function getFechaPago()
-    {
-        return $this->fechaPago;
-    }
-    
-    
     /**
      * Set activo
      *
@@ -514,54 +471,30 @@ class FacFactura
     {
         return $this->ventasGravadas;
     }
-    
-    
+
     /**
-     * Set ventasNosujetas
+     * Set estado
      *
-     * @param string $ventasNosujetas
+     * @param string $estado
      * @return FacFactura
      */
-    public function setVentasNosujetas($ventasNosujetas)
+    public function setEstado($estado)
     {
-        $this->ventasNosujetas = $ventasNosujetas;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get ventasNosujetas
+     * Get estado
      *
      * @return string 
      */
-    public function getVentasNosujetas()
+    public function getEstado()
     {
-        return $this->ventasNosujetas;
-    }    
-    
-    /**
-     * Set ventasExentas
-     *
-     * @param string $ventasExentas
-     * @return FacFactura
-     */
-    public function setVentasExentas($ventasExentas)
-    {
-        $this->ventasExentas = $ventasExentas;
-
-        return $this;
+        return $this->estado;
     }
 
-    /**
-     * Get ventasExentas
-     *
-     * @return string 
-     */
-    public function getVentasExentas()
-    {
-        return $this->ventasExentas;
-    }        
-    
     /**
      * Set sumas
      *
@@ -585,57 +518,97 @@ class FacFactura
         return $this->sumas;
     }
 
-    
-     /**
-     * Set idNotaremision
+    /**
+     * Set cobroTotal
      *
-     * @param \Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision
-     * @return FacNotaremisiondetalle
+     * @param string $cobroTotal
+     * @return FacFactura
      */
-    public function setIdNotaremision(\Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision = null)
+    public function setCobroTotal($cobroTotal)
     {
-        $this->idNotaremision = $idNotaremision;
+        $this->cobroTotal = $cobroTotal;
 
         return $this;
     }
 
     /**
-     * Get idNotaremision
+     * Get cobroTotal
      *
-     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
+     * @return string 
      */
-    public function getIdNotaremision()
+    public function getCobroTotal()
     {
-        return $this->idNotaremision;
+        return $this->cobroTotal;
     }
 
-    
-    
-     /**
-     * Set idFormatoDocumento
+    /**
+     * Set fechaPago
      *
-     * @param \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento
-     * @return FacFormatoDocumento
+     * @param \DateTime $fechaPago
+     * @return FacFactura
      */
-    public function setIdFormatoDocumento(\Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento = null)
+    public function setFechaPago($fechaPago)
     {
-        $this->idFormatoDocumento = $idFormatoDocumento;
+        $this->fechaPago = $fechaPago;
 
         return $this;
     }
 
     /**
-     * Get idFormatoDocumento
+     * Get fechaPago
      *
-     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento 
+     * @return \DateTime 
      */
-    public function getIdFormatoDocumento()
+    public function getFechaPago()
     {
-        return $this->idFormatoDocumento;
+        return $this->fechaPago;
     }
-    
-    
-    
+
+    /**
+     * Set ventasNosujetas
+     *
+     * @param string $ventasNosujetas
+     * @return FacFactura
+     */
+    public function setVentasNosujetas($ventasNosujetas)
+    {
+        $this->ventasNosujetas = $ventasNosujetas;
+
+        return $this;
+    }
+
+    /**
+     * Get ventasNosujetas
+     *
+     * @return string 
+     */
+    public function getVentasNosujetas()
+    {
+        return $this->ventasNosujetas;
+    }
+
+    /**
+     * Set ventasExentas
+     *
+     * @param string $ventasExentas
+     * @return FacFactura
+     */
+    public function setVentasExentas($ventasExentas)
+    {
+        $this->ventasExentas = $ventasExentas;
+
+        return $this;
+    }
+
+    /**
+     * Get ventasExentas
+     *
+     * @return string 
+     */
+    public function getVentasExentas()
+    {
+        return $this->ventasExentas;
+    }
 
     /**
      * Set idCliente
@@ -658,52 +631,6 @@ class FacFactura
     public function getIdCliente()
     {
         return $this->idCliente;
-    }
-
-    /**
-     * Set idCondicionpago
-     *
-     * @param \Bundles\CatalogosBundle\Entity\CtlCondicionpago $idCondicionpago
-     * @return FacFactura
-     */
-    public function setIdCondicionpago(\Bundles\CatalogosBundle\Entity\CtlCondicionpago $idCondicionpago = null)
-    {
-        $this->idCondicionpago = $idCondicionpago;
-
-        return $this;
-    }
-
-    /**
-     * Get idCondicionpago
-     *
-     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago 
-     */
-    public function getIdCondicionpago()
-    {
-        return $this->idCondicionpago;
-    }
-
-    /**
-     * Set idTipofactura
-     *
-     * @param \Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura
-     * @return FacFactura
-     */
-    public function setIdTipofactura(\Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura = null)
-    {
-        $this->idTipofactura = $idTipofactura;
-
-        return $this;
-    }
-
-    /**
-     * Get idTipofactura
-     *
-     * @return \Bundles\CatalogosBundle\Entity\CtlTipofactura 
-     */
-    public function getIdTipofactura()
-    {
-        return $this->idTipofactura;
     }
 
     /**
@@ -776,29 +703,96 @@ class FacFactura
     }
 
     /**
-     * Set estado
+     * Set idNotaremision
      *
-     * @param string $estado
+     * @param \BBundles\FacturaBundle\Entity\FacNotaremision $idNotaremision
      * @return FacFactura
      */
-    public function setEstado($estado)
+    public function setIdNotaremision(\Bundles\FacturaBundle\Entity\FacNotaremision $idNotaremision = null)
     {
-        $this->estado = $estado;
+        $this->idNotaremision = $idNotaremision;
 
         return $this;
     }
 
     /**
-     * Get estado
+     * Get idNotaremision
      *
-     * @return string
+     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
      */
-    public function getEstado()
+    public function getIdNotaremision()
     {
-        return $this->estado;
+        return $this->idNotaremision;
     }
-    
-    
+
+    /**
+     * Set idFormatoDocumento
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento
+     * @return FacFactura
+     */
+    public function setIdFormatoDocumento(\Bundles\CatalogosBundle\Entity\CfgFormatoDocumento $idFormatoDocumento = null)
+    {
+        $this->idFormatoDocumento = $idFormatoDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get idFormatoDocumento
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento 
+     */
+    public function getIdFormatoDocumento()
+    {
+        return $this->idFormatoDocumento;
+    }
+
+    /**
+     * Set idCondicionpago
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlCondicionpago $idCondicionpago
+     * @return FacFactura
+     */
+    public function setIdCondicionpago(\Bundles\CatalogosBundle\Entity\CtlCondicionpago $idCondicionpago = null)
+    {
+        $this->idCondicionpago = $idCondicionpago;
+
+        return $this;
+    }
+
+    /**
+     * Get idCondicionpago
+     *
+     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago 
+     */
+    public function getIdCondicionpago()
+    {
+        return $this->idCondicionpago;
+    }
+
+    /**
+     * Set idTipofactura
+     *
+     * @param \Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura
+     * @return FacFactura
+     */
+    public function setIdTipofactura(\Bundles\CatalogosBundle\Entity\CtlTipofactura $idTipofactura = null)
+    {
+        $this->idTipofactura = $idTipofactura;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipofactura
+     *
+     * @return \Bundles\CatalogosBundle\Entity\Entity\CtlTipofactura 
+     */
+    public function getIdTipofactura()
+    {
+        return $this->idTipofactura;
+    }
     /**
      * Constructor
      */
@@ -810,10 +804,10 @@ class FacFactura
     /**
      * Add facturaDetalle
      *
-     * @param \Bundles\FacturaBundle\Entity\FacFacturaDetalle $facturaDetalle
+     * @param \Bundles\FacturaBundle\Entity\FacFacturadetalle $facturaDetalle
      * @return FacFactura
      */
-    public function addFacturaDetalle(\Bundles\FacturaBundle\Entity\FacFacturaDetalle $facturaDetalle)
+    public function addFacturaDetalle(\Bundles\FacturaBundle\Entity\FacFacturadetalle $facturaDetalle)
     {
         $this->facturaDetalle[] = $facturaDetalle;
 
@@ -823,9 +817,9 @@ class FacFactura
     /**
      * Remove facturaDetalle
      *
-     * @param \Bundles\FacturaBundle\Entity\FacFacturaDetalle $facturaDetalle
+     * @param \Bundles\FacturaBundle\Entity\FacFacturadetalle $facturaDetalle
      */
-    public function removeFacturaDetalle(\Bundles\FacturaBundle\Entity\FacFacturaDetalle $facturaDetalle)
+    public function removeFacturaDetalle(\Bundles\FacturaBundle\Entity\FacFacturadetalle $facturaDetalle)
     {
         $this->facturaDetalle->removeElement($facturaDetalle);
     }
@@ -842,30 +836,6 @@ class FacFactura
     
     public function __toString() {
         return $this->numero .' ' . $this->idTipofactura;
-    }
-    
-    
-    /**
-     * Set cobroTotal
-     *
-     * @param string $cobroTotal
-     * @return FacFactura
-     */
-    public function setCobroTotal($cobroTotal)
-    {
-        $this->cobroTotal = $cobroTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get cobroTotal
-     *
-     * @return string 
-     */
-    public function getCobroTotal()
-    {
-        return $this->cobroTotal;
     }
     
 }

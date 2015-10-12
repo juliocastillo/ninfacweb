@@ -11,8 +11,8 @@ services:
         tags:
             - {name: sonata.admin, manager_type: orm, show_in_dashboard: false}
 
-    bundles_inventario.admin.inv_auxiliar_producto:
-        class: Bundles\InventarioBundle\Admin\InvAuxiliarProductoAdmin
-        arguments: [~, Bundles\CatalogosBundle\Entity\CtlProducto, BundlesInventarioBundle:InvAuxiliarProducto]
-        tags:
-            - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Auxiliar de productos}
+    #bundles_inventario.admin.inv_auxiliar_producto:
+    #    class: Bundles\InventarioBundle\Admin\InvAuxiliarProductoAdmin
+    #    arguments: [~, Bundles\CatalogosBundle\Entity\CtlProducto, BundlesInventarioBundle:InvAuxiliarProducto]
+    #    tags:
+    #        - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Auxiliar de productos}

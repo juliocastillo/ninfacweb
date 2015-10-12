@@ -66,10 +66,12 @@ class FacFacturaAdmin extends Admin {
         ;
     }
 
+
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper) {
+    protected function configureFormFields(FormMapper $formMapper)
+    {
         $formMapper
                 ->tab('DATOS GENERALES')
                 ->with('')
@@ -84,20 +86,7 @@ class FacFacturaAdmin extends Admin {
                       'entity_alias' => 'formato_por_tipofactura',
                       'empty_value'=> '...Seleccionar...',
                       'parent_field'=>'idTipofactura'))                
-                
-                
-                
-//                ->add('idTipofactura', NULL, array(
-//                    'label' => 'Tipo de factura',
-//                    'empty_value' => '...Seleccione...',
-//                    'attr' => array(
-//                        'style' => 'width:300px'
-//                    ),))
-//                ->add('idFormatoDocumento', NULL, array(
-//                    'label' => 'Formato de la Factura',
-//                    'attr' => array(
-//                        'style' => 'width:600px'
-//                    ),))
+
                 ->add('numero', null, array(
                     'label' => 'Numero de factura',
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
@@ -177,33 +166,36 @@ class FacFacturaAdmin extends Admin {
                     'inline' => 'standard'
                 ))                
                 ->end()
-                ->end()
+                ->end()              
         ;
     }
 
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields(ShowMapper $showMapper) {
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
         $showMapper
-                ->add('id')
-                ->add('numero')
-                ->add('fecha')
-                ->add('activo')
-                ->add('dateAdd')
-                ->add('dateMod')
-                ->add('iva')
-                ->add('ivaRetenido')
-                ->add('subtotal')
-                ->add('ventaTotal')
-                ->add('ventasGravadas')
-                ->end()
-                ->with('Elementos del Catalogo')
-                ->add('facturaDetalle', 'sonata_type_collection', array('label' => 'Elemento'), array('edit' => 'inline', 'inline' => 'table'))
-                ->end()
+            ->add('id')
+            ->add('numero')
+            ->add('fecha')
+            ->add('activo')
+            ->add('dateAdd')
+            ->add('dateMod')
+            ->add('iva')
+            ->add('ivaRetenido')
+            ->add('subtotal')
+            ->add('ventaTotal')
+            ->add('ventasGravadas')
+            ->add('estado')
+            ->add('sumas')
+            ->add('cobroTotal')
+            ->add('fechaPago')
+            ->add('ventasNosujetas')
+            ->add('ventasExentas')
         ;
     }
-
+    
     public function prePersist($factura) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
@@ -247,8 +239,8 @@ class FacFacturaAdmin extends Admin {
         
         // dejar la factura creada como activa
         $factura->setActivo(TRUE);
-    }
-
+    }    
+    
     public function preUpdate($factura) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();        
@@ -290,7 +282,7 @@ class FacFacturaAdmin extends Admin {
         }
         
     }
-
+    
     /*
      * permitir cuztomizar las acciones edit, create o show
      */
@@ -298,7 +290,7 @@ class FacFacturaAdmin extends Admin {
     public function getTemplate($name) {
         switch ($name) {
             case 'edit':
-                return 'BundlesFacturaBundle:FacFacturaAdmin:edit.html.twig';
+                return 'BundlesFacturaBundle:CRUD:FacFacturaAdmin/edit.html.twig';
                 break;
 //            case 'show':
 //                return 'MinsalCatalogosBundle:CtlDiagnosticoHistopatologicoAdmin:show.html.twig';
@@ -324,40 +316,22 @@ class FacFacturaAdmin extends Admin {
     }
     
     
+    
     /*
      * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
      */
     public function validate(ErrorElement $errorElement, $factura) {
-        if ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3) { // evaluar si es credito
-            $errorElement->with('fechaPago')
-                    ->assertNotBlank()
-                    ->assertNotNull()
-                    ->end();
-            
-            if ($factura->getFechaPago() < $factura->getFecha($factura)) {
-            $errorElement->with('fechaPago')
-                    ->addViolation('La Fecha de Pago debe ser mayor o igual a la fecha de facturación')
-                    ->end();
-            }
-        }  
-
-//            if (is_null($cobro->getIdBanco($cobro))) {
-//                $errorElement->with('idBanco')
-//                        ->addViolation('El banco es obligatorio')
-//                        ->end();
+//        if ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3) { // evaluar si es credito
+//            $errorElement->with('fechaPago')
+//                    ->assertNotBlank()
+//                    ->assertNotNull()
+//                    ->end();
+//            
+//            if ($factura->getFechaPago() < $factura->getFecha($factura)) {
+//            $errorElement->with('fechaPago')
+//                    ->addViolation('La Fecha de Pago debe ser mayor o igual a la fecha de facturación')
+//                    ->end();
 //            }
-//        } elseif($cobro->getIdFormaPago()->getId()==1) {
-//            if (!is_null($cobro->getNumeroCheque($cobro))) {
-//                $errorElement->with('numeroCheque')
-//                        ->addViolation('Si el pago es efectivo no ingrese número de cheque')
-//                        ->end();
-//            }
-//            if (!is_null($cobro->getIdBanco($cobro))) {
-//                $errorElement->with('idBanco')
-//                        ->addViolation('Si el pago es efectivo no seleccione el banco')
-//                        ->end();
-//            }
-            
+//        }
     }
- 
 }
