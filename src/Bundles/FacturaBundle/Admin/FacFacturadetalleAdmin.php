@@ -52,32 +52,32 @@ class FacFacturadetalleAdmin extends Admin {
      */
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->with('================================================================================================')
                 ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nombre del producto',
                     'btn_add' => FALSE,
-                    'btn_list' => 'Buscar producto',
-                    'btn_delete' => 'Limpiar campo',
+                    'btn_list' => 'Buscar',
+                    'btn_delete' => FALSE,
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
                     'admin_code' => 'bundles_catalogos.admin.ctl_producto',
-                    'placeholder' => '*****'
+                    'placeholder' => ''
                     ))
                 ->add('cantidad', null, array(
                     'required' => FALSE,
-                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
+                    'attr' => array('style' => 'width:50px', 'maxlength' => '25'),
                 ))
-                ->add('descripcion','textarea', array(
-                    'label'=>'Descripción del producto (sólo para formato detalle manual)',
-                    'required' => FALSE,
-                    'attr' => array(
-                        'style'=>'width:500px'
-                        )))
                 ->add('precioUnitario', null, array(
                     'required' => FALSE,
-                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
+                    'label'=>'Precio',
+                    'attr' => array('style' => 'width:75px', 'maxlength' => '25'),
                 ))
-                ->end();
+                ->add('descripcion','textarea', array(
+                    'label'=>'Descripción',
+                    'required' => FALSE,
+                    'attr' => array(
+                        'style'=>'width:400px; display: none;',
+                        'class'=>'addButtonInput'
+                )))
         ;
     }
 
@@ -98,4 +98,24 @@ class FacFacturadetalleAdmin extends Admin {
         ;
     }
 
+    
+        
+    /*
+     * permitir cuztomizar las acciones edit, create o show
+     */
+
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'edit':
+                return 'BundlesFacturaBundle:CRUD:FacFacturadetalleAdmin/edit.html.twig';
+                break;
+//            case 'show':
+//                return 'MinsalCatalogosBundle:CtlDiagnosticoHistopatologicoAdmin:show.html.twig';
+//                break;
+            default:
+                return parent::getTemplate($name);
+                break;
+        }
+    }
+    
 }

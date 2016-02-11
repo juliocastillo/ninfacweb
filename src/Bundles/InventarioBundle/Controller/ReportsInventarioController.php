@@ -136,8 +136,8 @@ class ReportsInventarioController extends Controller {
             $requestvalid = TRUE; 
         } else {
             $id = '';
-            $fini = '';
-            $ffin = '';
+            $fini = Date('Y-m-d');
+            $ffin = Date('Y-m-d');
             $movimientos = "";
             $nombreproducto = "";
             $requestvalid = FALSE;

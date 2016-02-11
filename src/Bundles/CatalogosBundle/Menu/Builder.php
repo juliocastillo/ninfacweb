@@ -36,8 +36,8 @@ class Builder extends ContainerAware {
 //        $this->menu['Reportes']->addChild('Reporte diario', array('route' => 'imprimir_auxiliar_producto',
 //            'routeParameters'=>array('id'=>'3')))
 //                ->setLinkAttribute('id', 'reporte1');
-        $this->menu['Reportes']->addChild('Auxiliar diario', array('route' => 'imprimir_auxiliar_producto'));
-
+        $this->menu['Reportes']->addChild('Auxiliar diario de productos', array('route' => 'imprimir_auxiliar_producto'));
+        $this->menu['Reportes']->addChild('Diario de facturación', array('route' => 'imprimir_diario_factura'));
         
         /* Creacion del menu estatico */
         $this->createStaticMenu($user);

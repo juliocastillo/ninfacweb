@@ -93,7 +93,7 @@ class CtlClienteAdmin extends Admin
                 'attr' => array('style'=>'width:300px'),))
                 
             ->add('email')
-            ->add('agenteRetencion', NULL, array('label'=>'Retencion de retencion'))
+            ->add('agenteRetencion', NULL, array('label'=>'Agente de retencion'))
             ->add('exento', NULL, array('label'=>'Exento de IVA'))
             ->add('activo');
         if ($id) {  // cuando se edite el registro

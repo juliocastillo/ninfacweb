@@ -73,25 +73,19 @@ class FacFacturaAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-                ->with('Factura', array('class' => 'col-md-4'))->end()
-                ->with('Cliente', array('class' => 'col-md-8'))->end()
-                ->with('Detalle', array('class' => 'col-md-12'))->end()
-                ->with('Resumen', array('class' => 'col-md-4'))->end()
-        ;
-        
-        $formMapper
-            ->with('Factura')
-                ->add('idTipofactura','entity', array(
-                          'class'=>'BundlesCatalogosBundle:CtlTipofactura',
-                          'label'=>'Tipo de factura',
-                          'attr' => array('style'=>'width:300px'),))
+                ->tab('DATOS GENERALES')
+                ->with('')
+            ->add('idTipofactura','entity', array(
+                      'class'=>'BundlesCatalogosBundle:CtlTipofactura',
+                      'label'=>'Tipo de factura',
+                      'attr' => array('style'=>'width:300px'),))
 
-                ->add('idFormatoDocumento', 'shtumi_dependent_filtered_entity', array(
-                          'label'=>'Formato de la Factura',
-                          'attr' => array('style'=>'width:300px'),
-                          'entity_alias' => 'formato_por_tipofactura',
-                          'empty_value'=> '...Seleccionar...',
-                          'parent_field'=>'idTipofactura'))                
+            ->add('idFormatoDocumento', 'shtumi_dependent_filtered_entity', array(
+                      'label'=>'Formato de la Factura',
+                      'attr' => array('style'=>'width:500px'),
+                      'entity_alias' => 'formato_por_tipofactura',
+                      'empty_value'=> '...Seleccionar...',
+                      'parent_field'=>'idTipofactura'))                
 
                 ->add('numero', null, array(
                     'label' => 'Numero de factura',
@@ -106,52 +100,46 @@ class FacFacturaAdmin extends Admin {
                             'class' => 'bootstrap-datepicker now',
                             'style' => 'width:300px', 'maxlength' => '25'
                         )))
-                ->end()
-                ->with('Cliente')
                 ->add('idCliente','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Cliente',
                     'btn_add' => 'Agregar',
                     'btn_list' => 'Buscar cliente',
-                    'btn_delete' => FALSE,
+                    'btn_delete' => 'Limpiar campo',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
                     'placeholder' => '*****'
                 ))
+//                ->add('idCliente', NULL, array(
+//                    'empty_value' => '...Seleccione...',
+//                    'label' => 'Cliente',
+//                ))
                 ->add('idCondicionpago', NULL, array(
                     'empty_value' => '...Seleccione...',
                     'label' => 'Condición de pago',
                     'attr' => array('style' => 'width:300px'),))
-//                ->add('fechaPago', null, array(
-//                        'label' => 'Fecha de pago crédito',
-//                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
-//                        'format' => 'dd/MM/y',
-//                        'attr' => array(
-//                            'class' => 'bootstrap-datepicker',
-//                            'style' => 'width:300px', 'maxlength' => '25'
-//                        )))
+                ->add('fechaPago', null, array(
+                        'label' => 'Fecha de pago crédito',
+                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr' => array(
+                            'class' => 'bootstrap-datepicker',
+                            'style' => 'width:300px', 'maxlength' => '25'
+                        )))
                 ->add('idEmpleado', NULL, array(
                     'empty_value' => '...Seleccione...',
                     'label' => 'Venta a cuenta',
-                    'attr' => array('style'=>'width:300px'),
                 ))
                 ->add('idNotaremision','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nota de remisión',
                     'btn_add' => NULL,
                     'btn_list' => 'Buscar #NR',
-                    'btn_delete' => FALSE,
+                    'btn_delete' => 'Limpar campo',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
-                    'placeholder' => ''
+                    'placeholder' => '*****'
                 ))
                 ->end()
-                ->with('Detalle')
-                ->add('facturaDetalle', 'sonata_type_collection', array(
-                    'label' => 'Items'), array(
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                ))
-                ->end()
-                ->with('Resumen')
+                ->with('$')                    
                 ->add('sumas', null, array(
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
@@ -168,6 +156,17 @@ class FacFacturaAdmin extends Admin {
                     'read_only' => TRUE,
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
+                ->end()
+                ->end()
+                ->tab('D E T A L L E')
+                ->with('')
+                ->add('facturaDetalle', 'sonata_type_collection', array(
+                    'label' => 'Items'), array(
+                    'edit' => 'inline',
+                    'inline' => 'standard'
+                ))                
+                ->end()
+                ->end()              
         ;
     }
 
@@ -287,23 +286,21 @@ class FacFacturaAdmin extends Admin {
     /*
      * permitir cuztomizar las acciones edit, create o show
      */
-    
-    
+
     public function getTemplate($name) {
         switch ($name) {
             case 'edit':
-                $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
-                $id = $entity->getId();
-                if ($id)  // cuando se edite el registro
-                    return 'BundlesFacturaBundle:CRUD:FacFacturaAdmin/edit.html.twig';
-                else
-                    return 'BundlesFacturaBundle:CRUD:FacFacturaAdmin/create.html.twig';
+                return 'BundlesFacturaBundle:CRUD:FacFacturaAdmin/edit.html.twig';
                 break;
+//            case 'show':
+//                return 'MinsalCatalogosBundle:CtlDiagnosticoHistopatologicoAdmin:show.html.twig';
+//                break;
             default:
                 return parent::getTemplate($name);
                 break;
         }
-    }    
+    }
+    
     
     /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface

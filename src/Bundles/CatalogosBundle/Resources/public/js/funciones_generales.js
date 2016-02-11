@@ -728,3 +728,19 @@ jQuery(document).ready(function($) {
       });
     })(jQuery);
 });
+
+
+jQuery(document).ready(function($) {
+    
+    function addButtonToInput(){
+        $('.addButtonInput').each(function(){
+           $(this).after('<a id="addDesc_'+$(this).attr('id')+'" onClick="showInput(\''+($(this).attr('id'))+'\');" style="cursor: pointer;" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>');
+        });
+    }
+    
+    addButtonToInput();
+});
+
+function showInput(id){
+    jQuery('#'+id).show();
+}

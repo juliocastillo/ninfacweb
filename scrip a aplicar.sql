@@ -106,3 +106,14 @@ ALTER TABLE "fac_factura"
 -- -------------------------------------------------------------
 
 COMMIT;
+
+
+
+
+BEGIN;
+
+-- CHANGE "COMMENT" OF "TABLE "ctl_tipo_cliente" ---------------
+COMMENT ON TABLE  "public"."ctl_tipo_cliente" IS 'Tabla para almacenar el tipo de cliente en el caso de empresas definidas como clientes y otros que son clientes eventuales';
+-- -------------------------------------------------------------
+
+COMMIT;
