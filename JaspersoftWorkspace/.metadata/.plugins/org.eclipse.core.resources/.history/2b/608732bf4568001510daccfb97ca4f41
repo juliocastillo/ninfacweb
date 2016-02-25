@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>New Data Adapter 1</name><driver>org.postgresql.Driver</driver><username>ninfac</username><password>n1nf4c</password><savePassword>true</savePassword><url>jdbc:postgresql://localhost:5432/ninfac</url><database></database><serverAddress></serverAddress></jdbcDataAdapter>
