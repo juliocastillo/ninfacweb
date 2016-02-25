@@ -32,6 +32,7 @@ class CtlProductoAdmin extends Admin
             ->add('codigo')
             ->add('nombre')
             ->add('presentacion')
+            ->add('idMarca',null,array('label'=>'Marca'))    
             ->add('precioVenta')
             ->add('existencia')
             ->add('_action', 'actions', array(
@@ -127,6 +128,7 @@ class CtlProductoAdmin extends Admin
             ->add('nombre')
             ->add('activo')
             ->add('presentacion')
+            ->add('idMarca',null,array('label'=>'Marca'))
             ->add('dateAdd')
             ->add('dateMod')
             ->add('existencia')
