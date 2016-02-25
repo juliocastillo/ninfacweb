@@ -28,3 +28,4 @@ app/config/bundles/knp_snappy.yml
 #JasperReport
 JaspersoftWorkspace/MyReports/bin
 JaspersoftWorkspace/.metadata
+JaspersoftWorkspace/*
