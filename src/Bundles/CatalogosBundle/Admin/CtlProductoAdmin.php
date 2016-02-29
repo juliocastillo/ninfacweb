@@ -141,6 +141,21 @@ class CtlProductoAdmin extends Admin
         ;
     }
     
+    
+    
+    public function getExportFields() {
+        return array('id',
+            'nombre',
+            'presentacion',
+            'Marca'=>'idMarca',
+            'existencia',
+            'precioVenta' 	
+        );
+    }
+
+
+
+
     /*
      * Metodo que se ejecuta antes de realizar una insercion.
      * Recibe como parametro una entidad; en este caso de tipo CtlPais
