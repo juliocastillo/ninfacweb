@@ -29,7 +29,11 @@ class InvInicialAdmin extends Admin
     {
         $listMapper
             ->add('idProducto')
-            ->add('fecha')
+            ->add('fecha','date',array(
+                                'widget' => 'single_text',
+                                'format' => 'd-m-Y',
+                                'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
+                ))
             ->add('lote')
             ->add('cantidad')
             ->add('activo')
@@ -117,4 +121,17 @@ class InvInicialAdmin extends Admin
             ->add('activo')
         ;
     }
+    
+     
+    public function getExportFields() {
+        return array('idProducto',
+            'lote'=>'Lote',
+            'fecha',
+            'modelo'=>'Modelo',
+            'serie',
+            'cantidad'
+        );
+    }
+
+    
 }
