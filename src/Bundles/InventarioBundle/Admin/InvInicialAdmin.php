@@ -28,6 +28,7 @@ class InvInicialAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('idProducto')
             ->add('fecha')
             ->add('lote')
             ->add('cantidad')
