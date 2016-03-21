@@ -41,3 +41,53 @@ ALTER TABLE "public"."inv_inicial" ADD CONSTRAINT "uk_inv_inicial" UNIQUE( "id_p
 -- -------------------------------------------------------------
 
 COMMIT;
+
+
+BEGIN;
+
+-- CREATE FIELD "fecha_vencimiento" ----------------------------
+ALTER TABLE "public"."inv_inicial" ADD COLUMN "fecha_vencimiento" Date NOT NULL;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+BEGIN;
+
+-- CHANGE "NULLABLE" OF "FIELD "fecha_vencimiento" -------------
+ALTER TABLE "public"."inv_inicial" ALTER COLUMN "fecha_vencimiento" DROP NOT NULL;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+
+BEGIN;
+
+-- CHANGE "NULLABLE" OF "FIELD "serie" -------------------------
+ALTER TABLE "public"."inv_inicial" ALTER COLUMN "serie" DROP NOT NULL;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+BEGIN;
+
+-- CHANGE "NULLABLE" OF "FIELD "modelo" ------------------------
+ALTER TABLE "public"."inv_inicial" ALTER COLUMN "modelo" DROP NOT NULL;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+BEGIN;
+
+-- CHANGE "NULLABLE" OF "FIELD "lote" --------------------------
+ALTER TABLE "public"."inv_inicial" ALTER COLUMN "lote" DROP NOT NULL;
+-- -------------------------------------------------------------
+
+COMMIT;
+
+
+
+
