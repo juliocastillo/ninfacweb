@@ -126,7 +126,7 @@ class InvInicialAdmin extends Admin
     public function getExportFields() {
         return array('idProducto',
             'lote'=>'Lote',
-            'fecha',
+            'fechaVencimiento',
             'modelo'=>'Modelo',
             'serie',
             'cantidad'
