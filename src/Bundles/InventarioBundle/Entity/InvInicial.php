@@ -234,10 +234,10 @@ class InvInicial
     /**
      * Set idProducto
      *
-     * @param \Bundles\InventarioBundle\Entity\CtlProducto $idProducto
+     * @param \Bundles\CatalogosBundle\Entity\CtlProducto $idProducto
      * @return InvInicial
      */
-    public function setIdProducto(\Bundles\InventarioBundle\Entity\CtlProducto $idProducto = null)
+    public function setIdProducto(\Bundles\CatalogosBundle\Entity\CtlProducto $idProducto = null)
     {
         $this->idProducto = $idProducto;
 
@@ -247,7 +247,7 @@ class InvInicial
     /**
      * Get idProducto
      *
-     * @return \Bundles\InventarioBundle\Entity\CtlProducto 
+     * @return \Bundles\CatalogosBundle\Entity\CtlProducto 
      */
     public function getIdProducto()
     {
