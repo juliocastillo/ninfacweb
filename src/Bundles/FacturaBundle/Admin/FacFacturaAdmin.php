@@ -313,7 +313,7 @@ class FacFacturaAdmin extends Admin {
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".activo = TRUE")
-                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
+                        //->where($query->getRootAlias() . ".estado != 'PAGADO'")
 
         );
     }

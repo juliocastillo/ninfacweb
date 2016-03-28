@@ -11,14 +11,29 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class CtlProductoAdmin extends Admin
 {
+    
+    /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_page' => 1,            // display the first page (default = 1)
+        '_sort_order' => 'ASC', // reverse order (default = 'ASC')
+        '_sort_by' => 'nombre'  // name of the ordered field
+                                 // (default = the model's id field, if any)
+
+        // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
+    );
+    
     /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('nombre')
             ->add('codigo')
+            ->add('nombre')
             ->add('activo')
         ;
     }
@@ -34,7 +49,6 @@ class CtlProductoAdmin extends Admin
             ->add('presentacion')
             ->add('idMarca',null,array('label'=>'Marca'))    
             ->add('precioVenta')
-            ->add('existencia')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

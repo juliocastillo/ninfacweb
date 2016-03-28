@@ -17,8 +17,15 @@ services:
     #    tags:
     #        - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Auxiliar de productos}
 
-    bundles_inventario.admin.inv_inicial:
-        class: Bundles\InventarioBundle\Admin\InvInicialAdmin
-        arguments: [~, Bundles\InventarioBundle\Entity\InvInicial, SonataAdminBundle:CRUD]
+
+    bundles_inventario.admin.inv_producto_mov:
+        class: Bundles\InventarioBundle\Admin\InvProductoMovAdmin
+        arguments: [~, Bundles\InventarioBundle\Entity\InvProductoMov, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Inventario Inicial}
+            - {name: sonata.admin, manager_type: orm, group: Inventarios, label: Crear producto-lote}
+
+    bundles_inventario.admin.inv_producto_mov_ventas:
+        class: Bundles\InventarioBundle\Admin\InvProductoMovVentasAdmin
+        arguments: [~, Bundles\InventarioBundle\Entity\InvProductoMovVentas, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, show_in_dashboard: false}

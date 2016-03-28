@@ -44,6 +44,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td colspan="3" align="center">INVENTARIO INICIAL</td>
                 <td colspan="3" align="center">ENTRADA</td>
                 <td colspan="3" align="center">SALIDA</td>
                 <td colspan="3" align="center">SALDO</td>
@@ -52,6 +54,10 @@
                 <td>FECHA</td>
                 <td>DOCUMENTO</td>
                 <td>TIPO.MOV</td>
+                <td>LOTE</td>
+                <td>CANT</td>
+                <td>PREC</td>
+                <td>IMPORTE</td>
                 <td>CANT</td>
                 <td>PREC</td>
                 <td>IMPORTE</td>
@@ -66,20 +72,25 @@
             {% set saldo_unidades = 0 %}
             {% set saldo_importe = 0 %}
             {% for mov in movimientos %}
-                {% set saldo_unidades = saldo_unidades + mov.cantidad_entrada - mov.cantidad_salida %}
-                {% set saldo_importe = saldo_importe + (mov.cantidad_entrada * mov.precio_entrada) %}
-                {% if mov.tipo_movimiento == 'Entrada' %}
+                {% set saldo_unidades = saldo_unidades + mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
+                {% set saldo_importe = saldo_importe + ((mov.cantidad_inicial + mov.cantidad_entrada) * mov.precio_costo) %}
+                {% if mov.tipo_movimiento != '3' %}
                     {% set costo = saldo_importe/saldo_unidades %}
                 {% endif %}
-                {% set entrada_importe = mov.cantidad_entrada * mov.precio_entrada %}
+                {% set inicial_importe = mov.cantidad_inicial * mov.precio_costo %}
+                {% set entrada_importe = mov.cantidad_entrada * mov.precio_costo %}
                 {% set salida_importe = mov.cantidad_salida * costo %}
                 {% set saldo_importe = saldo_unidades * costo %}
                 <tr>
                     <td>{{ mov.fecha | date('d/m/Y')}}</td>
                     <td>{{ mov.documento }}</td>
                     <td>{{ mov.tipo_movimiento }}</td>
+                    <td>{{ mov.lote }}</td>
+                    <td>{{ mov.cantidad_inicial }}</td>
+                    <td>{{ mov.precio_costo | number_format(2, '.', ',')}}</td>
+                    <td>{{ inicial_importe | number_format(2, '.', ',')}}</td>
                     <td>{{ mov.cantidad_entrada }}</td>
-                    <td>{{ mov.precio_entrada | number_format(2, '.', ',')}}</td>
+                    <td>{{ mov.precio_costo | number_format(2, '.', ',')}}</td>
                     <td>{{ entrada_importe | number_format(2, '.', ',')}}</td>
                     <td>{{ mov.cantidad_salida  | number_format(0, '.', ',') }}</td>
                     <td>{{ costo  | number_format(2, '.', ',') }}</td>

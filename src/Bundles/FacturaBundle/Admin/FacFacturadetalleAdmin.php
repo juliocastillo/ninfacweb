@@ -52,14 +52,14 @@ class FacFacturadetalleAdmin extends Admin {
      */
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                ->add('idInvProductoMov', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nombre del producto',
                     'btn_add' => FALSE,
                     'btn_list' => 'Buscar',
                     'btn_delete' => FALSE,
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
-                    'admin_code' => 'bundles_catalogos.admin.ctl_producto',
+                    'admin_code' => 'bundles_inventario.admin.inv_producto_mov_ventas',
                     'placeholder' => ''
                     ))
                 ->add('cantidad', null, array(
@@ -68,7 +68,7 @@ class FacFacturadetalleAdmin extends Admin {
                 ))
                 ->add('precioUnitario', null, array(
                     'required' => FALSE,
-                    'label'=>'Precio',
+                    'label'=>'Precio de venta',
                     'attr' => array('style' => 'width:75px', 'maxlength' => '25'),
                 ))
                 ->add('descripcion','textarea', array(
@@ -88,7 +88,7 @@ class FacFacturadetalleAdmin extends Admin {
         $showMapper
                 ->add('id')
 //            ->add('descripcion')
-                ->add('idProducto')
+                ->add('idInvProductoMov')
                 ->add('cantidad')
 
 //            ->add('precioUnitario')

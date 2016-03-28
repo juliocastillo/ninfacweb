@@ -27,83 +27,103 @@ class CtlProductoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
             $sql = 
-            " SELECT
-                *
-            FROM
-                (SELECT
-                  'Entrada' AS tipo_movimiento,
-                  pt.fecha as fecha,
-                  pt.documento AS documento,
-                  (case WHEN (pt.cantidad is not null) THEN pt.cantidad ELSE 0 END) AS cantidad_entrada,
-                  (case WHEN (pt.precio_unitario is not null) THEN pt.precio_unitario ELSE 0 END) AS precio_entrada,
-                  0 AS cantidad_salida,
-                  0 AS precio_salida
-                 FROM ctl_producto p
-                   LEFT JOIN (SELECT CONCAT(e.numero, ' ' , te.nombre) as documento, e.fecha, ed.lote, ed.id_producto, ed.cantidad, ed.precio_unitario
-                               FROM inv_entrada e, inv_entradadetalle ed, ctl_tipoentrada te
-                               WHERE e.id = ed.id_entrada AND ed.id_producto = '$id' AND e.id_tipoentrada = te.id AND
-                        e.fecha >= '$fini' AND e.fecha <= '$ffin') pt ON pt.id_producto = p.id
+            "SELECT * FROM (
+                SELECT
+                m.fecha AS fecha,
+                '1' AS tipo_movimiento,
+                m.id AS documento,
+                p.nombre,
+                m.lote,
+                m.cantidad_inicial AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                0 AS cantidad_salida,
+                p.precio_costo AS precio_costo
+                FROM
+                ctl_producto p
+                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id AND m.tipo_mov = 'I'
                 WHERE p.id = '$id'
                 UNION
                 SELECT
-                  'Salida' AS tipo_movimiento,
-                  fa.fecha AS fecha,
-                  CONCAT(fa.numero,' ' , fa.tipofactura) AS documento,
-                  0 AS cant_entrada,
-                  0 AS precio_entrada,
-                  (case WHEN (fa.cantidad_salida is not null) THEN fa.cantidad_salida ELSE 0 END) AS cantidad_salida,
-                  (case WHEN (fa.precio_unitario is not null) THEN fa.precio_unitario ELSE 0 END) AS precio_salida
-             FROM ctl_producto p
-                  LEFT JOIN (SELECT t.nombre AS tipofactura,f.numero,f.fecha,f.id_cliente,c.nombre AS cliente,c.nombre_comercial,fd.id_producto,fd.cantidad AS cantidad_salida, fd.precio_unitario
-                              FROM fac_facturadetalle fd,
-                                   fac_factura f
-                                   LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                                   LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                              WHERE fd.id_producto = '$id' AND fd.id_factura = f.id  AND
-                        f.fecha >= '$fini' AND f.fecha <= '$ffin') fa ON fa.id_producto = p.id
-                WHERE p.id = '$id') a
-            WHERE
-                a.fecha is not null
-            ORDER BY a.fecha ASC, a.tipo_movimiento ASC";
+                i.fecha AS fecha,
+                '2' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                e.cantidad AS cantidad_entrada,
+                0 AS cantidad_salida,
+                e.precio_unitario AS precio_costo
+                FROM
+                inv_entrada i, inv_entradadetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_entrada
+                UNION
+                SELECT
+                i.fecha AS fecha,
+                '3' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                e.cantidad AS cantidad_salida,
+                0 AS precio_costo
+                FROM
+                fac_factura i, fac_facturadetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_factura
+                ) d
+            ORDER BY lote, tipo_movimiento, fecha";
         }
         else { // devuelve todos los registros de un producto sin importar fecha
             $sql = 
-            " SELECT
-                *
-            FROM
-                (SELECT
-                  'Entrada' AS tipo_movimiento,
-                  pt.fecha as fecha,
-                  pt.documento AS documento,
-                  (case WHEN (pt.cantidad is not null) THEN pt.cantidad ELSE 0 END) AS cantidad_entrada,
-                  (case WHEN (pt.precio_unitario is not null) THEN pt.precio_unitario ELSE 0 END) AS precio_entrada,
-                  0 AS cantidad_salida,
-                  0 AS precio_salida
-                 FROM ctl_producto p
-                   LEFT JOIN (SELECT CONCAT(e.numero, ' ' , te.nombre) as documento, e.fecha, ed.lote, ed.id_producto, ed.cantidad, ed.precio_unitario
-                               FROM inv_entrada e, inv_entradadetalle ed, ctl_tipoentrada te
-                               WHERE e.id = ed.id_entrada AND ed.id_producto = '$id' AND e.id_tipoentrada = te.id) pt ON pt.id_producto = p.id
+            "SELECT * FROM (
+                SELECT
+                m.fecha AS fecha,
+                '1' AS tipo_movimiento,
+                m.id AS documento,
+                p.nombre,
+                m.lote,
+                m.cantidad_inicial AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                0 AS cantidad_salida,
+                p.precio_costo AS precio_costo
+                FROM
+                ctl_producto p
+                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id AND m.tipo_mov = 'I'
                 WHERE p.id = '$id'
                 UNION
                 SELECT
-                  'Salida' AS tipo_movimiento,
-                  fa.fecha AS fecha,
-                  CONCAT(fa.numero,' ' , fa.tipofactura) AS documento,
-                  0 AS cant_entrada,
-                  0 AS precio_entrada,
-                  (case WHEN (fa.cantidad_salida is not null) THEN fa.cantidad_salida ELSE 0 END) AS cantidad_salida,
-                  (case WHEN (fa.precio_unitario is not null) THEN fa.precio_unitario ELSE 0 END) AS precio_salida
-             FROM ctl_producto p
-                  LEFT JOIN (SELECT t.nombre AS tipofactura,f.numero,f.fecha,f.id_cliente,c.nombre AS cliente,c.nombre_comercial,fd.id_producto,fd.cantidad AS cantidad_salida, fd.precio_unitario
-                              FROM fac_facturadetalle fd,
-                                   fac_factura f
-                                   LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                                   LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                              WHERE fd.id_producto = '$id' AND fd.id_factura = f.id) fa ON fa.id_producto = p.id
-                WHERE p.id = '$id') a
-            WHERE
-                a.fecha is not null
-            ORDER BY a.fecha ASC, a.tipo_movimiento ASC";
+                i.fecha AS fecha,
+                '2' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                e.cantidad AS cantidad_entrada,
+                0 AS cantidad_salida,
+                e.precio_unitario AS precio_costo
+                FROM
+                inv_entrada i, inv_entradadetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_entrada
+                UNION
+                SELECT
+                i.fecha AS fecha,
+                '3' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                e.cantidad AS cantidad_salida,
+                0 AS precio_costo
+                FROM
+                fac_factura i, fac_facturadetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_factura
+                ) d
+            ORDER BY lote, tipo_movimiento, fecha";
         }
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;

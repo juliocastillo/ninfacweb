@@ -29,14 +29,7 @@ class InvEntradadetalle
      */
     private $comentario;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lote", type="string", length=25, nullable=false)
-     */
-    private $lote;
-
-    /**
+       /**
      * @var string
      *
      * @ORM\Column(name="serie", type="string", length=50, nullable=true)
@@ -65,13 +58,6 @@ class InvEntradadetalle
     private $precioUnitario;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_vencimiento", type="date", nullable=true)
-     */
-    private $fechaVencimiento;
-
-    /**
      * @var \InvEntrada
      *
      * @ORM\ManyToOne(targetEntity="InvEntrada", inversedBy="entradaDetalle")
@@ -82,14 +68,14 @@ class InvEntradadetalle
     private $idEntrada;
 
     /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlProducto
+     * @var \Bundles\InventarioBundle\Entity\InvProductoMov
      *
-     * @ORM\ManyToOne(targetEntity="\Bundles\CatalogosBundle\Entity\CtlProducto")
+     * @ORM\ManyToOne(targetEntity="Bundles\InventarioBundle\Entity\InvProductoMov")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_inv_producto_mov", referencedColumnName="id")
      * })
      */
-    private $idProducto;
+    private $idInvProductoMov;
 
 
 
@@ -125,30 +111,7 @@ class InvEntradadetalle
     {
         return $this->comentario;
     }
-
-    /**
-     * Set lote
-     *
-     * @param string $lote
-     * @return InvEntradadetalle
-     */
-    public function setLote($lote)
-    {
-        $this->lote = $lote;
-
-        return $this;
-    }
-
-    /**
-     * Get lote
-     *
-     * @return string 
-     */
-    public function getLote()
-    {
-        return $this->lote;
-    }
-
+    
     /**
      * Set serie
      *
@@ -242,29 +205,6 @@ class InvEntradadetalle
     }
 
     /**
-     * Set fechaVencimiento
-     *
-     * @param \DateTime $fechaVencimiento
-     * @return InvEntradadetalle
-     */
-    public function setFechaVencimiento($fechaVencimiento)
-    {
-        $this->fechaVencimiento = $fechaVencimiento;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaVencimiento
-     *
-     * @return \DateTime 
-     */
-    public function getFechaVencimiento()
-    {
-        return $this->fechaVencimiento;
-    }
-
-    /**
      * Set idEntrada
      *
      * @param \Bundles\InventarioBundle\Entity\InvEntrada $idEntrada
@@ -288,29 +228,30 @@ class InvEntradadetalle
     }
 
     /**
-     * Set idProducto
+     * Set idInvProductoMov
      *
-     * @param \Bundles\CatalogosBundle\Entity\CtlProducto $idProducto
-     * @return InvEntradadetalle
+     * @param \Bundles\InventarioBundle\Entity\InvProductoMov $idInvProductoMov
+     * @return FacFacturadetalle
      */
-    public function setIdProducto(\Bundles\CatalogosBundle\Entity\CtlProducto $idProducto = null)
+    public function setIdInvProductoMov(\Bundles\InventarioBundle\Entity\InvProductoMov $idInvProductoMov = null)
     {
-        $this->idProducto = $idProducto;
+        $this->idInvProductoMov = $idInvProductoMov;
 
         return $this;
     }
 
     /**
-     * Get idProducto
+     * Get idInvProductoMov
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlProducto 
+     * @return \Bundles\InventarioBundle\Entity\InvProductoMov 
      */
-    public function getIdProducto()
+    public function getIdInvProductoMov()
     {
-        return $this->idProducto;
+        return $this->idInvProductoMov;
     }
     
+    
     public function __toString() {
-        return ''.$this->idProducto;
+        return ''.$this->idInvProductoMov;
     }
 }

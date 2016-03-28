@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="InvProductoMov" table="inv_producto_mov">
+    <unique-constraints>
+      <unique-constraint name="uk_inv_producto_mov" columns="id_producto,lote"/>
+      <unique-constraint name="unique_id" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="idProducto" type="integer" column="id_producto" nullable="false"/>
+    <field name="fecha" type="date" column="fecha" nullable="false"/>
+    <field name="lote" type="string" column="lote" length="25" nullable="true"/>
+    <field name="cantidadInicial" type="decimal" column="cantidad_inicial" precision="10" scale="2" nullable="true"/>
+    <field name="activo" type="boolean" column="activo" nullable="false"/>
+    <field name="fechaVencimiento" type="date" column="fecha_vencimiento" nullable="true"/>
+    <field name="dateAdd" type="date" column="date_add" nullable="true"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="true"/>
+    <field name="idUserAdd" type="integer" column="id_user_add" nullable="true"/>
+    <field name="idUserMod" type="integer" column="id_user_mod" nullable="true"/>
+    <field name="cantidadEntrada" type="decimal" column="cantidad_entrada" precision="10" scale="2" nullable="true"/>
+    <field name="cantidadSalida" type="decimal" column="cantidad_salida" precision="10" scale="2" nullable="true"/>
+    <field name="saldo" type="decimal" column="saldo" precision="10" scale="2" nullable="true"/>
+  </entity>
+</doctrine-mapping>

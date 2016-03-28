@@ -31,31 +31,20 @@ class InvEntradadetalleAdmin extends Admin
     {
         $formMapper
             ->with('=============================================================')
-                ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
+                ->add('idInvProductoMov', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nombre del producto',
-                    'btn_add' => FALSE,
-                    'btn_list' => 'Buscar producto',
-                    'btn_delete' => 'Limpiar campo',
+                    'btn_add' => 'Crear producto-lote',
+                    'btn_list' => 'Buscar',
+                    'btn_delete' => FALSE,
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
-                            'admin_code' => 'bundles_catalogos.admin.ctl_producto',
-                            'placeholder' => '*****'
+                            'admin_code' => 'bundles_inventario.admin.inv_producto_mov',
+                            'placeholder' => ''
                     ))
+                ->add('precioUnitario',null, array('label'=>'Precio de costo unitario',
+                    'required'=>FALSE,
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('cantidad',null, array(
-                    'required'=>FALSE,
-                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
-                ->add('precioUnitario',null, array(
-                    'required'=>FALSE,
-                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
-                ->add('fechaVencimiento', null, array(
-                        'label' => 'Fecha de vencimiento',
-                        'widget' => 'single_text', // un sólo input para la fecha, no tres.
-                        'format' => 'dd/MM/y',
-                        'attr' => array(
-                            'class' => 'bootstrap-datepicker',
-                            'style' => 'width:300px', 'maxlength' => '25'
-                        )))
-                ->add('lote',null, array(
                     'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('serie',null, array(

@@ -9,9 +9,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
-class InvInicialAdmin extends Admin
+
+class InvProductoMovAdmin extends Admin
 {
-    
     /**
      * Default Datagrid values
      *
@@ -51,8 +51,8 @@ class InvInicialAdmin extends Admin
                                 'widget' => 'single_text',
                                 'format' => 'd-m-Y',
                                 'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
-                ))                
-            ->add('cantidad')
+                ))
+            ->add('tipoMov')
             ->add('activo',NULL,array('editable'=>TRUE))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -78,7 +78,7 @@ class InvInicialAdmin extends Admin
                         'format' => 'dd/MM/y',
                         'attr' => array(
                             'class' => 'bootstrap-datepicker',
-                            'style' => 'width:300px', 'maxlength' => '25'
+                            'style' => 'width:200px', 'maxlength' => '25'
                         )))
             ->add('idProducto', 'sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nombre del producto',
@@ -99,15 +99,18 @@ class InvInicialAdmin extends Admin
                         'format' => 'dd/MM/y',
                         'attr' => array(
                             'class' => 'bootstrap-datepicker',
-                            'style' => 'width:300px', 'maxlength' => '25'
+                            'style' => 'width:200px', 'maxlength' => '25'
                         )))                
-            ->add('cantidad',null, array(
+            ->add('cantidadInicial',null, array(
                     'required'=>FALSE,
-                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))                
-            ->add('serie',null, array(
-                'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
-            ->add('modelo',null, array(
-                'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+            ->add('tipoMov','choice',
+                        array(
+                            'label'=>'Tipo de movimiento',
+                            'choices' => array(
+                            'I' => 'Inventario inicial',
+                            'E' => 'Entrada'
+                        )))
             ->add('activo');
             if ($id) {  // cuando se edite el registro
                 if ($entity->getActivo() == TRUE) { // si el registro esta activo
@@ -132,9 +135,7 @@ class InvInicialAdmin extends Admin
             ->add('idProducto',null, array('label'=>'Nombre de producto'))
             ->add('fecha')
             ->add('lote')
-            ->add('modelo')
-            ->add('serie')
-            ->add('cantidad')
+            ->add('cantidadInicial')
             ->add('activo')
         ;
     }
@@ -144,9 +145,7 @@ class InvInicialAdmin extends Admin
         return array('idProducto',
             'lote'=>'Lote',
             'fechaVencimiento',
-            'modelo'=>'Modelo',
-            'serie',
-            'cantidad'
+            'cantidadInicial'
         );
     }
 
@@ -159,5 +158,22 @@ class InvInicialAdmin extends Admin
 //                $query
 //                        ->orderBy($query->getRootAlias() . ".id")
 //        );
-//    }
+//    }    
+    
+    
+    public function prePersist($data) {
+        // llenar campos de auditoria
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $data->setIdUserAdd($user);
+        $data->setDateAdd(new \DateTime());
+    }
+ 
+    public function preUpdate($data) {
+        // llenar campos de auditoria
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $data->setIdUserMod($user);
+        $data->setDateMod(new \DateTime());
+    }
+
+    
 }

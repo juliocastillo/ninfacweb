@@ -129,13 +129,12 @@ class InvEntradaAdmin extends Admin
                 ;
     }
     
-    
-    public function prePersist($entrada) {
+     public function prePersist($entrada) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $entrada->setIdUserAdd($user);
         $entrada->setDateAdd(new \DateTime());
-        
+         
         foreach ($entrada->getEntradaDetalle() as $entradaDetalle) {
             $entradaDetalle->setIdEntrada($entrada);
             
@@ -149,7 +148,7 @@ class InvEntradaAdmin extends Admin
         $entrada->setIdUserMod($user);
         $entrada->setDateMod(new \DateTime());
         
-       
+    
         foreach ($entrada->getEntradaDetalle() as $entradaDetalle) {
             $entradaDetalle->setIdEntrada($entrada);
         }

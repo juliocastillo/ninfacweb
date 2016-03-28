@@ -65,19 +65,19 @@ class FacFacturadetalle
     private $ventasNosujetas;
 
     /**
-     * @var \Bundles\CatalogosBundle\Entity\CtlProducto
+     * @var \Bundles\InventarioBundle\Entity\InvProductoMov
      *
-     * @ORM\ManyToOne(targetEntity="Bundles\CatalogosBundle\Entity\CtlProducto")
+     * @ORM\ManyToOne(targetEntity="Bundles\InventarioBundle\Entity\InvProductoMov")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_inv_producto_mov", referencedColumnName="id")
      * })
      */
-    private $idProducto;
+    private $idInvProductoMov;
 
     /**
      * @var \FacFactura
      *
-     * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facnotaremisionDetalle")
+     * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facturaDetalle")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_factura", referencedColumnName="id")
      * })
@@ -235,26 +235,26 @@ class FacFacturadetalle
     }
 
     /**
-     * Set idProducto
+     * Set idInvProductoMov
      *
-     * @param \Bundles\CatalogosBundle\Entity\CtlProducto $idProducto
+     * @param \Bundles\InventarioBundle\Entity\InvProductoMov $idInvProductoMov
      * @return FacFacturadetalle
      */
-    public function setIdProducto(\Bundles\CatalogosBundle\Entity\CtlProducto $idProducto = null)
+    public function setIdInvProductoMov(\Bundles\InventarioBundle\Entity\InvProductoMov $idInvProductoMov = null)
     {
-        $this->idProducto = $idProducto;
+        $this->idInvProductoMov = $idInvProductoMov;
 
         return $this;
     }
 
     /**
-     * Get idProducto
+     * Get idInvProductoMov
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlProducto 
+     * @return \Bundles\InventarioBundle\Entity\InvProductoMov 
      */
-    public function getIdProducto()
+    public function getIdInvProductoMov()
     {
-        return $this->idProducto;
+        return $this->idInvProductoMov;
     }
 
     /**
@@ -281,6 +281,6 @@ class FacFacturadetalle
     }
     
     public function __toString() {
-        return $this->idProducto;
+        return $this->idInvProductoMov;
     }
 }
