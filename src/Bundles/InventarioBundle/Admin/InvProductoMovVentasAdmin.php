@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class InvProductoMovVentasAdmin extends Admin
 {
@@ -83,18 +84,6 @@ class InvProductoMovVentasAdmin extends Admin
         );
     }
 
-    /**
-     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
-     */
-//    public function createQuery($context = 'list') {
-//        $query = parent::createQuery($context);
-//        return new ProxyQuery(
-//                $query
-//                        ->orderBy($query->getRootAlias() . ".id")
-//        );
-//    }    
-    
-    
     public function prePersist($data) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
@@ -109,5 +98,19 @@ class InvProductoMovVentasAdmin extends Admin
         $data->setDateMod(new \DateTime());
     }
 
+    
+    /**
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list') {
+        $query = parent::createQuery($context);
+        return new ProxyQuery(
+                $query
+                        ->where($query->getRootAlias() . ".activo=TRUE")
+        );
+    }    
+    
+
+    
 
 }

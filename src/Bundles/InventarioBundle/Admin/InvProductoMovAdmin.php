@@ -149,18 +149,6 @@ class InvProductoMovAdmin extends Admin
         );
     }
 
-    /**
-     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
-     */
-//    public function createQuery($context = 'list') {
-//        $query = parent::createQuery($context);
-//        return new ProxyQuery(
-//                $query
-//                        ->orderBy($query->getRootAlias() . ".id")
-//        );
-//    }    
-    
-    
     public function prePersist($data) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
