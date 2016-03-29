@@ -43,4 +43,39 @@ class FacFacturaRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
+    
+    /*
+     * DESCRIPCION: actualizar el estado en base a la evaluación de venta y cobro total
+     * Julio Castillo
+     * Analista programador
+     */
+    /*
+     * Obtener datos para el reporte de Diario de facturación
+     * 
+     */
+    public function diarioFacturacion($fini = null,$ffin = null){
+        $em = $this->getEntityManager();
+        $sql = " 
+                SELECT 
+                    f.numero,
+                    f.fecha,
+                    c.nombre AS cliente,
+                    p.nombre AS condicion,
+                    t.nombre AS tipo,
+                    f.sumas AS subtotal,
+                    0 AS descuento,
+                    f.subtotal AS ventaneta,
+                    f.iva_retenido AS iva,
+                    f.venta_total AS total
+                FROM fac_factura f
+                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
+                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
+                LEFT JOIN ctl_tipofactura t ON t.id = id_tipofactura
+                WHERE fecha >= '$fini' AND fecha <= '$ffin'
+                ORDER BY f.fecha, f.id_tipofactura;
+               ";
+        return $em->getConnection()->executeQuery($sql);
+    }
+    
+    
 }

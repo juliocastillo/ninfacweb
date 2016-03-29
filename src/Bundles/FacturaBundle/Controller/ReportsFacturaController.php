@@ -417,15 +417,12 @@ class ReportsFacturaController extends Controller {
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
         
-        if (isset($_REQUEST['id'])){
-            $id = $_REQUEST['id'];
+        if (isset($_REQUEST['fini'])){
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->AuxiliarProducto($id,$fini,$ffin);
-            $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->diarioFacturacion($fini,$ffin);
             $requestvalid = TRUE; 
         } else {
-            $id = '';
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -433,16 +430,12 @@ class ReportsFacturaController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
         return $this->render('BundlesFacturaBundle:Reportes:filtrar_diario_factura.html.twig', array(
-            'id' => $id,
             'movimientos'=>$movimientos,
-            'productos' => $productos,
             'empresa' => $empresa,
             'fini' => $fini,
             'ffin' => $ffin,
-            'requetvalid' => $requestvalid,
-            'nombreproducto' => $nombreproducto,
+            'requestvalid' => $requestvalid,
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )

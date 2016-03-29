@@ -151,7 +151,7 @@ class ReportsInventarioController extends Controller {
             'empresa' => $empresa,
             'fini' => $fini,
             'ffin' => $ffin,
-            'requetvalid' => $requestvalid,
+            'requestvalid' => $requestvalid,
             'nombreproducto' => $nombreproducto,
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')

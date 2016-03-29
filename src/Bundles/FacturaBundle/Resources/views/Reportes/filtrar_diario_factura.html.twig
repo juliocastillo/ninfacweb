@@ -14,18 +14,7 @@ file that was distributed with this source code.
 
 {% block show %}
         <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
-            <b>PRODUCTO:</b> 
-            <select id="productoseleccionado" name="id" required="required" >
-                <option value="" selected="{{ id }}">...Seleccione...</option>
-                {% for producto in productos %}
-                    {% if id == producto.id %}
-                        <option value="{{ producto.id }}" selected="{{ id }}">{{ producto.nombre }}</option>
-                    {% else %}
-                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            
+            <b><center>REPORTE DIARIO DE VENTAS</center></b> <br>
             <script type="text/javascript">
             $(function() {
               $('#fini').datetimepicker({ 
@@ -43,18 +32,18 @@ file that was distributed with this source code.
                     <td>Rango de fecha:</td>
                     <td>desde</td>
                     <td>
-                            <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:100px" required="required" name="fini">
+                            <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
                         </td>
                     <td>hasta</td>
                     <td>
-                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:100px" required="required" name="ffin">
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Filtrar"></td>
                 </tr>
             </table>
         </form>
         <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
-        {%if requetvalid == TRUE %}
+        {%if requestvalid == TRUE %}
             {% include 'BundlesFacturaBundle:Reportes:resultado_diario_factura.html.twig' %}
         {% endif %}
         </div>
