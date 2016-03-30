@@ -58,7 +58,9 @@
                 <td>ABONO TOTAL</td>
                 <td>SALDO</td>
             </tr>
+            {% set saldo = 0 %}
             {% for mov in movimientos %}
+                {% set saldo = saldo + (mov.venta_total-mov.cobro_total) %}
                 <tr>
                     <td>{{ mov.cliente }}</td>
                     <td>{{ mov.tipofactura }}</td>
@@ -68,7 +70,7 @@
                     <td>{{ mov.condicionpago }}</td>
                     <td>{{ mov.venta_total | number_format(2, '.', ',')}}</td>
                     <td>{{ mov.cobro_total | number_format(2, '.', ',')}}</td>
-                    <td>{{ mov.saldo  | number_format(0, '.', ',') }}</td>
+                    <td>{{ saldo  | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
         </table>

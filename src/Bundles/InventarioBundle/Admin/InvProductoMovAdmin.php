@@ -88,11 +88,12 @@ class InvProductoMovAdmin extends Admin
                             'style' => 'width:200px', 'maxlength' => '25'
                         )))                
             ->add('cantidadInicial',null, array(
+                    'label'=>'Cantidad en inventario inicial',
                     'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
             ->add('tipoMov','choice',
                         array(
-                            'label'=>'Tipo de movimiento',
+                            'label'=>'Tipo de movimiento de creación',
                             'choices' => array(
                             'I' => 'Inventario inicial',
                             'E' => 'Entrada'

@@ -17,13 +17,7 @@ class CtlClienteAdmin extends Admin
     {
         $datagridMapper
             ->add('nombre')
-            ->add('nombreComercial')
-            ->add('giro')
-            ->add('nit')
             ->add('nrc')
-            ->add('idDepartamento')
-            ->add('idMunicipio')
-            ->add('activo')
             ->add('exento')
         ;
     }

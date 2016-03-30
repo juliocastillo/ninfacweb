@@ -64,15 +64,15 @@ class FacFacturaRepository extends EntityRepository {
                     t.nombre AS tipo,
                     f.sumas AS subtotal,
                     0 AS descuento,
-                    f.subtotal AS ventaneta,
-                    f.iva_retenido AS iva,
+                    f.sumas AS ventaneta,
+                    f.iva AS iva,
                     f.venta_total AS total
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
                 LEFT JOIN ctl_tipofactura t ON t.id = id_tipofactura
                 WHERE fecha >= '$fini' AND fecha <= '$ffin'
-                ORDER BY f.fecha, f.id_tipofactura;
+                ORDER BY f.fecha, f.id_tipofactura, f.id_condicionpago;
                ";
         return $em->getConnection()->executeQuery($sql);
     }
