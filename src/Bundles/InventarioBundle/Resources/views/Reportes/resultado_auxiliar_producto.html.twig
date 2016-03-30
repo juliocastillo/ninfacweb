@@ -75,7 +75,11 @@
                 {% set saldo_unidades = saldo_unidades + mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
                 {% set saldo_importe = saldo_importe + ((mov.cantidad_inicial + mov.cantidad_entrada) * mov.precio_costo) %}
                 {% if mov.tipo_movimiento != '3' %}
-                    {% set costo = saldo_importe/saldo_unidades %}
+                    {% if saldo_unidades != 0 %}
+                        {% set costo = saldo_importe/saldo_unidades %}
+                    {% else %}
+                        {% set costo = saldo_importe/1 %}
+                    {% endif %}
                 {% endif %}
                 {% set inicial_importe = mov.cantidad_inicial * mov.precio_costo %}
                 {% set entrada_importe = mov.cantidad_entrada * mov.precio_costo %}

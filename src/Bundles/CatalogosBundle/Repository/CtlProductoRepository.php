@@ -40,7 +40,7 @@ class CtlProductoRepository extends EntityRepository {
                 p.precio_costo AS precio_costo
                 FROM
                 ctl_producto p
-                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id AND m.tipo_mov = 'I'
+                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id
                 WHERE p.id = '$id'
                 UNION
                 SELECT
