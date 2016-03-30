@@ -29,6 +29,7 @@ class Builder extends ContainerAware {
 
         // Agregar nodo principal para las opciones del menú
         $this->menu->addChild('Reportes')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
+        $this->menu->addChild('Herramientas')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
         
         /*
          * Agregando las opciones del nodo principal del menú,
@@ -38,6 +39,8 @@ class Builder extends ContainerAware {
         $this->menu['Reportes']->addChild('Auxiliar diario de productos', array('route' => 'imprimir_auxiliar_producto'));
         $this->menu['Reportes']->addChild('Diario de facturación', array('route' => 'imprimir_diario_factura'));
         $this->menu['Reportes']->addChild('Estado cuentas por cobrar', array('route' => 'imprimir_estado_cuentas_cobrar'));
+        
+        $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
         
         /* Creacion del menu estatico */
         $this->createStaticMenu($user);

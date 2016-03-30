@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * InvProductoMov
  *
  * @ORM\Table(name="inv_producto_mov", uniqueConstraints={@ORM\UniqueConstraint(name="uk_inv_producto_mov", columns={"id_producto", "lote"}), @ORM\UniqueConstraint(name="unique_id", columns={"id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bundles\InventarioBundle\Repository\InvProductoMovRepository")
  */
 class InvProductoMov
 {
