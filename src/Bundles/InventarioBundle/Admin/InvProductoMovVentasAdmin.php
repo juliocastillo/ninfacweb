@@ -49,6 +49,7 @@ class InvProductoMovVentasAdmin extends Admin
                                 'format' => 'd-m-Y',
                                 'attr' => array('style'=>'width:300px', 'maxlength' => '25'),
                 ))
+            ->add('idProducto.precioVenta',null,array('label'=>'Precio de Venta'))
             ->add('saldo')
         ;
     }

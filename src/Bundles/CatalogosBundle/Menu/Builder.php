@@ -1,15 +1,10 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// src/Bundles/CatalogosBundle/Menu/Builder.php
 
 /**
  * Description of Builder
  *
- * @author julio
+ * @author Julio Castillo
  */
 
 namespace Bundles\CatalogosBundle\Menu;
@@ -32,12 +27,17 @@ class Builder extends ContainerAware {
         $admin = $options['admin'];
         $user = $options['user'];
 
+        // Agregar nodo principal para las opciones del menú
         $this->menu->addChild('Reportes')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
-//        $this->menu['Reportes']->addChild('Reporte diario', array('route' => 'imprimir_auxiliar_producto',
-//            'routeParameters'=>array('id'=>'3')))
-//                ->setLinkAttribute('id', 'reporte1');
+        
+        /*
+         * Agregando las opciones del nodo principal del menú,
+         * invocando una ruta que se encuentra en el service.yml de los Bundles
+         *
+         */ 
         $this->menu['Reportes']->addChild('Auxiliar diario de productos', array('route' => 'imprimir_auxiliar_producto'));
         $this->menu['Reportes']->addChild('Diario de facturación', array('route' => 'imprimir_diario_factura'));
+        $this->menu['Reportes']->addChild('Estado cuentas por cobrar', array('route' => 'imprimir_estado_cuentas_cobrar'));
         
         /* Creacion del menu estatico */
         $this->createStaticMenu($user);

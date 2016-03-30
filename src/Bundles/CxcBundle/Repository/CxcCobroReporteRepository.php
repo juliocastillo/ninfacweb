@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// src/Bundles/CxcBundle/Repository/CxcCobrosRepository.php
 
 /**
  * Description of CxcCobroReporteRepository
@@ -42,5 +38,32 @@ class CxcCobroReporteRepository extends EntityRepository {
         $sql = "UPDATE cxc_cobro SET estado = 'PAGADO' WHERE fecha = '$fecha'";
         $em->getConnection()->executeQuery($sql);
         return;
+    }
+    
+    
+     /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
+    public function estadoCuentasCobrar($id){
+        $em = $this->getEntityManager();
+        $sql = "
+                SELECT 
+                    c.nombre AS cliente,
+                    t.nombre AS tipofactura,
+                    f.numero,
+                    f.fecha,
+                    now()-f.fecha AS dias_transcurridos,
+                    p.nombre AS condicionpago,
+                    f.venta_total,
+                    f.cobro_total,
+                    (f.venta_total-f.cobro_total) AS saldo
+                FROM fac_factura f
+                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
+                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
+                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
+                WHERE f.id_condicionpago != 1 AND f.id_cliente = '$id'";
+        return $em->getConnection()->executeQuery($sql);
     }
 }
