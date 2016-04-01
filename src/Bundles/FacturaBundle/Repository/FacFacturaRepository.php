@@ -61,6 +61,7 @@ class FacFacturaRepository extends EntityRepository {
                     f.fecha,
                     c.nombre AS cliente,
                     p.nombre AS condicion,
+                    f.id_condicionpago,
                     t.nombre AS tipo,
                     f.sumas AS subtotal,
                     0 AS descuento,

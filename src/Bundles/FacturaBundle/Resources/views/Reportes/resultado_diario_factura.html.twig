@@ -53,13 +53,19 @@
                 {% set ventaneta = 0 %}
                 {% set iva = 0 %}
                 {% set total = 0 %}
-                            
+                {% set total_contado = 0 %}
+                {% set total_creditos = 0 %}
             {% for mov in movimientos %}
                 {% set subtotal = subtotal + mov.subtotal %}
                 {% set descuento = descuento + mov.descuento %}
                 {% set ventaneta = ventaneta + mov.ventaneta %}
                 {% set iva = iva + mov.iva %}
                 {% set total = total + mov.total %}
+                {% if mov.id_condicionpago == 1 %}
+                    {% set total_contado = total_contado + mov.total %}
+                {% else %}
+                    {% set total_creditos = total_creditos + mov.total %}
+                {% endif %}
                 <tr>
                     <td>{{ mov.tipo }}</td>
                     <td>{{ mov.numero }}</td>
@@ -74,6 +80,18 @@
                 </tr>
             {% endfor %}
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>======</td>
+                <td>======</td>
+                <td>======</td>
+                <td>======</td>
+                <td>======</td>
+            </tr>
+            <tr>
                 <td>SUMAS</td>
                 <td></td>
                 <td></td>
@@ -85,6 +103,32 @@
                 <td>{{ iva  | number_format(2, '.', ',') }}</td>
                 <td>{{ total  | number_format(2, '.', ',') }}</td>
             </tr>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>RESUMEN</td>
+                <td>Total contado</td>
+                <td>{{ total_contado  | number_format(2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total créditos</td>
+                <td>{{ total_creditos  | number_format(2, '.', ',') }}</td>
+            </tr>
+            
         </table>
     </body>
 </html>

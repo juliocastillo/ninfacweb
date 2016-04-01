@@ -57,9 +57,13 @@ class CtlClienteAdmin extends Admin
             ->add('nombre','text', array(
                 'max_length'=>'100',
                 ))
-            ->add('nombreComercial','text', array(
-                'max_length'=>'100',
-                ))
+                
+                
+                
+                
+            ->add('nombreComercial', 'entity_collection_selector', array(
+    'configs' => array('entity' => 'AcmeDemoBundle:Customer')
+))
             ->add('giro','text', array(
                 'max_length'=>'100',
                 ))
