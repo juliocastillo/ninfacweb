@@ -36,7 +36,7 @@ class CxcCobroReporteAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array(),
+                    //'delete' => array(),
                 )
             ))
         ;

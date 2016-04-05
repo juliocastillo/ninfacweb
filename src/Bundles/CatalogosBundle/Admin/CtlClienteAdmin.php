@@ -16,7 +16,10 @@ class CtlClienteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('nombre')
+            ->add('nombre',null, array(
+                'class'=>'form-control',
+                'placeholder'=>'Search'
+                ))
             ->add('nrc')
             ->add('exento')
         ;
@@ -36,7 +39,7 @@ class CtlClienteAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array(),
+                    //'delete' => array(),
                 )
             ))
         ;

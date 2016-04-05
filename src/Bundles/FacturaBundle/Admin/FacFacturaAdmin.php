@@ -60,7 +60,7 @@ class FacFacturaAdmin extends Admin {
                     'actions' => array(
                         'show' => array(),
                         'edit' => array(),
-                        'delete' => array(),
+                        //'delete' => array(),
                     )
                 ))
         ;
@@ -313,7 +313,7 @@ class FacFacturaAdmin extends Admin {
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".activo = TRUE")
-                        //->where($query->getRootAlias() . ".estado != 'PAGADO'")
+                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
 
         );
     }
