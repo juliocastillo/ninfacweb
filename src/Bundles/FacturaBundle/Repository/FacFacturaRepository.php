@@ -78,5 +78,35 @@ class FacFacturaRepository extends EntityRepository {
         return $em->getConnection()->executeQuery($sql);
     }
     
+    /*
+     * DESCRIPCION: obtener listado de facturas por vendedor
+     * Julio Castillo
+     * Analista programador
+     */
+    public function facturasVendedor($fini = null,$ffin = null,$id=null){
+        $em = $this->getEntityManager();
+        $sql = " 
+                SELECT 
+                    f.numero,
+                    f.fecha,
+                    c.nombre AS cliente,
+                    p.nombre AS condicion,
+                    f.id_condicionpago,
+                    t.nombre AS tipo,
+                    t.id AS id_tipo,
+                    f.sumas AS subtotal,
+                    0 AS descuento,
+                    f.sumas AS ventaneta,
+                    f.iva AS iva,
+                    f.venta_total AS total
+                FROM fac_factura f
+                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
+                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
+                LEFT JOIN ctl_tipofactura t ON t.id = id_tipofactura
+                WHERE fecha >= '$fini' AND fecha <= '$ffin' AND id_empleado = '$id'
+                ORDER BY  f.id_tipofactura DESC, f.fecha, f.id_condicionpago;
+               ";
+        return $em->getConnection()->executeQuery($sql);
+    }
     
 }

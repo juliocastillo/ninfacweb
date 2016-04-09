@@ -1,0 +1,136 @@
+{#
+
+Reporte de facturas por vendedor
+CREATED BY: Julio Castillo
+DATE: 9/4/16
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>REPORTE DE FACTURAS POR VENDEDOR</center></b> <br>
+            <b>VENDEDOR:</b> 
+            <select id="vendedorseleccionado" name="id" required="required" >
+                <option value="">...Seleccione...</option>
+                {% set vendedor_nombre = '' %}
+                {% for vendedor in vendedores %}
+                    {% if id == vendedor.id %}
+                        {% set vendedor_nombre = vendedor.nombres ~ ' ' ~ vendedor.apellidos %}
+                        <option value="{{ vendedor.id }}" selected="{{ id }}">{{ vendedor.nombres ~ ' ' ~ vendedor.apellidos}}</option>
+                    {% else %}
+                        <option value="{{ vendedor.id }}">{{ vendedor.nombres ~ ' ' ~ vendedor.apellidos }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 60%; margin: 10px">
+                <tr>
+                    <td>Rango de fecha:{{ id }}</td>
+                    <td>desde</td>
+                    <td>
+                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+                    <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte de Ventas</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Vendedor: {{ vendedor_nombre }}</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td>TIPO</td>
+                <td>NUMERO</td>
+                <td>FECHA</td>
+                <td>CLIENTE</td>
+                <td style="text-align: center">TOTAL</td>
+            </tr>
+                {% set subtotal = 0 %}
+                {% set descuento = 0 %}
+                {% set ventaneta = 0 %}
+                {% set iva = 0 %}
+                {% set total = 0 %}
+                {% set total_cf = 0 %}
+                {% set total_ccf = 0 %}
+            {% for mov in movimientos %}
+                {% set subtotal = subtotal + mov.subtotal %}
+                {% set descuento = descuento + mov.descuento %}
+                {% set ventaneta = ventaneta + mov.ventaneta %}
+                {% set iva = iva + mov.iva %}
+                {% set total = total + mov.total %}
+                {% if mov.id_tipo == 1 %}
+                    {% set total_cf = total_cf + mov.total %}
+                {% else %}
+                    {% set total_ccf = total_ccf + mov.total %}
+                {% endif %}
+                <tr>
+                    <td>{{ mov.tipo }}</td>
+                    <td>{{ mov.numero }}</td>
+                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td>{{ mov.cliente }}</td>
+                    <td style="text-align: right">{{ mov.total  | number_format(2, '.', ',') }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">========</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">SUMA </td>
+                <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">Total crédito fiscal </td>
+                <td style="text-align: right">{{ total_ccf  | number_format(2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">Total consumidor final </td>
+                <td style="text-align: right">{{ total_cf  | number_format(2, '.', ',') }}</td>
+            </tr>
+            
+        </table>
+
+        {% endif %}
+        </div>
+{% endblock %}
