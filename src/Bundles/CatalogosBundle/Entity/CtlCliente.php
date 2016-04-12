@@ -513,7 +513,7 @@ class CtlCliente
      */
     public function setAgenteRetencion($agenteRetencion)
     {
-        $this->exento = $agenteRetencion;
+        $this->agenteRetencion = $agenteRetencion;
 
         return $this;
     }

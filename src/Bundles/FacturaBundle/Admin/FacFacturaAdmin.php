@@ -160,6 +160,12 @@ class FacFacturaAdmin extends Admin {
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
+                
+                    ->add('ivaRetenido', null, array(
+                        'read_only' => TRUE,
+                        'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                    ))
+
                     ->add('subtotal', null, array(
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
@@ -228,7 +234,18 @@ class FacFacturaAdmin extends Admin {
             $factura->setVentaTotal($sumas);
         }       
 
-        $factura->setIvaRetenido(0);
+        /*
+         * evaluar si el cliente es agente de retención
+         * para retener el iva correspondiente
+         * al momento del desarrollo es 1%
+         */
+        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
+            $factura->setIvaRetenido($sumas * 0.13);
+        }
+        else {
+            $factura->setIvaRetenido(0);
+        }
+        
         $factura->setVentasGravadas(0);
         
         if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
@@ -262,6 +279,7 @@ class FacFacturaAdmin extends Admin {
          */
         if ($factura->getIdTipofactura()->getId()==2){ // si la factura es de tipo Comprobante Credito Fiscal
             $iva = $sumas * 0.13;
+            
             $subtotal = $sumas + $iva;
             $factura->setSumas($sumas);
             $factura->setIva($iva);
@@ -274,7 +292,19 @@ class FacFacturaAdmin extends Admin {
             $factura->setVentaTotal($sumas);
         }       
 
-        $factura->setIvaRetenido(0);
+        /*
+         * evaluar si el cliente es agente de retención
+         * para retener el iva correspondiente
+         * al momento del desarrollo es 1%
+         */
+        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
+            $factura->setIvaRetenido($sumas * 0.13);
+        }
+        else {
+            $factura->setIvaRetenido(0);
+        }
+
+        
         $factura->setVentasGravadas(0);
         
         if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
