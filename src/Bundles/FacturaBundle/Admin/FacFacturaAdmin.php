@@ -240,7 +240,9 @@ class FacFacturaAdmin extends Admin {
          * al momento del desarrollo es 1%
          */
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
-            $factura->setIvaRetenido($sumas * 0.13);
+            $ivaretenido = $sumas * 0.01;
+            $factura->setIvaRetenido($ivaretenido);
+            $factura->setVentaTotal($subtotal-$ivaretenido);
         }
         else {
             $factura->setIvaRetenido(0);
@@ -298,7 +300,9 @@ class FacFacturaAdmin extends Admin {
          * al momento del desarrollo es 1%
          */
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
-            $factura->setIvaRetenido($sumas * 0.13);
+            $ivaretenido = $sumas * 0.01;
+            $factura->setIvaRetenido($ivaretenido);
+            $factura->setVentaTotal($subtotal-$ivaretenido);
         }
         else {
             $factura->setIvaRetenido(0);
