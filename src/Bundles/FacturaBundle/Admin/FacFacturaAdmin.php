@@ -346,8 +346,7 @@ class FacFacturaAdmin extends Admin {
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
-                        ->where($query->getRootAlias() . ".activo = TRUE")
-                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
+                        ->where($query->getRootAlias() . ".dateAdd = 'now()'")
 
         );
     }

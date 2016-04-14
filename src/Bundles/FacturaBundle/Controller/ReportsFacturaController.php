@@ -485,5 +485,51 @@ class ReportsFacturaController extends Controller {
         )
         );        
     }
+
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+    /**
+     * @Route("/facturas_detalle_cliente", name="imprimir_facturas_detalle_cliente", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function facturas_detalle_clienteAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $lista = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+        
+        if (isset($_REQUEST['fini'])){
+            $id = $_REQUEST['id'];
+            $fini = $_REQUEST['fini'];
+            $ffin = $_REQUEST['ffin'];
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturasDetalleCliente($fini,$ffin,$id);
+            $requestvalid = TRUE;
+        } else {
+            $id = '';
+            $fini = Date('Y-m-d');
+            $ffin = Date('Y-m-d');
+            $movimientos = "";
+            $nombreproducto = "";
+            $requestvalid = FALSE;
+        }
+
+        return $this->render('BundlesFacturaBundle:Reportes:facturas_detalle_cliente.html.twig', array(
+            'id' => $id,
+            'clientes'=>$lista,
+            'movimientos'=>$movimientos,
+            'empresa' => $empresa,
+            'fini' => $fini,
+            'ffin' => $ffin,
+            'requestvalid' => $requestvalid,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
+    
     
 }

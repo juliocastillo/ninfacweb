@@ -1,0 +1,148 @@
+{#
+
+Reporte de facturas por vendedor
+CREATED BY: Julio Castillo
+DATE: 9/4/16
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>REPORTE DE FACTURAS DETALLE</center></b> <br>
+            <b>CLIENTE:</b> 
+            <select id="clienteseleccionado" name="id" required="required" >
+                <option value="">...Seleccione...</option>
+                {% set nombre = '' %}
+                {% for row in clientes %}
+                    {% if id == row.id %}
+                        {% set nombre = row.nombre %}
+                        <option value="{{ row.id }}" selected="{{ id }}">{{ row.nombre }}</option>
+                    {% else %}
+                        <option value="{{ row.id }}">{{ row.nombre }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 60%; margin: 10px">
+                <tr>
+                    <td>Rango de fecha:</td>
+                    <td>desde</td>
+                    <td>
+                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+                    <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte Factura-Detalle por Cliente</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Cliente: {{ nombre }}</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td>NUMERO</td>
+                <td>TIPO</td>
+                <td>FECHA</td>
+                <td>DETALLE</td>
+                <td style="text-align: center">CANTIDAD</td>
+                <td style="text-align: center">PRECIO</td>
+                <td style="text-align: center">SUB-TOTAL</td>
+            </tr>
+                {% set subtotal = 0 %}
+                {% set descuento = 0 %}
+                {% set ventaneta = 0 %}
+                {% set iva = 0 %}
+                {% set total = 0 %}
+                {% set total_cf = 0 %}
+                {% set total_ccf = 0 %}
+                {% set numero_texto = "" %}
+            {% for mov in movimientos %}
+                {% set subtotal = subtotal + mov.subtotal %}
+                {% set descuento = descuento + mov.descuento %}
+                {% set ventaneta = ventaneta + mov.ventaneta %}
+                {% set iva = iva + mov.iva %}
+                {% set total = total + mov.total %}
+                {% if mov.id_tipo == 1 %}
+                    {% set total_cf = total_cf + mov.total %}
+                {% else %}
+                    {% set total_ccf = total_ccf + mov.total %}
+                {% endif %}
+                <tr>
+                    
+                    {% if mov.numero != numero_texto %}
+                            <td>{{ mov.numero }}</td><td>{{ mov.tipo }}</td><td>{{ mov.fecha | date('d/m/Y')}}</td>
+                        {% else %}
+                            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                        {% endif %}
+                    </td>
+                    <td>{{ mov.nombre_producto }}</td>
+                    <td style="text-align: right">{{ mov.cantidad }}</td>
+                    <td style="text-align: right">{{ mov.precio_unitario }}</td>
+                    <td style="text-align: right">{{ mov.ventas_gravadas  | number_format(2, '.', ',') }}</td>
+                </tr>
+                {% set numero_texto = mov.numero %}
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">========</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" style="text-align: right">SUMA </td>
+                <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" style="text-align: right">Total crédito fiscal </td>
+                <td style="text-align: right">{{ total_ccf  | number_format(2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" style="text-align: right">Total consumidor final </td>
+                <td style="text-align: right">{{ total_cf  | number_format(2, '.', ',') }}</td>
+            </tr>
+            
+        </table>
+
+        {% endif %}
+        </div>
+{% endblock %}
