@@ -15,14 +15,17 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 
 class FacFacturaAdmin extends Admin {
 
+    /*
+     * remover o agregar botones de herramientas
+     * de sonata admin
+     */
     protected function configureRoutes(RouteCollection $collection) {
         $collection
-                //->remove('create')
-                ->add('delete')
-        //->remove('edit')
+            ->remove('delete')
         ;
     }
 
+    
     /**
      * @param DatagridMapper $datagridMapper
      */

@@ -8,8 +8,19 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Sonata\AdminBundle\Route\RouteCollection;
+
 class CtlClienteAdmin extends Admin
 {
+    protected function configureRoutes(RouteCollection $collection) {
+        $collection
+                //->remove('create')
+                ->remove('delete')
+        //->remove('edit')
+        ;
+    }
+
+    
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -39,7 +50,7 @@ class CtlClienteAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    //'delete' => array(),
+                    'delete' => array(),
                 )
             ))
         ;
