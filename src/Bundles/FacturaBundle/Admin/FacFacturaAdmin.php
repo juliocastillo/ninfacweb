@@ -345,14 +345,14 @@ class FacFacturaAdmin extends Admin {
     /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
-    public function createQuery($context = 'list') {
-        $query = parent::createQuery($context);
-        return new ProxyQuery(
-                $query
-                        ->where($query->getRootAlias() . ".dateAdd = 'now()'")
-
-        );
-    }
+//    public function createQuery($context = 'list') {
+//        $query = parent::createQuery($context);
+//        return new ProxyQuery(
+//                $query
+//                        ->where($query->getRootAlias() . ".dateAdd = 'now()'")
+//
+//        );
+//    }
     
     
     
