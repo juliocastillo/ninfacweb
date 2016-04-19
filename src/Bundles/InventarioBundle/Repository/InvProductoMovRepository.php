@@ -56,8 +56,10 @@ class InvProductoMovRepository extends EntityRepository {
                 UPDATE inv_producto_mov SET cantidad_salida = (
                 SELECT 
                 sum(cantidad) 
-                FROM fac_facturadetalle f
-                WHERE id_inv_producto_mov = inv_producto_mov.id)
+                FROM fac_factura f, fac_facturadetalle d
+                WHERE f.id = d.id_factura AND
+                d.id_inv_producto_mov = inv_producto_mov.id AND
+                f.estado!='ANULADO')
             ";
         $em->getConnection()->executeQuery($sql);
         return;

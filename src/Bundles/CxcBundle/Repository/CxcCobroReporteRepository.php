@@ -63,7 +63,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
                 LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND f.id_cliente = '$id'";
+                WHERE f.id_condicionpago != 1 AND f.id_cliente = '$id' AND f.estado != 'PENDIENTE'";
         return $em->getConnection()->executeQuery($sql);
     }
 }

@@ -72,7 +72,7 @@ class FacFacturaRepository extends EntityRepository {
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
                 LEFT JOIN ctl_tipofactura t ON t.id = id_tipofactura
-                WHERE fecha >= '$fini' AND fecha <= '$ffin'
+                WHERE fecha >= '$fini' AND fecha <= '$ffin' AND f.estado != 'ANULADO'
                 ORDER BY f.fecha, f.id_tipofactura, f.id_condicionpago;
                ";
         return $em->getConnection()->executeQuery($sql);
@@ -103,7 +103,7 @@ class FacFacturaRepository extends EntityRepository {
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
                 LEFT JOIN ctl_tipofactura t ON t.id = id_tipofactura
-                WHERE fecha >= '$fini' AND fecha <= '$ffin' AND id_empleado = '$id'
+                WHERE fecha >= '$fini' AND fecha <= '$ffin' AND id_empleado = '$id' AND f.estado != 'ANULADO'
                 ORDER BY  f.id_tipofactura DESC, f.fecha, f.id_condicionpago;
                ";
         return $em->getConnection()->executeQuery($sql);
@@ -143,7 +143,7 @@ class FacFacturaRepository extends EntityRepository {
 		LEFT JOIN ctl_producto o ON o.id = m.id_producto
                 WHERE m.id = d.id_inv_producto_mov AND f.id=d.id_factura AND 
 			f.fecha >= '$fini' AND f.fecha <= '$ffin' AND
-                        c.id = $id
+                        c.id = $id AND f.estado != 'ANULADO'
                 ORDER BY f.fecha, f.id_tipofactura, f.id_condicionpago
                 ";
         return $em->getConnection()->executeQuery($sql);
