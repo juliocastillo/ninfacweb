@@ -27,6 +27,7 @@ class Builder extends ContainerAware {
         $admin = $options['admin'];
         $user = $options['user'];
 
+        if ($user){ // el menu se activará si ya esta logeado el usuario
         // Agregar nodo principal para las opciones del menú
         $this->menu->addChild('Reportes')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
         $this->menu->addChild('Herramientas')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
@@ -43,6 +44,10 @@ class Builder extends ContainerAware {
         $this->menu['Reportes']->addChild('Estado cuentas por cobrar', array('route' => 'imprimir_estado_cuentas_cobrar'));
         
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
+        $this->menu['Herramientas']->addChild('Copia de respaldo', array('route' => 'copia_respaldo')); //
+        } else { // la opcion aparecerá si no esta logeado el usuario
+            $this->menu->addChild('Acerca de')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
+        }
         
         /* Creacion del menu estatico */
         $this->createStaticMenu($user);
@@ -56,12 +61,12 @@ class Builder extends ContainerAware {
         /*
          * Ejemplo de Creacion de Menu Estatico, descomentar para su funcionamiento
          */
-        /* if($user->hasRole('ROLE_USER_LISTAREXPEDIENTES') || $user->hasRole('ROLE_SUPER_ADMIN')) */
+        //if($user->hasRole('ROLE_USER_LISTAREXPEDIENTES') || $user->hasRole('ROLE_SUPER_ADMIN')){
           //$this->menu['Reportes']->addChild('Expedientes Creados por Usuario', array('route' => 'bundles_inventario.admin.inv_auxiliar_producto'));
         /* if($user->hasRole('ROLE_USER_BUSCAREMERGENCIA') || $user->hasRole('ROLE_SUPER_ADMIN')){ */
           //$this->menu['IdentificaciÃ³n Paciente']->addChild('Registrar Emergencia', array('route' => 'admin_bundles_siaps_mntpaciente_buscaremergencia'));
           //$this->menu['Reportes']->addChild('Emergencias por Fecha', array('route' => 'admin_bundles_seguimiento_secemergencia_resumen_emergencia'));
-          /*} */
+         // }
     }
 
 }

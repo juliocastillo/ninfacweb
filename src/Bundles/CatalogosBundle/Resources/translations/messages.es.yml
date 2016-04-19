@@ -19,4 +19,6 @@
 'Ctl Almacen List': 'Listar Almacenes'
 'Ctl Tipo Cliente List': 'Listar tipo de cliente'
 'Cxc Cobro Reporte List': 'Listar reportes cobros'
-'Inv Inicial List': 'Inventario Inicial'
+'Inv Inicial List': 'Listar Inventario Inicial'
+'Ctl Motivo Anulacion List': 'Listar Motivo de anulación'
+'Fac Factura Anulada List': 'Listar Anulación de facturas'

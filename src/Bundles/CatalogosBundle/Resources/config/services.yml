@@ -135,3 +135,9 @@ services:
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlMarca, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Marcas}
+
+    bundles_catalogos.admin.ctl_motivo_anulacion:
+        class: Bundles\CatalogosBundle\Admin\CtlMotivoAnulacionAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlMotivoAnulacion, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Motivo anulación}

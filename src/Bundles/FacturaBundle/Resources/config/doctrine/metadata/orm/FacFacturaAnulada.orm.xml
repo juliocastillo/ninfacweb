@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="FacFacturaAnulada" table="fac_factura_anulada">
+    <indexes>
+      <index name="index_id1" columns="id_user_add"/>
+      <index name="IDX_3075F9EC27760979" columns="id_factura"/>
+      <index name="IDX_3075F9ECDEDAFAA8" columns="id_motivo_anulacion"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="dateAdd" type="date" column="date_add" nullable="true"/>
+    <field name="idUserAdd" type="integer" column="id_user_add" nullable="false"/>
+    <field name="idUserMod" type="integer" column="id_user_mod" nullable="false"/>
+    <field name="dateMod" type="date" column="date_mod" nullable="false"/>
+    <many-to-one field="idMotivoAnulacion" target-entity="CtlMotivoAnulacion">
+      <join-columns>
+        <join-column name="id_motivo_anulacion" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idFactura" target-entity="FacFactura">
+      <join-columns>
+        <join-column name="id_factura" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

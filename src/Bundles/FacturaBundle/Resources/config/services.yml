@@ -22,3 +22,9 @@ services:
         arguments: [~, Bundles\FacturaBundle\Entity\FacFacturadetalle, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+
+    bundles_factura.admin.fac_factura_anulada:
+        class: Bundles\FacturaBundle\Admin\FacFacturaAnuladaAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacFacturaAnulada, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Ventas, label: Anular Factura}

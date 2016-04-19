@@ -8,8 +8,21 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Sonata\AdminBundle\Route\RouteCollection;
+
 class FacNotaremisionAdmin extends Admin
 {
+    
+    /*
+     * remover o agregar botones de herramientas
+     * de sonata admin
+     */
+    protected function configureRoutes(RouteCollection $collection) {
+        $collection
+            ->remove('delete')
+        ;
+    }
+    
     /**
      * @param DatagridMapper $datagridMapper
      */
