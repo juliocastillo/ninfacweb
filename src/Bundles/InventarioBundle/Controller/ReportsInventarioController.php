@@ -129,15 +129,11 @@ class ReportsInventarioController extends Controller {
         
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
-            $fini = $_REQUEST['fini'];
-            $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->AuxiliarProducto($id,$fini,$ffin);
+            $movimientos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->AuxiliarProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
             $requestvalid = TRUE; 
         } else {
             $id = '';
-            $fini = Date('Y-m-d');
-            $ffin = Date('Y-m-d');
             $movimientos = "";
             $nombreproducto = "";
             $requestvalid = FALSE;
@@ -149,8 +145,6 @@ class ReportsInventarioController extends Controller {
             'movimientos'=>$movimientos,
             'productos' => $productos,
             'empresa' => $empresa,
-            'fini' => $fini,
-            'ffin' => $ffin,
             'requestvalid' => $requestvalid,
             'nombreproducto' => $nombreproducto,
             'base_template' => $this->getBaseTemplate(),
