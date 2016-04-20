@@ -351,7 +351,7 @@ class FacFacturaAdmin extends Admin {
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
-                        ->where($query->getRootAlias() . ".activo = FALSE")
+                        ->where($query->getRootAlias() . ".activo = TRUE")
 
         );
         } else { // permite ver las facturas del día a otro usuario no administrador
