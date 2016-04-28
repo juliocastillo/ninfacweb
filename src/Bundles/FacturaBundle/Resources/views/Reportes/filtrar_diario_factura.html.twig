@@ -38,6 +38,24 @@ file that was distributed with this source code.
                     <td>
                             <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
+                </tr>
+                <tr>
+                    <td>Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            <option value="">Todos</option>
+                            {% set tipo_factura = '' %}
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    {% set tipo_factura = tipo.nombre %}
+                                    <option value="{{ tipo.id }}" selected="{{ id_tipofactura }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+
+                    </td>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>
             </table>

@@ -41,7 +41,10 @@ class InvEntradadetalleAdmin extends Admin
                             'admin_code' => 'bundles_inventario.admin.inv_producto_mov',
                             'placeholder' => ''
                     ))
-                ->add('precioUnitario',null, array('label'=>'Precio de costo unitario',
+                ->add('precioUnitario',null, array('label'=>'Costo FOB',
+                    'required'=>FALSE,
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+                ->add('costoAdicional',null, array('label'=>'Costo CIF',
                     'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
                 ->add('cantidad',null, array(

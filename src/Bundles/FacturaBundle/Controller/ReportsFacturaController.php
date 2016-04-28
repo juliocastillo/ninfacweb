@@ -415,12 +415,16 @@ class ReportsFacturaController extends Controller {
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
         
+        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+        
         if (isset($_REQUEST['fini'])){
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->diarioFacturacion($fini,$ffin);
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->diarioFacturacion($id_tipofactura,$fini,$ffin);
             $requestvalid = TRUE; 
         } else {
+            $id_tipofactura = "";
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -429,10 +433,12 @@ class ReportsFacturaController extends Controller {
         }
 
         return $this->render('BundlesFacturaBundle:Reportes:filtrar_diario_factura.html.twig', array(
+            'id_tipofactura' => $id_tipofactura,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,
             'fini' => $fini,
             'ffin' => $ffin,
+            'tipos' => $tipos,
             'requestvalid' => $requestvalid,
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
@@ -457,14 +463,18 @@ class ReportsFacturaController extends Controller {
 
         $vendedores = $em->getRepository('BundlesCatalogosBundle:CtlEmpleado')->findBy(array('activo'=>TRUE,'autorizarVenta'=>TRUE));
         
+        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+        
         if (isset($_REQUEST['fini'])){
             $id = $_REQUEST['id'];
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturasVendedor($fini,$ffin,$id);
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturasVendedor($id_tipofactura,$fini,$ffin,$id);
             $requestvalid = TRUE; 
         } else {
             $id = '';
+            $id_tipofactura = '';
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -474,6 +484,8 @@ class ReportsFacturaController extends Controller {
 
         return $this->render('BundlesFacturaBundle:Reportes:facturas_vendedor.html.twig', array(
             'id' => $id,
+            'id_tipofactura' => $id_tipofactura,
+            'tipos' => $tipos,
             'vendedores'=>$vendedores,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,
@@ -502,14 +514,18 @@ class ReportsFacturaController extends Controller {
 
         $lista = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
         
+        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+
         if (isset($_REQUEST['fini'])){
             $id = $_REQUEST['id'];
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturasDetalleCliente($fini,$ffin,$id);
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturasDetalleCliente($id_tipofactura, $fini,$ffin,$id);
             $requestvalid = TRUE;
         } else {
             $id = '';
+            $id_tipofactura = '';
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -519,6 +535,8 @@ class ReportsFacturaController extends Controller {
 
         return $this->render('BundlesFacturaBundle:Reportes:facturas_detalle_cliente.html.twig', array(
             'id' => $id,
+            'id_tipofactura'=>$id_tipofactura,
+            'tipos' => $tipos,
             'clientes'=>$lista,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,

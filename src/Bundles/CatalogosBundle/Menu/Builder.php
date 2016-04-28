@@ -38,6 +38,7 @@ class Builder extends ContainerAware {
          *
          */ 
         $this->menu['Reportes']->addChild('Auxiliar de productos', array('route' => 'imprimir_auxiliar_producto'));
+        $this->menu['Reportes']->addChild('Ventas por producto', array('route' => 'imprimir_venta_producto'));
         $this->menu['Reportes']->addChild('Diario de facturación', array('route' => 'imprimir_diario_factura'));
         $this->menu['Reportes']->addChild('Facturas por vendedor', array('route' => 'imprimir_facturas_vendedor'));
         $this->menu['Reportes']->addChild('Factura-Detalle por clientes', array('route' => 'imprimir_facturas_detalle_cliente'));

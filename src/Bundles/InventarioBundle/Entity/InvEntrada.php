@@ -50,6 +50,15 @@ class InvEntrada
      */
     private $numero;
 
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo_compra", type="integer", nullable=true)
+     */
+    private $tipoCompra;
+    
+    
     /**
      * @var boolean
      *
@@ -215,6 +224,29 @@ class InvEntrada
     public function setNumero($numero)
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCompra
+     *
+     * @return integer 
+     */
+    public function getTipoCompra()
+    {
+        return $this->tipoCompra;
+    }
+
+    /**
+     * Set tipoCompra
+     *
+     * @param integer $tipoCompra
+     * @return InvEntrada
+     */
+    public function setTipoCompra($tipoCompra)
+    {
+        $this->tipoCompra = $tipoCompra;
 
         return $this;
     }

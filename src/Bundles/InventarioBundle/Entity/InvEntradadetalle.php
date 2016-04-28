@@ -58,6 +58,14 @@ class InvEntradadetalle
     private $precioUnitario;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="costo_adicional", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    private $costoAdicional;
+    
+    
+    /**
      * @var \InvEntrada
      *
      * @ORM\ManyToOne(targetEntity="InvEntrada", inversedBy="entradaDetalle")
@@ -204,6 +212,32 @@ class InvEntradadetalle
         return $this->precioUnitario;
     }
 
+    
+    /**
+     * Set costoAdicional
+     *
+     * @param string $costoAdicional
+     * @return InvEntradadetalle
+     */
+    public function setCostoAdicional($costoAdicional)
+    {
+        $this->costoAdicional = $costoAdicional;
+
+        return $this;
+    }
+
+    /**
+     * Get costoAdicional
+     *
+     * @return string 
+     */
+    public function getCostoAdicional()
+    {
+        return $this->costoAdicional;
+    }
+    
+    
+    
     /**
      * Set idEntrada
      *

@@ -129,7 +129,7 @@ class ReportsInventarioController extends Controller {
         
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
-            $movimientos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->AuxiliarProducto($id);
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->AuxiliarProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
             $requestvalid = TRUE; 
         } else {
@@ -154,6 +154,45 @@ class ReportsInventarioController extends Controller {
     }
 
     
+    /**
+     * @Route("/venta_producto", name="imprimir_venta_producto", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function venta_productoAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
+        
+        if (isset($_REQUEST['id'])){
+            $id = $_REQUEST['id'];
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id);
+            $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
+            $requestvalid = TRUE; 
+        } else {
+            $id = '';
+            $movimientos = "";
+            $nombreproducto = "";
+            $requestvalid = FALSE;
+        }
+
+        
+        return $this->render('BundlesInventarioBundle:Reportes:venta_producto.html.twig', array(
+            'id' => $id,
+            'movimientos'=>$movimientos,
+            'productos' => $productos,
+            'empresa' => $empresa,
+            'requestvalid' => $requestvalid,
+            'nombreproducto' => $nombreproducto,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
+
     
     
 }

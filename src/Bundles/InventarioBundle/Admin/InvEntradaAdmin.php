@@ -72,6 +72,18 @@ class InvEntradaAdmin extends Admin
                     'attr'=> array(
                           'style' => 'width:400px'
                         )))
+                
+                ->add('tipoCompra', 'choice', array(
+                    'label'=>'Tipo de compra',
+                    'attr'=> array(
+                          'style' => 'width:400px'
+                        ),
+                    'choices'   => array(
+                        '0'   => 'Seleccione',
+                        '1'   => 'Local',
+                        '2' => 'Importación',
+                    )
+                ))
                 ->add('idProveedor','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Proveedor',
                     'btn_add' => 'Agregar',
@@ -129,7 +141,18 @@ class InvEntradaAdmin extends Admin
                 ;
     }
     
-     public function prePersist($entrada) {
+    public function getExportFields() {
+        return array('id',
+            'numero',
+            'fecha',
+            'idTipoentrada',
+            'idProveedor',
+            'idAlmacen'
+            );
+    }
+    
+    
+    public function prePersist($entrada) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $entrada->setIdUserAdd($user);

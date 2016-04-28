@@ -41,18 +41,18 @@
                 <td>NUMERO</td>
                 <td>FECHA</td>
                 <td>CLIENTE</td>
-                <td>CONDICION</td>
-                <td>SUB-TOTAL</td>
-                <td>DESC</td>
-                <td>VENTA-NETA</td>
-                <td>IVA</td>
-                <td>TOTAL</td>
+                <td style="text-align: right">CONTADO</td>
+                <td style="text-align: right">CREDITO</td>
+                <td style="text-align: right">VENTA-NETA</td>
+                <td style="text-align: right">IVA</td>
+                <td style="text-align: right">TOTAL</td>
             </tr>
                 {% set subtotal = 0 %}
                 {% set descuento = 0 %}
                 {% set ventaneta = 0 %}
                 {% set iva = 0 %}
                 {% set total = 0 %}
+                
                 {% set total_contado = 0 %}
                 {% set total_creditos = 0 %}
             {% for mov in movimientos %}
@@ -71,12 +71,11 @@
                     <td>{{ mov.numero }}</td>
                     <td>{{ mov.fecha | date('d/m/Y')}}</td>
                     <td>{{ mov.cliente }}</td>
-                    <td>{{ mov.condicion }}</td>
-                    <td>{{ mov.subtotal | number_format(2, '.', ',')}}</td>
-                    <td>{{ mov.descuento | number_format(2, '.', ',')}}</td>
-                    <td>{{ mov.ventaneta  | number_format(2, '.', ',') }}</td>
-                    <td>{{ mov.iva  | number_format(2, '.', ',') }}</td>
-                    <td>{{ mov.total  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %}{{ mov.total | number_format(2, '.', ',')}} {% else %} &nbsp; {% endif %}</td>
+                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %} &nbsp; {% else %} {{ mov.total | number_format(2, '.', ',')}} {% endif %}</td>
+                    <td style="text-align: right">{{ mov.ventaneta  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ mov.iva  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ mov.total  | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
             <tr>
@@ -84,49 +83,22 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td>======</td>
-                <td>======</td>
-                <td>======</td>
-                <td>======</td>
-                <td>======</td>
+                <td style="text-align: right">======</td>
+                <td style="text-align: right">======</td>
+                <td style="text-align: right">======</td>
+                <td style="text-align: right">======</td>
+                <td style="text-align: right">======</td>
             </tr>
             <tr>
                 <td>SUMAS</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td>{{ subtotal  | number_format(2, '.', ',') }}</td>
-                <td>{{ descuento  | number_format(2, '.', ',') }}</td>
-                <td>{{ ventaneta  | number_format(2, '.', ',') }}</td>
-                <td>{{ iva  | number_format(2, '.', ',') }}</td>
-                <td>{{ total  | number_format(2, '.', ',') }}</td>
-            </tr>
-            
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>RESUMEN</td>
-                <td>Total contado</td>
-                <td>{{ total_contado  | number_format(2, '.', ',') }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Total créditos</td>
-                <td>{{ total_creditos  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ total_contado  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ total_creditos  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ ventaneta  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ iva  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
             </tr>
             
         </table>

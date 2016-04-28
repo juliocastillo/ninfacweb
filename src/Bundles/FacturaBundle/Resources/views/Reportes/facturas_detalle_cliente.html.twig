@@ -48,8 +48,26 @@ DATE: 9/4/16
                     <td>
                             <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
+                </tr>
+                <tr>
+                    <td>Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            <option value="">Todos</option>
+                            {% set tipo_factura = '' %}
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    {% set tipo_factura = tipo.nombre %}
+                                    <option value="{{ tipo.id }}" selected="{{ id }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>
+                
             </table>
         </form>
         <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
@@ -67,9 +85,10 @@ DATE: 9/4/16
         </table>
         <table width="100%" style="border-collapse: collapse;">
             <tr>
-                <td>NUMERO</td>
                 <td>TIPO</td>
+                <td>NUMERO</td>
                 <td>FECHA</td>
+                <td>CONDICION</td>
                 <td>DETALLE</td>
                 <td style="text-align: center">CANTIDAD</td>
                 <td style="text-align: center">PRECIO</td>
@@ -97,9 +116,9 @@ DATE: 9/4/16
                 <tr>
                     
                     {% if mov.numero != numero_texto %}
-                            <td>{{ mov.numero }}</td><td>{{ mov.tipo }}</td><td>{{ mov.fecha | date('d/m/Y')}}</td>
+                            <td>{{ mov.tipo }}</td><td>{{ mov.numero }}</td><td>{{ mov.fecha | date('d/m/Y')}} </td><td> {{ mov.condicion }}</td>
                         {% else %}
-                            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                         {% endif %}
                     </td>
                     <td>{{ mov.nombre_producto }}</td>
@@ -116,9 +135,11 @@ DATE: 9/4/16
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td style="text-align: right">========</td>
             </tr>
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -130,10 +151,12 @@ DATE: 9/4/16
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td colspan="3" style="text-align: right">Total crédito fiscal </td>
                 <td style="text-align: right">{{ total_ccf  | number_format(2, '.', ',') }}</td>
             </tr>
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
