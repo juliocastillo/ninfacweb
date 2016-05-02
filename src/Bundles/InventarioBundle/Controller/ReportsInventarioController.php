@@ -192,6 +192,42 @@ class ReportsInventarioController extends Controller {
         )
         );        
     }
+    
+    /**
+     * @Route("/inventario_aldia", name="imprimir_inventario_aldia", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function inventario_aldiaAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        if (isset($_REQUEST['fini'])){
+            $fini = $_REQUEST['fini'];
+            $ffin = $_REQUEST['ffin'];
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($fini,$ffin);
+            $requestvalid = TRUE; 
+        } else {
+            $fini = Date('Y-m-d');
+            $ffin = Date('Y-m-d');
+            $movimientos = "";
+            $requestvalid = FALSE;
+        }
+
+        
+        return $this->render('BundlesInventarioBundle:Reportes:inventario_aldia.html.twig', array(
+            'movimientos'=>$movimientos,
+            'empresa' => $empresa,
+            'fini' => $fini,
+            'ffin' => $ffin,
+            'requestvalid' => $requestvalid,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
 
     
     

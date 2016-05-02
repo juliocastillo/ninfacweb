@@ -38,11 +38,14 @@ class Builder extends ContainerAware {
          *
          */ 
         $this->menu['Reportes']->addChild('Auxiliar de productos', array('route' => 'imprimir_auxiliar_producto'));
+        $this->menu['Reportes']->addChild('Inventario al día', array('route' => 'imprimir_inventario_aldia'));
         $this->menu['Reportes']->addChild('Ventas por producto', array('route' => 'imprimir_venta_producto'));
         $this->menu['Reportes']->addChild('Diario de facturación', array('route' => 'imprimir_diario_factura'));
         $this->menu['Reportes']->addChild('Facturas por vendedor', array('route' => 'imprimir_facturas_vendedor'));
         $this->menu['Reportes']->addChild('Factura-Detalle por clientes', array('route' => 'imprimir_facturas_detalle_cliente'));
+        $this->menu['Reportes']->addChild('Facturas Anuladas', array('route' => 'imprimir_factura_anulada'));
         $this->menu['Reportes']->addChild('Estado cuentas por cobrar', array('route' => 'imprimir_estado_cuentas_cobrar'));
+        
         
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
         $this->menu['Herramientas']->addChild('Copia de respaldo', array('route' => 'copia_respaldo')); //

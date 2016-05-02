@@ -549,5 +549,49 @@ class ReportsFacturaController extends Controller {
         );        
     }
     
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+    /**
+     * @Route("/factura_anulada", name="imprimir_factura_anulada", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function factura_anuladaAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+
+        if (isset($_REQUEST['fini'])){
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
+            $fini = $_REQUEST['fini'];
+            $ffin = $_REQUEST['ffin'];
+            $movimientos = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturaAnulada($id_tipofactura, $fini,$ffin);
+            $requestvalid = TRUE;
+        } else {
+            $id_tipofactura = '';
+            $fini = Date('Y-m-d');
+            $ffin = Date('Y-m-d');
+            $movimientos = "";
+            $nombreproducto = "";
+            $requestvalid = FALSE;
+        }
+
+        return $this->render('BundlesFacturaBundle:Reportes:facturas_anuladas.html.twig', array(
+            'id_tipofactura'=>$id_tipofactura,
+            'tipos' => $tipos,
+            'movimientos'=>$movimientos,
+            'empresa' => $empresa,
+            'fini' => $fini,
+            'ffin' => $ffin,
+            'requestvalid' => $requestvalid,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
     
 }

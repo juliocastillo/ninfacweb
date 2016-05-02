@@ -26,7 +26,7 @@ class InvProductoMovRepository extends EntityRepository {
             SELECT 
             sum(cantidad) 
             FROM inv_entradadetalle f
-            WHERE id_inv_producto_mov = inv_producto_mov.id)
+            WHERE id_inv_producto_mov = inv_producto_mov.id AND f.activo = true)
             ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -270,6 +270,49 @@ class InvProductoMovRepository extends EntityRepository {
                 fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id";
+        }
+        $result = $em->getConnection()->executeQuery($sql)->fetchAll();
+        return $result;
+    }
+    
+    /*
+     * DESCRIPCION: Reporte Auxiliar de producto (kardex).
+     * Julio Castillo
+     * Analista programador
+     */
+    public function InventarioAldia($fini = null, $ffin = null){
+        $em = $this->getEntityManager();
+        if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
+            $sql = 
+            "SELECT 
+                    t02.nombre,
+                    t02.precio_costo,
+                    t01.lote,
+                    t01.cantidad_inicial,
+                    t03.cantidad AS cantidad_entrada,
+                    t04.cantidad AS cantidad_salida	
+            FROM
+                    inv_producto_mov 	t01
+                    LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
+            ORDER BY t02.nombre,t02.id_categoria,t01.lote";
+        }
+        else { // devuelve todos los registros de un producto sin importar fecha
+            $sql = 
+            "SELECT 
+                    t02.nombre,
+                    t02.precio_costo,
+                    t01.lote,
+                    t01.cantidad_inicial,
+                    t03.cantidad AS cantidad_entrada,
+                    t04.cantidad AS cantidad_salida	
+            FROM
+                    inv_producto_mov 	t01
+                    LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
+            ORDER BY t02.nombre,t02.id_categoria,t01.lote";
         }
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;

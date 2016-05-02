@@ -1,0 +1,109 @@
+{#
+
+Reporte de facturas por vendedor
+CREATED BY: Julio Castillo
+DATE: 9/4/16
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>REPORTE DE FACTURAS ANULADAS</center></b> <br>
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 60%; margin: 10px">
+                <tr>
+                    <td>Rango de fecha:</td>
+                    <td>desde</td>
+                    <td>
+                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            <option value="">Todos</option>
+                            {% set tipo_factura = '' %}
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    {% set tipo_factura = tipo.nombre %}
+                                    <option value="{{ tipo.id }}" selected="{{ id_tipofactura }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+                    <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte de Facturas Anuladas</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td>TIPO</td>
+                <td>NUMERO</td>
+                <td>FECHA</td>
+                <td>CLIENTE</td>
+                <td>FECHA ANULACION</td>
+                <td>MOTIVO</td>
+            </tr>
+                {% set subtotal = 0 %}
+                {% set descuento = 0 %}
+                {% set ventaneta = 0 %}
+                {% set iva = 0 %}
+                {% set total = 0 %}
+                {% set total_cf = 0 %}
+                {% set total_ccf = 0 %}
+            {% for mov in movimientos %}
+                {% set subtotal = subtotal + mov.subtotal %}
+                {% set ventaneta = ventaneta + mov.ventaneta %}
+                {% set iva = iva + mov.iva %}
+                {% set total = total + mov.total %}
+                {% if mov.id_tipo == 1 %}
+                    {% set total_cf = total_cf + mov.total %}
+                {% else %}
+                    {% set total_ccf = total_ccf + mov.total %}
+                {% endif %}
+                <tr>
+                    <td>{{ mov.tipo }}</td>
+                    <td>{{ mov.numero }}</td>
+                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td>{{ mov.cliente }}</td>
+                    <td>{{ mov.fecha_anulacion | date('d/m/Y')}}</td>
+                    <td>{{ mov.id_motivo_anulacion }}</td>
+                </tr>
+            {% endfor %}
+            
+        </table>
+
+        {% endif %}
+        </div>
+{% endblock %}

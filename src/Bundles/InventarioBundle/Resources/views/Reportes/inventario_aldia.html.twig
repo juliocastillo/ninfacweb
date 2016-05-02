@@ -1,0 +1,91 @@
+{#
+
+Reporte de facturas por vendedor
+CREATED BY: Julio Castillo
+DATE: 9/4/16
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>REPORTE DE INVENTARIO AL DIA</center></b> <br>
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 60%; margin: 10px">
+                <tr>
+                    <td>Rango de fecha:</td>
+                    <td>desde</td>
+                    <td>
+                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+                    <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">Reporte de Inventario al día</td>
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td>PRODUCTO</td>
+                <td>LOTE</td>
+                <td align="right">INICIAL</td>
+                <td align="right">ENTRADA</td>
+                <td align="right">SALIDA</td>
+                <td align="right">IMPORTE</td>
+                <td align="right">SALDO</td>
+            </tr>
+            {% set total_importe = 0 %}
+            {% for mov in movimientos %}
+                {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
+                {% set importe = total * mov.precio_costo %}
+                {% set total_importe = total_importe + importe %}
+                <tr>
+                    <td>{{ mov.nombre }}</td>
+                    <td>{{ mov.lote }}</td>
+                    <td align="right">{{ mov.cantidad_inicial }}</td>
+                    <td align="right">{{ mov.cantidad_entrada }}</td>
+                    <td align="right">{{ mov.cantidad_salida }}</td>
+                    <td align="right">{{ importe  | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td align="right"></td>
+                    <td align="right"></td>
+                    <td align="right"></td>
+                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>
+                    <td align="right"></td>
+                </tr>
+            
+        </table>
+
+        {% endif %}
+        </div>
+{% endblock %}
