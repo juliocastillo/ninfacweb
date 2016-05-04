@@ -77,14 +77,18 @@ class ReportsCxcController extends Controller {
 
         $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
         
+        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+        
         if (isset($_REQUEST['id'])){
-            $id = $_REQUEST['id'];
-            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->estadoCuentasCobrar($id);
-            
-            $nombrecliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($id)->getNOmbre();
+            $id_cliente = $_REQUEST['id'];
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
+            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->estadoCuentasCobrar($id_cliente,$id_tipofactura);
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
+            $nombrecliente = "";
             $requestvalid = TRUE; 
         } else {
-            $id = '';
+            $id_cliente = '';
+            $id_tipofactura = '';
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -94,7 +98,9 @@ class ReportsCxcController extends Controller {
 
         
         return $this->render('BundlesCxcBundle:Reportes:filtrar_estado_cuentas_cobrar.html.twig', array(
-            'id' => $id,
+            'id' => $id_cliente,
+            'tipos' => $tipos,
+            'id_tipofactura'=>$id_tipofactura,
             'movimientos'=>$movimientos,
             'clientes' => $clientes,
             'empresa' => $empresa,

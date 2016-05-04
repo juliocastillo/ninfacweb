@@ -18,6 +18,7 @@ file that was distributed with this source code.
             <b>CLIENTE:</b> 
             <select id="clienteseleccionado" name="id" required="required" >
                 <option value="" selected="{{ id }}">...Seleccione...</option>
+                <option value="0">Todos</option>
                 {% for cliente in clientes %}
                     {% if id == cliente.id %}
                         <option value="{{ cliente.id }}" selected="{{ id }}">{{ cliente.nombre }}</option>
@@ -41,6 +42,22 @@ file that was distributed with this source code.
             </script>
             <table style="width: 50%; margin: 10px">
                 <tr>
+                    <td>Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            <option value="">Todos</option>
+                            {% set tipo_factura = '' %}
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    {% set tipo_factura = tipo.nombre %}
+                                    <option value="{{ tipo.id }}" selected="{{ id_tipofactura }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+
+                    </td>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>
             </table>

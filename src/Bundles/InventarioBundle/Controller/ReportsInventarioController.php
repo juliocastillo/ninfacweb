@@ -23,6 +23,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Knp\Snappy\Pdf;
 
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+
+
 class ReportsInventarioController extends Controller {
     /*
      * ANALISTA PROGRAMADOR: Julio Castillo
@@ -228,7 +233,41 @@ class ReportsInventarioController extends Controller {
         )
         );        
     }
+    
+    /**
+     * @Route("/exportar_archivo", name="exportar_archivo_csv", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function exportar_archivoAction() {
+        
+        $response = new StreamedResponse();
+        $response->setCallback(function() {
+            $handle = fopen('php://output', 'w+');
 
+            // Add the header of the CSV file
+            fputcsv($handle, array('Name', 'Surname', 'Age', 'Sex'),';');
+            // Query data from database
+            $em = $this->getDoctrine()->getManager();
+            $results = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia('2016-01-01','2016-04-30');
+            // Add the data queried from database
+            while($row = $em->fetch($results)) {
+                fputcsv(
+                    $handle, // The file pointer
+                    array($row['name'], $row['surname'], $row['age'], $row['sex']), // The fields
+                    ';' // The delimiter
+                );
+            }
+
+            fclose($handle);
+        });
+
+        $response->setStatusCode(200);
+//        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+//        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+
+        return $response;        
+    }
+    
     
     
 }

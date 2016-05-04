@@ -28,3 +28,9 @@ services:
         arguments: [~, Bundles\FacturaBundle\Entity\FacFacturaAnulada, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Ventas, label: Anular Factura}
+
+    bundles_factura.admin.fac_factura_manual:
+        class: Bundles\FacturaBundle\Admin\FacFacturaManualAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacFacturaManual, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Ventas, label: Crear créditos}
