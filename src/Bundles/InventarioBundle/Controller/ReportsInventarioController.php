@@ -208,13 +208,17 @@ class ReportsInventarioController extends Controller {
 
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+        
+        $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(array('activo'=>TRUE));
 
         if (isset($_REQUEST['fini'])){
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($fini,$ffin);
+            $id_marca = $_REQUEST['id_marca'];
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($fini,$ffin,$id_marca);
             $requestvalid = TRUE; 
         } else {
+            $id_marca = '';
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
@@ -223,6 +227,8 @@ class ReportsInventarioController extends Controller {
 
         
         return $this->render('BundlesInventarioBundle:Reportes:inventario_aldia.html.twig', array(
+            'id_marca'=>$id_marca,
+            'marcas'=>$marcas,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,
             'fini' => $fini,

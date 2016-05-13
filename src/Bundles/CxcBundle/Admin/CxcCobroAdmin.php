@@ -2,6 +2,8 @@
 
 namespace Bundles\CxcBundle\Admin;
 
+use Bundles\FacturaBundle\Entity;
+
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -63,71 +65,135 @@ class CxcCobroAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        
+        $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
+        $id = $entity->getId();
+        
         $empleado = new \Bundles\CatalogosBundle\Entity\CtlEmpleado;
         $banco = new \Bundles\CatalogosBundle\Entity\CtlBanco;
+        $factura = new \Bundles\FacturaBundle\Entity\FacFactura;
+        
         $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.autorizarCobro=TRUE');
         $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
+        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado = 'PENDIENTE'");
         
-        $formMapper
-            ->add('idFactura','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
-                    'label'=>'Numero de Factura',
+        if (!$id) { // Se mostrara al agregar un ITEM
+            $formMapper
+
+                    
+                ->add('idFactura','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'Factura (seleccione factura)',
+                    'required' => TRUE,
                     'btn_add' => FALSE,
-                    'btn_list' => 'Buscar factura',
-                    'btn_delete' => FALSE,
-                    'btn_catalogue' => 'SonataNewBundle'
-                        ), array(
-                    'placeholder' => '#####'
-                ))
-            ->add('numeroRecibo','integer',array(
-                'attr' => array(
-                    'style'=>'width:300px', 'maxlength' => '25')))
-            ->add('fecha', null, array(
-                    'label' => 'Fecha  (dd/mm/aaaa)',
-                    'disabled' => false,
-                    'widget' => 'single_text',  // un sólo input para la fecha, no tres.
-                    'format' => 'dd/MM/y',
-                    'attr'=> array('class'=>'bootstrap-datepicker now',
+                    'query' => $qry_factura,
+                    'attr' => array(
+                        'style'=>'width:500px')))     
+                    
+                ->add('numeroRecibo','integer',array(
+                    'attr' => array(
+                        'style'=>'width:300px', 'maxlength' => '25')))
+                ->add('fecha', null, array(
+                        'label' => 'Fecha  (dd/mm/aaaa)',
+                        'disabled' => false,
+                        'widget' => 'single_text',  // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr'=> array('class'=>'bootstrap-datepicker now',
+                            'style'=>'width:300px', 'maxlength' => '25'
+                            )))
+                ->add('idFormaPago','entity', array(
+                        'class'=>'BundlesCatalogosBundle:CtlFormaPago',
+                        'label'=>'Forma de pago',
+                        'attr' => array('style'=>'width:300px'),))
+                ->add('numeroCheque','text',array(
+                    'label'=>'Número de Cheque',
+                    'required'=>FALSE,
+                    'attr' => array(
                         'style'=>'width:300px', 'maxlength' => '25'
                         )))
-            ->add('idFormaPago','entity', array(
-                    'class'=>'BundlesCatalogosBundle:CtlFormaPago',
-                    'label'=>'Forma de pago',
-                    'attr' => array('style'=>'width:300px'),))
-            ->add('numeroCheque','text',array(
-                'label'=>'Número de Cheque',
-                'required'=>FALSE,
-                'attr' => array(
-                    'style'=>'width:300px', 'maxlength' => '25'
-                    )))
-            ->add('idBanco','sonata_type_model', array(
-                'empty_value'=>'...ninguno...',
-                'label' => 'Nombre del banco',
-                'required' => FALSE,
-                'btn_add' => FALSE,
-                'query' => $qry_banco,
-                'attr' => array(
-                    'style'=>'width:500px', 'maxlength' => '25')))
-                
-            ->add('monto','text',array(
-                'attr' => array(
-                    'style'=>'width:300px', 'maxlength' => '25')))
-
-            ->add('idEmpleado','sonata_type_model', array(
-                'empty_value'=>'...ninguno...',
-                'label' => 'Quien realiza el cobro?',
-                'required' => TRUE,
-                'btn_add' => FALSE,
-                'query' => $qry_empleado,
-                'attr' => array(
-                    'style'=>'width:500px', 'maxlength' => '25')))
-                
-            ->add('observacion','textarea', array(
-                    'label'=>'Comentarios',
+                ->add('idBanco','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'Nombre del banco',
                     'required' => FALSE,
+                    'btn_add' => FALSE,
+                    'query' => $qry_banco,
                     'attr' => array(
-                        'style'=>'width:500px'
+                        'style'=>'width:500px', 'maxlength' => '25')))
+
+                ->add('monto','text',array(
+                    'attr' => array(
+                        'style'=>'width:300px', 'maxlength' => '25')))
+
+                ->add('idEmpleado','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'Quien realiza el cobro?',
+                    'required' => TRUE,
+                    'btn_add' => FALSE,
+                    'query' => $qry_empleado,
+                    'attr' => array(
+                        'style'=>'width:500px', 'maxlength' => '25')))
+
+                ->add('observacion','textarea', array(
+                        'label'=>'Comentarios',
+                        'required' => FALSE,
+                        'attr' => array(
+                            'style'=>'width:500px'
+                            )))
+            ;
+        } else { // mode de modificacion el registro
+            $formMapper
+                
+                ->add('numeroRecibo','integer',array(
+                    'attr' => array(
+                        'style'=>'width:300px', 'maxlength' => '25')))
+                ->add('fecha', null, array(
+                        'label' => 'Fecha  (dd/mm/aaaa)',
+                        'disabled' => false,
+                        'widget' => 'single_text',  // un sólo input para la fecha, no tres.
+                        'format' => 'dd/MM/y',
+                        'attr'=> array('class'=>'bootstrap-datepicker now',
+                            'style'=>'width:300px', 'maxlength' => '25'
+                            )))
+                ->add('idFormaPago','entity', array(
+                        'class'=>'BundlesCatalogosBundle:CtlFormaPago',
+                        'label'=>'Forma de pago',
+                        'attr' => array('style'=>'width:300px'),))
+                ->add('numeroCheque','text',array(
+                    'label'=>'Número de Cheque',
+                    'required'=>FALSE,
+                    'attr' => array(
+                        'style'=>'width:300px', 'maxlength' => '25'
                         )))
-        ;
+                ->add('idBanco','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'Nombre del banco',
+                    'required' => FALSE,
+                    'btn_add' => FALSE,
+                    'query' => $qry_banco,
+                    'attr' => array(
+                        'style'=>'width:500px', 'maxlength' => '25')))
+
+                ->add('monto','text',array(
+                    'attr' => array(
+                        'style'=>'width:300px', 'maxlength' => '25')))
+
+                ->add('idEmpleado','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'Quien realiza el cobro?',
+                    'required' => TRUE,
+                    'btn_add' => FALSE,
+                    'query' => $qry_empleado,
+                    'attr' => array(
+                        'style'=>'width:500px', 'maxlength' => '25')))
+
+                ->add('observacion','textarea', array(
+                        'label'=>'Comentarios',
+                        'required' => FALSE,
+                        'attr' => array(
+                            'style'=>'width:500px'
+                            )))
+            ;
+        }
     }
 
     /**
@@ -154,6 +220,8 @@ class CxcCobroAdmin extends Admin
         
         $cobro->setActivo(TRUE);
 
+        $cobro->setEstado('PENDIENTE');
+        
     }
  
     public function preUpdate($cobro) {
@@ -162,6 +230,8 @@ class CxcCobroAdmin extends Admin
         $cobro->setIdUserMod($user);
         $cobro->setDateMod(new \DateTime());
 
+        $cobro->setEstado('PENDIENTE');
+        
         //accediendo al objeto de una entidad a través del EntityManager
 //        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
 //        $factura = $cobro->getIdFactura();
@@ -177,10 +247,7 @@ class CxcCobroAdmin extends Admin
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaPagos($idFactura);
         
         // actualizar estado en caso que la factura sea liquidada
-        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
-        
-        // asignar el estado procesado
-        $cobro->setEstado('PROCESADO');
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);        
     }
 
     public function postUpdate($cobro) {
@@ -256,8 +323,7 @@ class CxcCobroAdmin extends Admin
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
-                        ->where($query->getRootAlias() . ".activo = TRUE")
-                        ->where($query->getRootAlias() . ".estado != 'PAGADO'")
+                        ->where($query->getRootAlias() . ".dateAdd = 'now()'")
         );
     }
 

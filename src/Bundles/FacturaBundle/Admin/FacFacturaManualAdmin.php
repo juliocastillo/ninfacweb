@@ -152,7 +152,7 @@ class FacFacturaManualAdmin extends Admin
                     ->add('ventaTotal', null, array(
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
-                    ->add('cobroTotal', null, array(
+                    ->add('cobroTotalSinDetalle', null, array(
                     'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
         ;

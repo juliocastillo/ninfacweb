@@ -24,10 +24,19 @@ class FacFacturaRepository extends EntityRepository {
      */
     public function actualizaPagos($idFactura){
         $em = $this->getEntityManager();
-        $sql = "UPDATE fac_factura SET cobro_total =
-                (SELECT sum(monto) FROM cxc_cobro WHERE id_factura = '$idFactura' GROUP BY id_factura)
+        $sql = "UPDATE fac_factura SET cobro_total = COALESCE(cobro_total_sin_detalle,0) +
+                (SELECT sum(monto) FROM cxc_cobro c
+                    WHERE c.id_factura = '$idFactura'
+                    GROUP BY id_factura), estado = 'PENDIENTE'
                 WHERE id = '$idFactura'";
         $em->getConnection()->executeQuery($sql);
+        
+        //actualizar el estado de los pagos realizados que fueron aplicados a la factura
+        $sql = "UPDATE cxc_cobro c SET estado = 'PAGADO'
+                WHERE c.id_factura = '$idFactura' AND
+                        c.estado='PENDIENTE'";
+        $em->getConnection()->executeQuery($sql);
+        
         return;
     }
     
@@ -35,12 +44,17 @@ class FacFacturaRepository extends EntityRepository {
      * DESCRIPCION: actualizar el estado en base a la evaluación de venta y cobro total
      * Julio Castillo
      * Analista programador
+     * 
+     * actualiza el estado de la factura en base a todos los abotos realizados
+     * evalua cantidades pagadas a la factura
      */
-    public function actualizaEstado($idFactura){
+    public function actualizaEstado($idFactura){ 
+        //actualizar estado de factura en base a los pagos realizados
         $em = $this->getEntityManager();
         $sql = "UPDATE fac_factura SET estado = 'PAGADO'
-                WHERE venta_total <= cobro_total AND estado != 'PAGADO' AND id='$idFactura'";
+                WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) AND estado != 'PAGADO' AND id='$idFactura'";
         $em->getConnection()->executeQuery($sql);
+                
         return;
     }
     

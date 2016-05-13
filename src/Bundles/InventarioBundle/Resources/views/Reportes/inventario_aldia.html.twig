@@ -35,6 +35,24 @@ DATE: 9/4/16
                     <td>
                             <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
+                </tr>
+                <tr>
+                    <td>
+                    <p>Marca de producto:</p> 
+                        <select id="productoseleccionado" name="id_marca" required="required">
+                            <option value="" selected="{{ id_marca }}">...Seleccione...</option>
+                            <option value="000">Todas</option>
+                            {% for marca in marcas %}
+                                {% if id_marca == marca.id %}
+                                    <option value="{{ marca.id }}" selected="{{ id_marca }}">{{ marca.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ marca.id }}">{{ marca.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>
             </table>

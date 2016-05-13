@@ -129,6 +129,14 @@ class FacFacturaManual
      * @ORM\Column(name="cobro_total", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $cobroTotal;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cobro_total_sin_detalle", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $cobroTotalSinDetalle;
+    
 
     /**
      * @var \DateTime
@@ -568,6 +576,32 @@ class FacFacturaManual
         return $this->cobroTotal;
     }
 
+    /**
+     * Set cobroTotalSinDetalle
+     *
+     * @param string $cobroTotalSinDetalle
+     * @return FacFactura
+     */
+    public function setCobroTotalSinDetalle($cobroTotalSinDetalle)
+    {
+        $this->cobroTotalSinDetalle = $cobroTotalSinDetalle;
+
+        return $this;
+    }
+
+    /**
+     * Get cobroTotalSinDetalle
+     *
+     * @return string 
+     */
+    public function getCobroTotalSinDetalle()
+    {
+        return $this->cobroTotalSinDetalle;
+    }    
+    
+    
+    
+    
     /**
      * Set fechaPago
      *

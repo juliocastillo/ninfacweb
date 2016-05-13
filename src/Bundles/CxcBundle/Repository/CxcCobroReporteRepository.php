@@ -58,7 +58,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
                     p.nombre AS condicionpago,
                     f.venta_total,
-                    f.cobro_total,
+                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
                     (f.venta_total-f.cobro_total) AS saldo
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
@@ -80,7 +80,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
                     p.nombre AS condicionpago,
                     f.venta_total,
-                    f.cobro_total,
+                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
                     (f.venta_total-f.cobro_total) AS saldo
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
@@ -101,7 +101,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
                     p.nombre AS condicionpago,
                     f.venta_total,
-                    f.cobro_total,
+                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
                     (f.venta_total-f.cobro_total) AS saldo
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
@@ -123,7 +123,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
                     p.nombre AS condicionpago,
                     f.venta_total,
-                    f.cobro_total,
+                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
                     (f.venta_total-f.cobro_total) AS saldo
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
