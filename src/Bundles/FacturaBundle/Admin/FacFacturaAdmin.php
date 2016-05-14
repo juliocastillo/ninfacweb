@@ -87,18 +87,18 @@ class FacFacturaAdmin extends Admin {
                 ->add('idTipofactura','entity', array(
                           'class'=>'BundlesCatalogosBundle:CtlTipofactura',
                           'label'=>'Tipo de factura',
-                          'attr' => array('style'=>'width:300px'),))
+                          'attr' => array('style'=>'width:150px'),))
 
                 ->add('idFormatoDocumento', 'shtumi_dependent_filtered_entity', array(
                           'label'=>'Formato de la Factura',
-                          'attr' => array('style'=>'width:300px'),
+                          'attr' => array('style'=>'width:150px'),
                           'entity_alias' => 'formato_por_tipofactura',
                           'empty_value'=> '...Seleccionar...',
                           'parent_field'=>'idTipofactura'))                
 
                 ->add('numero', null, array(
                     'label' => 'Numero de factura',
-                    'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                    'attr' => array('style' => 'width:150px', 'maxlength' => '25'),
                 ))
                 ->add('fecha', null, array(
                         'label' => 'Fecha de la factura',
@@ -107,7 +107,7 @@ class FacFacturaAdmin extends Admin {
                         'format' => 'dd/MM/y',
                         'attr' => array(
                             'class' => 'bootstrap-datepicker now',
-                            'style' => 'width:300px', 'maxlength' => '25'
+                            'style' => 'width:200px', 'maxlength' => '25'
                         )))
                 ->end()
                 ->with('Cliente')
@@ -243,7 +243,8 @@ class FacFacturaAdmin extends Admin {
          * al momento del desarrollo es 1%
          */
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
-            $ivaretenido = $sumas * 0.01;
+            $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
+            $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         }
@@ -303,7 +304,8 @@ class FacFacturaAdmin extends Admin {
          * al momento del desarrollo es 1%
          */
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE){
-            $ivaretenido = $sumas * 0.01;
+            $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
+            $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         }
