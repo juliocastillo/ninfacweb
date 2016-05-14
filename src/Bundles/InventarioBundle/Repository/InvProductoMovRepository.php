@@ -26,7 +26,7 @@ class InvProductoMovRepository extends EntityRepository {
             SELECT 
             sum(cantidad) 
             FROM inv_entradadetalle f
-            WHERE id_inv_producto_mov = inv_producto_mov.id AND f.activo = true)
+            WHERE f.id_inv_producto_mov = inv_producto_mov.id)
             ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -86,7 +86,8 @@ class InvProductoMovRepository extends EntityRepository {
     public function actualizarSaldos(){
         $em = $this->getEntityManager();
         $sql = "
-            UPDATE inv_producto_mov SET saldo = cantidad_inicial + cantidad_entrada- cantidad_salida;
+            UPDATE inv_producto_mov SET saldo = COALESCE(cantidad_inicial,0) + 
+                COALESCE(cantidad_entrada,0) - COALESCE(cantidad_salida,0);
             ";
         $em->getConnection()->executeQuery($sql);
         return;
