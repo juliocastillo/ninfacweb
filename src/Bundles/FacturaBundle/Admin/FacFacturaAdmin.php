@@ -102,11 +102,10 @@ class FacFacturaAdmin extends Admin {
                 ))
                 ->add('fecha', null, array(
                         'label' => 'Fecha de la factura',
-                        'read_only' => TRUE,
                         'widget' => 'single_text', // un sólo input para la fecha, no tres.
                         'format' => 'dd/MM/y',
                         'attr' => array(
-                            'class' => 'bootstrap-datepicker now',
+                            'class' => 'bootstrap-datepicker',
                             'style' => 'width:200px', 'maxlength' => '25'
                         )))
                 ->end()

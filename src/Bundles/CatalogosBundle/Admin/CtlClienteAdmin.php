@@ -44,6 +44,7 @@ class CtlClienteAdmin extends Admin
         $listMapper
             ->add('nombre')
             ->add('nombreComercial')
+            ->add('direccion')
             ->add('exento')
             ->add('activo')
             ->add('_action', 'actions', array(
