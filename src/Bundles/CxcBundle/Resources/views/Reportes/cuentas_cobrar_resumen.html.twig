@@ -1,0 +1,119 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>CUENTAS POR COBRAR RESUMEN</center></b> <br>
+            <b>CLIENTE:</b> 
+            <select id="clienteseleccionado" name="id_cliente" required="required" >
+                <option value="" selected="{{ id_cliente }}">...Seleccione...</option>
+                {% for cliente in clientes %}
+                    {% if id_cliente == cliente.id %}
+                        <option value="{{ cliente.id }}" selected="{{ id_cliente }}">{{ cliente.nombre }}</option>
+                    {% else %}
+                        <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({ 
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 50%; margin: 10px">
+                <tr>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+            <table width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td colspan="2" align="center">{{ empresa.nombre }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">Cuentas por Cobrar (resumen)</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">CLIENTE:  {{ nombrecliente }}</td>
+                </tr>
+            </table>
+        <table width="100%" style="border-collapse: collapse;">
+           <tr>
+                <td>TIPO</td>
+                <td>NUMERO</td>
+                <td>FECHA</td>
+                <td align="right">1 - 30 DIAS</td>
+                <td align="right">31 - 60 DIAS</td>
+                <td align="right">61 - 90 DIAS</td>
+                <td align="right">> 90 DIAS</td>
+                <td align="right">TOTAL</td>
+            </tr>
+            {% set saldomenor30 = 0 %}
+            {% set saldomenor60 = 0 %}
+            {% set saldomenor90 = 0 %}
+            {% set saldomayor90 = 0 %}
+            {% set saldo = 0 %}
+            {% for mov in movimientos %}
+                {% set saldomenor30 = saldomenor30 + mov.menor30%}
+                {% set saldomenor60 = saldomenor60 + mov.menor60%}
+                {% set saldomenor90 = saldomenor90 + mov.menor90%}
+                {% set saldomayor90 = saldomayor90 + mov.mayor90%}
+                {% set saldo = saldo + mov.saldo %}
+                <tr>
+                    <td>{{ mov.tipofactura }}</td>
+                    <td>{{ mov.numero }}</td>
+                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td align="right">{{ mov.menor30 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ mov.menor60 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ mov.menor90 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ mov.mayor90 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ mov.saldo  | number_format(2, '.', ',') }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right">==========</td>
+                    <td align="right">==========</td>
+                    <td align="right">==========</td>
+                    <td align="right">==========</td>
+                    <td align="right">==========</td>
+                </tr>
+                <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td></td>
+                    <td align="right">{{ saldomenor30 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ saldomenor60 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ saldomenor90 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ saldomayor90 | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ saldo  | number_format(2, '.', ',') }}</td>
+                </tr>
+                
+        </table>
+        {% endif %}
+        </div>
+{% endblock %}

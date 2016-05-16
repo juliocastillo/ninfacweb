@@ -44,7 +44,9 @@ class Builder extends ContainerAware {
         $this->menu['Reportes']->addChild('Facturas por vendedor', array('route' => 'imprimir_facturas_vendedor'));
         $this->menu['Reportes']->addChild('Factura-Detalle por clientes', array('route' => 'imprimir_facturas_detalle_cliente'));
         $this->menu['Reportes']->addChild('Facturas Anuladas', array('route' => 'imprimir_factura_anulada'));
-        $this->menu['Reportes']->addChild('Estado cuentas por cobrar', array('route' => 'imprimir_estado_cuentas_cobrar'));
+        $this->menu['Reportes']->addChild('Recibos de cobro', array('route' => 'imprimir_recibos_cobro'));
+        $this->menu['Reportes']->addChild('Cuentas por cobrar listado', array('route' => 'imprimir_estado_cuentas_cobrar'));
+        $this->menu['Reportes']->addChild('Cuentas por cobrar resumen', array('route' => 'imprimir_cuentas_cobrar_resumen'));
         
         
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //

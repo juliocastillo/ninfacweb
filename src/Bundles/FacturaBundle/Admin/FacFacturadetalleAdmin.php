@@ -75,8 +75,7 @@ class FacFacturadetalleAdmin extends Admin {
                     'label'=>'Descripción',
                     'required' => FALSE,
                     'attr' => array(
-                        'style'=>'width:400px; display: none;',
-                        'class'=>'addButtonInput'
+                        'style'=>'width:400px;'
                 )))
         ;
     }

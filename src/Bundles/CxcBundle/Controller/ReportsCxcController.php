@@ -112,7 +112,50 @@ class ReportsCxcController extends Controller {
         );        
     }
     
-    
+    /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+    /**
+     * Funcion que permite crear el reporte de cuentas por cobrar
+     * por cliente. 
+     * 
+     * @Route("/cuentas_cobrar_resumen", name="imprimir_cuentas_cobrar_resumen", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function cuentas_cobrar_resumenAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+        
+        if (isset($_REQUEST['id_cliente'])){
+            $id_cliente = $_REQUEST['id_cliente'];
+            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->cuentasCobrarResumen($id_cliente);
+            $nombrecliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($id_cliente)->getNombre();;
+            $requestvalid = TRUE; 
+        } else {
+            $id_cliente = '';
+            $movimientos = "";
+            $nombrecliente = "";
+            $requestvalid = FALSE;
+        }
+
+        
+        return $this->render('BundlesCxcBundle:Reportes:cuentas_cobrar_resumen.html.twig', array(
+            'id_cliente' => $id_cliente,
+            'movimientos'=>$movimientos,
+            'clientes' => $clientes,
+            'empresa' => $empresa,
+            'requestvalid' => $requestvalid,
+            'nombrecliente' => $nombrecliente,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
     
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
@@ -192,4 +235,46 @@ class ReportsCxcController extends Controller {
         );
         
     }
+    
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+
+    /**
+     * @Route("/recibos_cobro", name="imprimir_recibos_cobro", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function recibos_cobroAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+        
+        if (isset($_REQUEST['fini'])){
+            $fini = $_REQUEST['fini'];
+            $ffin = $_REQUEST['ffin'];
+            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->recibosCobro($fini,$ffin);
+            $requestvalid = TRUE; 
+        } else {
+            $movimientos = "";
+            $requestvalid = FALSE;
+            $fini = Date('Y-m-d');
+            $ffin = Date('Y-m-d');
+        }
+
+        
+        return $this->render('BundlesCxcBundle:Reportes:recibos_cobro.html.twig', array(
+            'fini' => $fini,
+            'ffin' => $ffin,
+            'movimientos'=>$movimientos,
+            'empresa' => $empresa,
+            'requestvalid' => $requestvalid,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
+    
+    
 }

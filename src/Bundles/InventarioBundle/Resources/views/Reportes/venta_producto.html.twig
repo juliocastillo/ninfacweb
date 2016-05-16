@@ -66,20 +66,40 @@ file that was distributed with this source code.
                     <td>NUMERO</td>
                     <td>CLIENTE</td>
                     <td>LOTE</td>
-                    <td>CANTIDAD</td>
-                    <td>PRECIO VENTA</td>
+                    <td align="right">CANTIDAD</td>
+                    <td align="right">PRECIO VENTA</td>
                 </tr>
+                {% set total = 0 %}
                 {% for mov in movimientos %}
+                    {% set total = total + mov.cantidad_salida %}
                     <tr>
                         <td>{{ mov.fecha | date('d/m/Y')}}</td>
                         <td>{{ mov.tipo }}</td>
                         <td>{{ mov.numero }}</td>
                         <td>{{ mov.cliente }}</td>
                         <td>{{ mov.lote }}</td>
-                        <td align="right">{{ mov.cantidad_salida }}</td>
+                        <td align="right">{{ mov.cantidad_salida | number_format(2, '.', ',') }}</td>
                         <td align="right">{{ mov.precio_unitario | number_format(2, '.', ',')}}</td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right">==========</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right">{{ total | number_format(2, '.', ',') }}</td>
+                    <td></td>
+                </tr>
             </table>
 
         {% endif %}

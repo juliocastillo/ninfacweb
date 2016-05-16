@@ -137,4 +137,67 @@ class CxcCobroReporteRepository extends EntityRepository {
         }
         return $em->getConnection()->executeQuery($sql);
     }
+    
+    /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
+    public function cuentasCobrarResumen($id_cliente=null){
+        $em = $this->getEntityManager();
+        if ($id_cliente){
+            $sql = "
+                SELECT 
+                    t.nombre AS tipofactura,
+                    f.numero,
+                    f.fecha,
+                    CASE WHEN (now()::date - (f.fecha::date-'0 day'::interval)) <= '30 days' THEN (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) END AS menor30,
+                    CASE WHEN (now()::date - (f.fecha::date-'0 day'::interval)) > '30 days' AND (now()::date - (f.fecha::date-'0 day'::interval)) <= '60 days' THEN (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) END AS menor60,
+                    CASE WHEN (now()::date - (f.fecha::date-'0 day'::interval)) > '60 days' AND (now()::date - (f.fecha::date-'0 day'::interval)) <= '90 days' THEN (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) END AS menor90,
+                    CASE WHEN (now()::date - (f.fecha::date-'0 day'::interval)) > '90 days' THEN (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) END AS mayor90,
+                    (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) AS saldo
+                FROM fac_factura f
+                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
+                WHERE f.id_condicionpago != 1 AND                    
+                    f.id_cliente = '$id_cliente' AND
+                    f.estado = 'PENDIENTE'
+                ORDER BY f.id_tipofactura, f.numero";
+        }
+        return $em->getConnection()->executeQuery($sql);
+    }
+    
+    /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
+    public function recibosCobro($fini=null,$ffin=null){
+        $em = $this->getEntityManager();
+        if ($ffin){
+            $sql = "
+                    SELECT
+                        t01.numero_recibo,
+                        t01.fecha,
+                        t05.nombre AS condicion_pago,
+                        t01.monto AS monto,
+                        t02.numero AS factura,
+                        t03.nombre AS cliente,
+                        t04.nombre AS tipo,
+                        t02.venta_total,
+                        t02.venta_total - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0)) AS saldo,
+                        t02.estado
+
+                    FROM
+                        cxc_cobro 		t01,
+                        fac_factura 		t02
+                        LEFT JOIN ctl_cliente 	t03 ON t03.id = t02.id_cliente
+                        LEFT JOIN ctl_tipofactura	t04 ON t04.id = t02.id_tipofactura
+                        LEFT JOIN ctl_condicionpago	t05 ON t05.id = t02.id_condicionpago
+                    WHERE
+                        t02.id = t01.id_factura AND t01.fecha >= '$fini' AND t01.fecha <= '$ffin'
+                    ORDER BY t01.numero_recibo                
+                    ";
+        }
+        return $em->getConnection()->executeQuery($sql);
+    }
 }
