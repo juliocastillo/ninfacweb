@@ -353,7 +353,6 @@ class FacFacturaAdmin extends Admin {
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".activo = TRUE")
-                        ->where($query->getRootAlias() . ".sinDetalle != TRUE")
 
         );
         } else { // permite ver las facturas del día a otro usuario no administrador
@@ -361,7 +360,6 @@ class FacFacturaAdmin extends Admin {
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".dateAdd = 'now()'")
-                        ->where($query->getRootAlias() . ".sinDetalle != TRUE")
 
         );    
         }
