@@ -11,12 +11,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * CxcCobro
  *
- * @ORM\Table(name="cxc_cobro", uniqueConstraints={@ORM\UniqueConstraint(name="uk_numero_fecha", columns={"numero_recibo","fecha", "id_factura"})}, indexes={@ORM\Index(name="IDX_8D545D8B890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_8D545D8BB1476DEC", columns={"id_forma_pago"}), @ORM\Index(name="IDX_8D545D8B27760979", columns={"id_factura"}), @ORM\Index(name="IDX_8D545D8B46D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_8D545D8BAC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_8D545D8B995BA0E1", columns={"id_banco"})})
+ * @ORM\Table(name="cxc_cobro", indexes={@ORM\Index(name="IDX_8D545D8B890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_8D545D8BB1476DEC", columns={"id_forma_pago"}), @ORM\Index(name="IDX_8D545D8B27760979", columns={"id_factura"}), @ORM\Index(name="IDX_8D545D8B46D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_8D545D8BAC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_8D545D8B995BA0E1", columns={"id_banco"})})
  * @ORM\Entity(repositoryClass="Bundles\CxcBundle\Repository\CxcCobroReporteRepository")
- * @UniqueEntity(
- *     fields={"numeroRecibo", "fecha", "id_factura"},
- *     message="Ya existe este recibo en la base de datos"
- *  )
  */
 class CxcCobro
 {
