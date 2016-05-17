@@ -316,15 +316,26 @@ class CxcCobroAdmin extends Admin
             
     } // fin validate()
     
-     /**
+    /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
     public function createQuery($context = 'list') {
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        if($user->hasRole('ROLE_SUPER_ADMIN')){ // Permite ver todas las factoras solo al administrador del sistema
+        $query = parent::createQuery($context);
+        return new ProxyQuery(
+                $query
+                        ->where($query->getRootAlias() . ".activo = TRUE")
+
+        );
+        } else { // permite ver las facturas del día a otro usuario no administrador
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
                         ->where($query->getRootAlias() . ".dateAdd = 'now()'")
-        );
+
+        );    
+        }
     }
 
            

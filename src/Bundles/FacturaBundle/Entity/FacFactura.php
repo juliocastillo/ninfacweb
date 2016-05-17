@@ -129,6 +129,14 @@ class FacFactura
     private $fechaPago;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sin_detalle", type="boolean", nullable=true)
+     */
+    private $sinDetalle;
+    
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="ventas_nosujetas", type="decimal", precision=10, scale=2, nullable=true)
@@ -822,6 +830,28 @@ class FacFactura
     public function removeFacturaDetalle(\Bundles\FacturaBundle\Entity\FacFacturadetalle $facturaDetalle)
     {
         $this->facturaDetalle->removeElement($facturaDetalle);
+    }
+    /**
+     * Set sinDetalle
+     *
+     * @param boolean $sinDetalle
+     * @return FacFactura
+     */
+    public function setSinDetalle($sinDetalle)
+    {
+        $this->sinDetalle = $sinDetalle;
+
+        return $this;
+    }
+
+    /**
+     * Get sinDetalle
+     *
+     * @return boolean 
+     */
+    public function getSinDetalle()
+    {
+        return $this->sinDetalle;
     }
 
     /**
