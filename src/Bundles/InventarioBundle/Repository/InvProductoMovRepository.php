@@ -175,7 +175,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 fac_factura i, fac_facturadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura
+                WHERE i.id = e.id_factura AND i.estado != 'ANULADO'
                 ) d
             ORDER BY lote, tipo_movimiento, fecha";
         }
