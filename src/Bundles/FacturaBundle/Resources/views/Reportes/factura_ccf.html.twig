@@ -64,7 +64,7 @@
                 {% for item in items %}
                     <tr>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.cantidad }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" >{{ item.idinvproductomov.idproducto }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov.idproducto }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.ventasnosujetas }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.ventasexentas }}</td>
