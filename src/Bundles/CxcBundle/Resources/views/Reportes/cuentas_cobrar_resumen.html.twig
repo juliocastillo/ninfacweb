@@ -112,8 +112,13 @@ file that was distributed with this source code.
                     <td align="right">{{ saldomayor90 | number_format(2, '.', ',')}}</td>
                     <td align="right">{{ saldo  | number_format(2, '.', ',') }}</td>
                 </tr>
-                
         </table>
+                
+        <form action="exportar_a_excel">
+            <input class="btn btn-small btn-primary" type="submit" value="Exportar a hoja de cálculo">
+        </form>
+
+                
         {% endif %}
         </div>
 {% endblock %}

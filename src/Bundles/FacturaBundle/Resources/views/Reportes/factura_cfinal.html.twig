@@ -26,7 +26,7 @@
 
         </style>
     </head>
-    <body style=" font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+    <body style="font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
         <div style="height: {{ formato.piey }};">
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }}" width="{{ formato.fila1col1 }}">{{ factura.fecha | date('d-m-Y') }}</td>
@@ -58,7 +58,7 @@
                 {% for item in items %}
                     <tr>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.cantidad }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }}" >{{ item.idproducto }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}" >{{ item.idinvproductomov }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.ventasnosujetas }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;">{{ item.ventasexentas }}</td>

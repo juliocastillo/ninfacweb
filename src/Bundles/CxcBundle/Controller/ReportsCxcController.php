@@ -276,5 +276,23 @@ class ReportsCxcController extends Controller {
         );        
     }
     
-    
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+
+    /**
+     * @Route("/exportar_a_excel", name="exportar_a_excel", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function exportar_a_excelAction() {
+        header('Content-type: application(vnd.ms-excel');
+        header('Content-Desposition: attachment; filename=export.xls');
+        return $this->render('BundlesCxcBundle:Reportes:export.html.twig',array(
+            'id'=>'1'
+            
+        )
+                
+                );
+   
+    }
 }
