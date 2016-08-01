@@ -123,9 +123,10 @@ class CfgFormatoDocumentoAdmin extends Admin
             ->end()
             ->tab('Pié de página')
                 ->with('')
-            ->add('pieY')
-            ->add('pieXCol1')
-            ->add('pieXCol2')
+            ->add('pieInterlineado','text',array('label'=>'Interlineado en pixeles px'))
+            ->add('pieY','text',array('label'=>'Inicio del pie de página en %'))
+            ->add('pieXCol1','text',array('label'=>'Tamaño de la primera columna del pie en %'))
+            ->add('pieXCol2','text',array('label'=>'Tamaño de la segunda columna del pie en %'))
         ;
     }
 

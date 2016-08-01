@@ -69,6 +69,12 @@ class CfgFormatoDocumento
      */
     private $idFontSize;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pie_interlineado", type="string", length=5, nullable=false)
+     */
+    private $pieInterlineado;
     
     
     /**
@@ -414,6 +420,28 @@ class CfgFormatoDocumento
         return $this->detalleInterlineado;
     }
 
+    /**
+     * Set pieInterlineado
+     *
+     * @param string $pieInterlineado
+     * @return CfgFormatoDocumento
+     */
+    public function setPieInterlineado($pieInterlineado)
+    {
+        $this->pieInterlineado = $pieInterlineado;
+
+        return $this;
+    }
+
+    /**
+     * Get pieInterlineado
+     *
+     * @return string 
+     */
+    public function getPieInterlineado()
+    {
+        return $this->pieInterlineado;
+    }
     
     /**
      * Set interlineado
