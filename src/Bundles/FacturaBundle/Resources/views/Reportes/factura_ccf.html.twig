@@ -32,17 +32,23 @@
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila1col1 }}">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ factura.fecha | date('d-m-Y') }}</td>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila1col2 }}">{{ cliente.nrc }}</td></tr></table>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila1col2 }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ cliente.nrc }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila2col1 }}">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ cliente.nombre}}</td>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila2col2 }}">{{ cliente.nit }}</td></tr></table>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila2col2 }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ cliente.nit }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila3col1 }}">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ cliente.direccion}}</td>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila3col2 }}">{{ cliente.giro }}</td></tr></table>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila3col2 }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ cliente.giro }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila4col1 }}">&nbsp;</td>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila4col2 }}">&nbsp;</td></tr></table>
@@ -50,12 +56,16 @@
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila5col1 }}">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ cliente.iddepartamento}}</td>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila5col2 }}">{{ cliente.codigo }}</td></tr></table>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila5col2 }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ cliente.codigo }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila6col1 }}">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ factura.idempleado }}</td>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila6col2 }}">{{ factura.idcondicionpago }}</td></tr></table>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila6col2 }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ factura.idcondicionpago }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila7col1 }}">{% if notaremision.numero is defined %} {{ notaremision.fecha | date('d-m-Y') }} {% endif %}&nbsp;</td>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila7col2 }}">{% if notaremision.numero is defined %} {{ notaremision.numero }}{% endif %}</td></tr></table>
@@ -104,7 +114,7 @@
             {# pie de pagina #}
             <table width="100%">
                 <tr>
-                    <td width=" {{ formato.piexcol1 }} "style="text-align: left;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ totalenletras }}</td>
+                    <td width=" {{ formato.piexcol1 }} "style="text-align: left;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ totalenletras }}</td>
                     <td width=" {{ formato.piexcol2 }} " style="text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ factura.sumas }}</td>
                 </tr>
                 <tr>

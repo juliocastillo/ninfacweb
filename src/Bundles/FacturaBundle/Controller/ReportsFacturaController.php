@@ -228,7 +228,7 @@ class ReportsFacturaController extends Controller {
         /* buscar el registro padre a traves de id */
         $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->find($id);
         
-        $totalenletras = 'SON: '.$this->num2letras($factura->getVentaTotal());
+        $totalenletras = $this->num2letras($factura->getVentaTotal());
         
         $idCliente = $factura->getIdCliente();
         $idNotaremision = $factura->getIdNotaremision();
