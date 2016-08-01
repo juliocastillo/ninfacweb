@@ -75,12 +75,20 @@
                     <td width="{{ formato.detallexcol5 }}" style="text-align: center;">&nbsp;</td>
                     <td width="{{ formato.detallexcol6 }}" style="text-align: center;">&nbsp;</td>
                 </tr>
+                <tr>
+                    <td width="{{ formato.detallexcol1 }}" style="text-align: center;">&nbsp;</td>
+                    <td width="{{ formato.detallexcol2 }}">&nbsp;</td>
+                    <td width="{{ formato.detallexcol3 }}" style="text-align: center;">&nbsp;</td>
+                    <td width="{{ formato.detallexcol4 }}" style="text-align: center;">&nbsp;</td>
+                    <td width="{{ formato.detallexcol5 }}" style="text-align: center;">&nbsp;</td>
+                    <td width="{{ formato.detallexcol6 }}" style="text-align: center;">&nbsp;</td>
+                </tr>
                 {% for item in items %}
                     <tr>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.cantidad }}</td>
                         <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            {{ item.idinvproductomov }}</td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
