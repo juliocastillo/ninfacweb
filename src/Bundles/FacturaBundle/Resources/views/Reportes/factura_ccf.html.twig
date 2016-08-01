@@ -91,12 +91,18 @@
                 </tr>
                 {% for item in items %}
                     <tr>
-                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.cantidad }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov.idproducto }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.preciounitario }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.ventasnosujetas }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.ventasexentas }}</td>
-                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ item.ventasgravadas }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            {{ item.cantidad }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov.idproducto }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            {{ item.preciounitario }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            {{ item.ventasnosujetas }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            {{ item.ventasexentas }}</td>
+                        <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                            {{ item.ventasgravadas }}</td>
                     </tr>
                 {% endfor %}
                 {% for i in numItems .. formato.detallenumeroitems - 1 %}
@@ -114,16 +120,20 @@
             {# pie de pagina #}
             <table width="100%">
                 <tr>
-                    <td width=" {{ formato.piexcol1 }} " style="height:{{ formato.pieinterlineado }}; text-align: left;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ totalenletras }}</td>
-                    <td width=" {{ formato.piexcol2 }} " style="height:{{ formato.pieinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ factura.sumas }}</td>
+                    <td width=" {{ formato.piexcol1 }} " style="height:{{ formato.pieinterlineado }}; text-align: left;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ totalenletras }}</td>
+                    <td width=" {{ formato.piexcol2 }} " style="height:{{ formato.pieinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                        {{ factura.sumas }}</td>
                 </tr>
                 <tr>
                     <td style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">&nbsp;</td>
-                    <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ factura.iva }}</td>
+                    <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                        {{ factura.iva }}</td>
                 </tr>
                 <tr>
                     <td style="height:{{ formato.pieinterlineado }};text-align: right;"></td>
-                    <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">{{ factura.subtotal }}</td>
+                    <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
+                        {{ factura.subtotal }}</td>
                 </tr>
                 <tr>
                     <td style="height:{{ formato.pieinterlineado }};text-align: right;">&nbsp;</td>
