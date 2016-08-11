@@ -20,13 +20,17 @@ class InvProductoMovRepository extends EntityRepository {
      * Analista programador
      */
     public function actualizarEntradas(){
+        /*verifica que los registros aún no hayan sido enviados al historico
+         * por cierre de periodo funcion COALESCE para evitar problemas con
+         * datos sin ningún valor
+         */
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET cantidad_entrada = (
             SELECT 
             sum(cantidad) 
             FROM inv_entradadetalle f
-            WHERE f.id_inv_producto_mov = inv_producto_mov.id)
+            WHERE f.id_inv_producto_mov = inv_producto_mov.id AND COALESCE(f.historial,false) != true)
             ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -59,7 +63,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM fac_factura f, fac_facturadetalle d
                 WHERE f.id = d.id_factura AND
                 d.id_inv_producto_mov = inv_producto_mov.id AND
-                f.estado!='ANULADO')
+                f.estado!='ANULADO' AND COALESCE(d.historial,false) != true)
             ";
         $em->getConnection()->executeQuery($sql);
         return;
