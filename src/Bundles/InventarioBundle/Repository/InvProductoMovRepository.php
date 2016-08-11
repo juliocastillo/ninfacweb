@@ -164,7 +164,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_entrada
+                WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) != true
                 UNION
                 SELECT
                 i.fecha AS fecha,
@@ -179,7 +179,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 fac_factura i, fac_facturadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura AND i.estado != 'ANULADO'
+                WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) != true
                 ) d
             ORDER BY lote, tipo_movimiento, fecha";
         }
@@ -214,7 +214,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_entrada
+                WHERE i.id = e.id_entrada  AND COALESCE(e.historial,false) != true
                 UNION
                 SELECT
                 i.fecha AS fecha,
@@ -229,7 +229,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 fac_factura i, fac_facturadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura
+                WHERE i.id = e.id_factura  AND COALESCE(e.historial,false) != true
                 ) d
             ORDER BY lote, tipo_movimiento, fecha";
         }
@@ -302,8 +302,8 @@ class InvProductoMovRepository extends EntityRepository {
             FROM
                     inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
-                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
-                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
         }
