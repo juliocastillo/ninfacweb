@@ -29,7 +29,24 @@
     <body style=" font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
         <div style="height: {{ formato.piey }};">
             <table width="100%" style="border-collapse: collapse;"><tr>
-                    <td style="height:{{ formato.interlineado }}" width="{{ formato.fila1col1 }}">{{ factura.fecha | date('d-m-Y') }}</td>
+                    <td style="height:{{ formato.interlineado }}" width="{{ formato.fila1col1 }}">
+					{{ factura.fecha | date('d') }}
+						{{ ' de ' }}
+						{% if factura.fecha | date('m') == 1 %} {{ 'enero' }}
+						{% elseif factura.fecha | date('m') == 2 %} {{ 'febrero' }}
+						{% elseif factura.fecha | date('m') == 3 %} {{ 'marzo' }}
+						{% elseif factura.fecha | date('m') == 4 %} {{ 'abril' }}
+						{% elseif factura.fecha | date('m') == 5 %} {{ 'mayo' }}
+						{% elseif factura.fecha | date('m') == 6 %} {{ 'junio' }}
+						{% elseif factura.fecha | date('m') == 7 %} {{ 'julio' }}
+						{% elseif factura.fecha | date('m') == 8 %} {{ 'agosto' }}
+						{% elseif factura.fecha | date('m') == 9 %} {{ 'septiembre' }}
+						{% elseif factura.fecha | date('m') == 10 %} {{ 'octubre' }}
+						{% elseif factura.fecha | date('m') == 11 %} {{ 'noviembre' }}
+						{% else %} {{ 'diciembre' }} {% endif %}
+						{{ ' de ' }}
+						{{ factura.fecha | date('Y') }}
+					</td>
                     <td width="{{ formato.fila1col2 }}">{{ cliente.nit }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }}" width="{{ formato.fila2col1 }}">{{ cliente.nombre}}</td>
