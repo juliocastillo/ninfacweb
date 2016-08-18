@@ -104,7 +104,8 @@
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.cantidad }}</td>
                         <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov }}</td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov }}<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lote:{{ item.idinvproductomov.lote }}; Vence:{{ item.idinvproductomov.fecha_vencimiento | date("d/m/Y")}}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
