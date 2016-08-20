@@ -66,7 +66,9 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ cliente.giro }}</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
-                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila4col1 }}">&nbsp;</td>
+                    <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila4col1 }}">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{ cliente.nombrecomercial }}</td>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila4col2 }}">&nbsp;</td></tr></table>
             <table width="100%" style="border-collapse: collapse;"><tr>
                     <td style="height:{{ formato.interlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}" width="{{ formato.fila5col1 }}">
@@ -108,10 +110,10 @@
                 {% for item in items %}
                     <tr>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            {{ item.cantidad }}</td>
+                            {{ item.cantidad | number_format(0, '.', ',')}}</td>
                         <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov.idproducto }}<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lote:{{ item.idinvproductomov.lote }}; Vence:{{ item.idinvproductomov.fecha_vencimiento | date("d/m/Y")}}</td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov.idproducto }}; {{ item.idinvproductomov.idproducto.presentacion }}<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca:{{ item.idinvproductomov.idproducto.idmarca }}; Lote:{{ item.idinvproductomov.lote }}; Vence:{{ item.idinvproductomov.fechavencimiento | date('d/m/Y') }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
