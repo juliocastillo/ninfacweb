@@ -158,7 +158,50 @@ class ReportsInventarioController extends Controller {
         );        
     }
 
-    
+ 
+   /**
+     * @Route("/historial_auxiliar_producto", name="historial_imprimir_auxiliar_producto", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function historial_auxiliar_productoAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
+        
+        if (isset($_REQUEST['id'])){
+            $id = $_REQUEST['id'];
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->HistorialAuxiliarProducto($id);
+            $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
+            $requestvalid = TRUE; 
+        } else {
+            $id = '';
+            $movimientos = "";
+            $nombreproducto = "";
+            $requestvalid = FALSE;
+        }
+
+        
+        return $this->render('BundlesInventarioBundle:Reportes:historial_filtrar_auxiliar_producto.html.twig', array(
+            'id' => $id,
+            'movimientos'=>$movimientos,
+            'productos' => $productos,
+            'empresa' => $empresa,
+            'requestvalid' => $requestvalid,
+            'nombreproducto' => $nombreproducto,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+        )
+        );        
+    }
+
+
+
+
+ 
     /**
      * @Route("/venta_producto", name="imprimir_venta_producto", options={"expose"=true})
      * @Method("GET")

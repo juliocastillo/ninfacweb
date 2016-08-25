@@ -47,7 +47,7 @@ class Builder extends ContainerAware {
         $this->menu['Reportes']->addChild('Recibos de cobro', array('route' => 'imprimir_recibos_cobro'));
         $this->menu['Reportes']->addChild('Cuentas por cobrar listado', array('route' => 'imprimir_estado_cuentas_cobrar'));
         $this->menu['Reportes']->addChild('CXC por antiguedad', array('route' => 'imprimir_cuentas_cobrar_resumen'));
-        
+        $this->menu['Reportes']->addChild('Historial de movimientos', array('route' => 'historial_imprimir_auxiliar_producto'));
         
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
         $this->menu['Herramientas']->addChild('Copia de respaldo', array('route' => 'copia_respaldo')); //
