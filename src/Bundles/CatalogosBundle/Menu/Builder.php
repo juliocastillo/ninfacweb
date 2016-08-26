@@ -31,12 +31,12 @@ class Builder extends ContainerAware {
         // Agregar nodo principal para las opciones del menú
         $this->menu->addChild('Reportes')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
         $this->menu->addChild('Herramientas')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
-        
+
         /*
          * Agregando las opciones del nodo principal del menú,
          * invocando una ruta que se encuentra en el service.yml de los Bundles
          *
-         */ 
+         */
         $this->menu['Reportes']->addChild('Auxiliar de productos', array('route' => 'imprimir_auxiliar_producto'));
         $this->menu['Reportes']->addChild('Inventario al día', array('route' => 'imprimir_inventario_aldia'));
         $this->menu['Reportes']->addChild('Ventas por producto', array('route' => 'imprimir_venta_producto'));
@@ -48,13 +48,13 @@ class Builder extends ContainerAware {
         $this->menu['Reportes']->addChild('Cuentas por cobrar listado', array('route' => 'imprimir_estado_cuentas_cobrar'));
         $this->menu['Reportes']->addChild('CXC por antiguedad', array('route' => 'imprimir_cuentas_cobrar_resumen'));
         $this->menu['Reportes']->addChild('Historial de movimientos', array('route' => 'historial_imprimir_auxiliar_producto'));
-        
+
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
         $this->menu['Herramientas']->addChild('Copia de respaldo', array('route' => 'copia_respaldo')); //
         } else { // la opcion aparecerá si no esta logeado el usuario
             $this->menu->addChild('Acerca de')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
         }
-        
+
         /* Creacion del menu estatico */
         $this->createStaticMenu($user);
 

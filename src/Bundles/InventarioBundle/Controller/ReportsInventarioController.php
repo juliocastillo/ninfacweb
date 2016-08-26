@@ -41,7 +41,7 @@ class ReportsInventarioController extends Controller {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
 
-        
+
         /*
          * Usando consulta nativa de symfony
          */
@@ -50,10 +50,10 @@ class ReportsInventarioController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $producto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id);
-        
+
         /* buscar movimientos del producto*/
         $movimientos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->AuxiliarProducto($id);
-        
+
         $vistaParaImpresion = $this->renderView('BundlesInventarioBundle:Reportes:auxiliar_producto.html.twig', array(
             'id'=>$id,
             'producto' => $producto,
@@ -79,13 +79,13 @@ class ReportsInventarioController extends Controller {
                         'Content-Disposition' => 'inline'
                     )
         );
-        
+
     }
-    
+
     /*
      * agregar para usarlo en admin con el templete de sonata
      */
-    
+
     /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
@@ -116,9 +116,9 @@ class ReportsInventarioController extends Controller {
         }
         return $this->getAdminPool()->getTemplate('layout');
     }
-    
-    
-    
+
+
+
     /**
      * @Route("/auxiliar_producto", name="imprimir_auxiliar_producto", options={"expose"=true})
      * @Method("GET")
@@ -131,12 +131,12 @@ class ReportsInventarioController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
-        
+
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->AuxiliarProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id = '';
             $movimientos = "";
@@ -144,7 +144,7 @@ class ReportsInventarioController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesInventarioBundle:Reportes:filtrar_auxiliar_producto.html.twig', array(
             'id' => $id,
             'movimientos'=>$movimientos,
@@ -155,11 +155,10 @@ class ReportsInventarioController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
 
- 
-   /**
+    /**
      * @Route("/historial_auxiliar_producto", name="historial_imprimir_auxiliar_producto", options={"expose"=true})
      * @Method("GET")
      */
@@ -171,12 +170,12 @@ class ReportsInventarioController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
-        
+
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->HistorialAuxiliarProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id = '';
             $movimientos = "";
@@ -184,7 +183,7 @@ class ReportsInventarioController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesInventarioBundle:Reportes:historial_filtrar_auxiliar_producto.html.twig', array(
             'id' => $id,
             'movimientos'=>$movimientos,
@@ -195,13 +194,9 @@ class ReportsInventarioController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
 
-
-
-
- 
     /**
      * @Route("/venta_producto", name="imprimir_venta_producto", options={"expose"=true})
      * @Method("GET")
@@ -214,12 +209,12 @@ class ReportsInventarioController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
-        
+
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id = '';
             $movimientos = "";
@@ -227,7 +222,7 @@ class ReportsInventarioController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesInventarioBundle:Reportes:venta_producto.html.twig', array(
             'id' => $id,
             'movimientos'=>$movimientos,
@@ -238,9 +233,9 @@ class ReportsInventarioController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
-    
+
     /**
      * @Route("/inventario_aldia", name="imprimir_inventario_aldia", options={"expose"=true})
      * @Method("GET")
@@ -251,7 +246,7 @@ class ReportsInventarioController extends Controller {
 
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
-        
+
         $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(array('activo'=>TRUE));
 
         if (isset($_REQUEST['fini'])){
@@ -259,7 +254,7 @@ class ReportsInventarioController extends Controller {
             $ffin = $_REQUEST['ffin'];
             $id_marca = $_REQUEST['id_marca'];
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($fini,$ffin,$id_marca);
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id_marca = '';
             $fini = Date('Y-m-d');
@@ -268,7 +263,7 @@ class ReportsInventarioController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesInventarioBundle:Reportes:inventario_aldia.html.twig', array(
             'id_marca'=>$id_marca,
             'marcas'=>$marcas,
@@ -280,15 +275,15 @@ class ReportsInventarioController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
-    
+
     /**
      * @Route("/exportar_archivo", name="exportar_archivo_csv", options={"expose"=true})
      * @Method("GET")
      */
     public function exportar_archivoAction() {
-        
+
         $response = new StreamedResponse();
         $response->setCallback(function() {
             $handle = fopen('php://output', 'w+');
@@ -314,9 +309,9 @@ class ReportsInventarioController extends Controller {
 //        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
 //        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
 
-        return $response;        
+        return $response;
     }
-    
-    
-    
+
+
+
 }

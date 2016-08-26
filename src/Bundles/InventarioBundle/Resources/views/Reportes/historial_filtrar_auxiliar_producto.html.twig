@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block show %}
         <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
             <b><center>HISTORIAL REPORTE AUXILIAR DE PRODUCTOS</center></b> <br>
-            <b>PRODUCTO:</b> 
+            <b>PRODUCTO:</b>
             <select id="productoseleccionado" name="id" required="required" >
                 <option value="" selected="{{ id }}">...Seleccione...</option>
                 {% for producto in productos %}
@@ -26,14 +26,20 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endfor %}
             </select>
-            
+            <br>
+            <b>Movimientos del cierre de:</b>
+            <select id="fechacierre" name="fecha" required="required" >
+                <option value="2016-08-11" selected="">2016-08-11</option>
+            </select>
+
+
             <script type="text/javascript">
             $(function() {
-              $('#fini').datetimepicker({ 
+              $('#fini').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
-               $('#ffin').datetimepicker({ 
+               $('#ffin').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
