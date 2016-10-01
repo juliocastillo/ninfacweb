@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="FacNotacreditodetalle" table="fac_notacreditodetalle">
+    <indexes>
+      <index name="index_fac_facturadetalle_id" columns="id_facturadetalle"/>
+      <index name="index_fac_notacredito_id" columns="id_notacredito"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="cantidad" type="decimal" column="cantidad" precision="10" scale="2" nullable="false"/>
+    <field name="precioUnitario" type="decimal" column="precio_unitario" precision="10" scale="2" nullable="false"/>
+    <field name="ventasExentas" type="decimal" column="ventas_exentas" precision="10" scale="2" nullable="false"/>
+    <field name="ventasGravadas" type="decimal" column="ventas_gravadas" precision="10" scale="2" nullable="false"/>
+    <field name="historial" type="boolean" column="historial" nullable="false"/>
+    <many-to-one field="idFacturadetalle" target-entity="FacFacturadetalle">
+      <join-columns>
+        <join-column name="id_facturadetalle" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idNotacredito" target-entity="FacNotacredito">
+      <join-columns>
+        <join-column name="id_notacredito" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

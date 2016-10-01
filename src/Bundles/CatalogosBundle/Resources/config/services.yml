@@ -141,3 +141,9 @@ services:
         arguments: [~, Bundles\CatalogosBundle\Entity\CtlMotivoAnulacion, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Motivo anulación}
+
+    bundles_catalogos.admin.ctl_motivo_notacredito:
+        class: Bundles\CatalogosBundle\Admin\CtlMotivoNotacreditoAdmin
+        arguments: [~, Bundles\CatalogosBundle\Entity\CtlMotivoNotacredito, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Catálogos, label: Motivo nota crédito}

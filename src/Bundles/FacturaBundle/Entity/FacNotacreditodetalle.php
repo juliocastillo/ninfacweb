@@ -5,12 +5,12 @@ namespace Bundles\FacturaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FacFacturadetalle
+ * FacNotacreditodetalle
  *
- * @ORM\Table(name="fac_facturadetalle", indexes={@ORM\Index(name="IDX_C91BC726F760EA80", columns={"id_producto"}), @ORM\Index(name="IDX_C91BC72627760979", columns={"id_factura"})})
+ * @ORM\Table(name="fac_notacreditodetalle", indexes={@ORM\Index(name="index_fac_facturadetalle_id", columns={"id_facturadetalle"}), @ORM\Index(name="index_fac_notacredito_id", columns={"id_notacredito"})})
  * @ORM\Entity
  */
-class FacFacturadetalle
+class FacNotacreditodetalle
 {
     /**
      * @var integer
@@ -18,16 +18,9 @@ class FacFacturadetalle
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="fac_facturadetalle_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="fac_notacreditodetalle_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=2044, nullable=true)
-     */
-    private $descripcion;
 
     /**
      * @var string
@@ -58,11 +51,21 @@ class FacFacturadetalle
     private $ventasGravadas;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="ventas_nosujetas", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="historial", type="boolean", nullable=true)
      */
-    private $ventasNosujetas;
+    private $historial;
+
+    /**
+     * @var \FacNotacredito
+     *
+     * @ORM\ManyToOne(targetEntity="FacNotacredito", inversedBy="notacreditoDetalle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_notacredito", referencedColumnName="id")
+     * })
+     */
+    private $idNotacredito;
 
     /**
      * @var \Bundles\InventarioBundle\Entity\InvProductoMov
@@ -74,18 +77,8 @@ class FacFacturadetalle
      */
     private $idInvProductoMov;
 
-    /**
-     * @var \FacFactura
-     *
-     * @ORM\ManyToOne(targetEntity="FacFactura", inversedBy="facturaDetalle")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_factura", referencedColumnName="id")
-     * })
-     */
-    private $idFactura;
-    
-    
-    
+
+
     /**
      * Get id
      *
@@ -97,33 +90,10 @@ class FacFacturadetalle
     }
 
     /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return FacFacturadetalle
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
      * Set cantidad
      *
      * @param string $cantidad
-     * @return FacFacturadetalle
+     * @return FacNotacreditodetalle
      */
     public function setCantidad($cantidad)
     {
@@ -146,7 +116,7 @@ class FacFacturadetalle
      * Set precioUnitario
      *
      * @param string $precioUnitario
-     * @return FacFacturadetalle
+     * @return FacNotacreditodetalle
      */
     public function setPrecioUnitario($precioUnitario)
     {
@@ -169,7 +139,7 @@ class FacFacturadetalle
      * Set ventasExentas
      *
      * @param string $ventasExentas
-     * @return FacFacturadetalle
+     * @return FacNotacreditodetalle
      */
     public function setVentasExentas($ventasExentas)
     {
@@ -192,7 +162,7 @@ class FacFacturadetalle
      * Set ventasGravadas
      *
      * @param string $ventasGravadas
-     * @return FacFacturadetalle
+     * @return FacNotacreditodetalle
      */
     public function setVentasGravadas($ventasGravadas)
     {
@@ -212,16 +182,49 @@ class FacFacturadetalle
     }
 
     /**
-     * Set ventasNosujetas
+     * Set historial
      *
-     * @param string $ventasNosujetas
-     * @return FacFacturadetalle
+     * @param boolean $historial
+     * @return FacNotacreditodetalle
      */
-    public function setVentasNosujetas($ventasNosujetas)
+    public function setHistorial($historial)
     {
-        $this->ventasNosujetas = $ventasNosujetas;
+        $this->historial = $historial;
 
         return $this;
+    }
+
+    /**
+     * Get historial
+     *
+     * @return boolean 
+     */
+    public function getHistorial()
+    {
+        return $this->historial;
+    }
+
+    /**
+     * Set idNotacredito
+     *
+     * @param \Bundles\FacturaBundle\Entity\FacNotacredito $idNotacredito
+     * @return FacNotacreditodetalle
+     */
+    public function setIdNotacredito(\Bundles\FacturaBundle\Entity\FacNotacredito $idNotacredito = null)
+    {
+        $this->idNotacredito = $idNotacredito;
+
+        return $this;
+    }
+
+    /**
+     * Get idNotacredito
+     *
+     * @return \Bundles\FacturaBundle\Entity\FacNotacredito 
+     */
+    public function getIdNotacredito()
+    {
+        return $this->idNotacredito;
     }
 
     /**
@@ -246,7 +249,8 @@ class FacFacturadetalle
 
         return $this;
     }
-
+    
+    
     /**
      * Get idInvProductoMov
      *
@@ -256,29 +260,8 @@ class FacFacturadetalle
     {
         return $this->idInvProductoMov;
     }
-
-    /**
-     * Set idFactura
-     *
-     * @param \Bundles\FacturaBundle\Entity\FacFactura $idFactura
-     * @return FacFacturadetalle
-     */
-    public function setIdFactura(\Bundles\FacturaBundle\Entity\FacFactura $idFactura = null)
-    {
-        $this->idFactura = $idFactura;
-
-        return $this;
-    }
-
-    /**
-     * Get idFactura
-     *
-     * @return \Bundles\FacturaBundle\Entity\FacFactura 
-     */
-    public function getIdFactura()
-    {
-        return $this->idFactura;
-    }
+    
+    
     
     public function __toString() {
         return $this->idInvProductoMov . '';

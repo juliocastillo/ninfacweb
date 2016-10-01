@@ -85,9 +85,14 @@ class FacFacturaAnulada
      *   @ORM\JoinColumn(name="id_motivo_anulacion", referencedColumnName="id")
      * })
      */
-
     private $idMotivoAnulacion;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
+     */
+    private $fecha;
 
 
     /**
@@ -236,6 +241,29 @@ class FacFacturaAnulada
     public function getIdMotivoAnulacion()
     {
         return $this->idMotivoAnulacion;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     * @return FacFactura
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime 
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
     }
     
     public function __toString() {

@@ -34,3 +34,15 @@ services:
         arguments: [~, Bundles\FacturaBundle\Entity\FacFacturaManual, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Ventas, label: Crear créditos}
+
+    bundles_factura.admin.fac_notacredito:
+        class: Bundles\FacturaBundle\Admin\FacNotacreditoAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacNotacredito, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Ventas, label: Notas de crédito}
+
+    bundles_factura.admin.fac_notacreditodetalle:
+        class: Bundles\FacturaBundle\Admin\FacNotacreditodetalleAdmin
+        arguments: [~, Bundles\FacturaBundle\Entity\FacNotacreditodetalle, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false}
