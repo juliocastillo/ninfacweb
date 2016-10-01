@@ -22,4 +22,5 @@
 'Inv Inicial List': 'Listar Inventario Inicial'
 'Ctl Motivo Anulacion List': 'Listar Motivo de anulación'
 'Fac Factura Anulada List': 'Listar Anulación de facturas'
-'Fac Notas Credito List': 'Listar Notas de crédito'
+'Fac Notacredito List': 'Listar Notas de crédito'
+'Ctl Motivo Notacredito List': 'Listar Motivos de Notas de crédito'
