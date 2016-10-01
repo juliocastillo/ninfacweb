@@ -61,8 +61,13 @@ class FacNotacreditoAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /* filtrar solo CFF */
+        $factura = new \Bundles\FacturaBundle\Entity\FacFactura;
+        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado != 'ANULADA' AND s.idTipofactura = 2");
+        
+        
         $formMapper
-                ->with('Nota_credito', array('class' => 'col-md-4'))->end()
+                ->with('Nota_credito', array('class' => 'col-md-8'))->end()
                 ->with('Detalle', array('class' => 'col-md-12'))->end()
                 ->with('Resumen', array('class' => 'col-md-4'))->end()
         ;
@@ -79,8 +84,18 @@ class FacNotacreditoAdmin extends Admin
                             'class' => 'bootstrap-datepicker',
                             'style' => 'width:200px', 'maxlength' => '25'
                         )))
-                ->add('idFactura',null,array('label'=>'Número de CCF'))
-                ->add('idMotivoNotacredito',null,array('label'=>'Motivo de la nota de crédito'))
+                ->add('idFactura','sonata_type_model', array(
+                    'empty_value'=>'...ninguno...',
+                    'label' => 'CFF (seleccione CCF)',
+                    'required' => TRUE,
+                    'btn_add' => FALSE,
+                    'query' => $qry_factura,
+                    'attr' => array(
+                        'style'=>'width:300px')))     
+
+                ->add('idMotivoNotacredito',null,array('label'=>'Motivo de la nota de crédito',
+                    'attr' => array(
+                        'style'=>'width:300px')))
             ->end()
             ->with('Detalle')
                 ->add('notacreditoDetalle','sonata_type_collection',array('label' =>'Elemento'),
