@@ -1,4 +1,4 @@
-BEGIN;
+﻿BEGIN;
 
 -- CREATE FIELD "tipo_compra" ----------------------------------
 ALTER TABLE "public"."inv_entrada" ADD COLUMN "tipo_compra" Integer;
@@ -243,3 +243,153 @@ ALTER TABLE "public"."fac_notacredito"
 -- -------------------------------------------------------------
 
 COMMIT;
+
+
+
+
+
+-- Table: fac_notacredito
+
+-- DROP TABLE fac_notacredito;
+
+CREATE TABLE fac_notacredito
+(
+  id serial NOT NULL, -- primary key
+  fecha date NOT NULL, -- Fecha en que se elaboro la nota de credito
+  sumas numeric(10,2) NOT NULL, -- la sumatora de todos los item en el caso de dovolución de producto se calcula automaticamente, en el caso de descuento o devolución de efectivo se edita
+  iva numeric(10,2), -- calculo del iva a la sumatoria 13% al momento de la creacion del sistema
+  subtotal numeric(10,2),
+  iva_retenido numeric(10,2),
+  ventas_exentas numeric(10,2),
+  venta_total numeric(10,2) NOT NULL, -- valor total del documento, con todos los descuentos o adiciones aplicadas
+  activo boolean,
+  id_user_add integer NOT NULL,
+  id_user_mod integer,
+  date_add date NOT NULL,
+  date_mod date,
+  id_factura integer NOT NULL,
+  id_motivo_notacredito serial NOT NULL,
+  numero integer NOT NULL,
+  CONSTRAINT pk_notacredito_id PRIMARY KEY (id),
+  CONSTRAINT lnk_ctl_motivo_notacredito_fac_notacredito FOREIGN KEY (id_motivo_notacredito)
+      REFERENCES ctl_motivo_notacredito (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT lnk_fac_factura_fac_notacredito FOREIGN KEY (id_factura)
+      REFERENCES fac_factura (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT lnk_fos_user_user_fac_notacredito FOREIGN KEY (id_user_add)
+      REFERENCES fos_user_user (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT lnk_fos_user_user_fac_notacredito_2 FOREIGN KEY (id_user_mod)
+      REFERENCES fos_user_user (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE fac_notacredito
+  OWNER TO postgres;
+COMMENT ON TABLE fac_notacredito
+  IS 'Nota de credito para devolución de producto, efectivo o descuento';
+COMMENT ON COLUMN fac_notacredito.id IS 'primary key';
+COMMENT ON COLUMN fac_notacredito.fecha IS 'Fecha en que se elaboro la nota de credito';
+COMMENT ON COLUMN fac_notacredito.sumas IS 'la sumatora de todos los item en el caso de dovolución de producto se calcula automaticamente, en el caso de descuento o devolución de efectivo se edita';
+COMMENT ON COLUMN fac_notacredito.iva IS 'calculo del iva a la sumatoria 13% al momento de la creacion del sistema';
+COMMENT ON COLUMN fac_notacredito.venta_total IS 'valor total del documento, con todos los descuentos o adiciones aplicadas';
+
+
+-- Index: index_ctl_motivo_notacredito_id
+
+-- DROP INDEX index_ctl_motivo_notacredito_id;
+
+CREATE INDEX index_ctl_motivo_notacredito_id
+  ON fac_notacredito
+  USING btree
+  (id_motivo_notacredito);
+
+-- Index: index_fac_factura_id
+
+-- DROP INDEX index_fac_factura_id;
+
+CREATE INDEX index_fac_factura_id
+  ON fac_notacredito
+  USING btree
+  (id_factura);
+
+
+
+-- Table: fac_notacreditodetalle
+
+-- DROP TABLE fac_notacreditodetalle;
+
+CREATE TABLE fac_notacreditodetalle
+(
+  cantidad numeric(10,2) NOT NULL, -- establece la cantidad de producto a ser devuelto al inventario
+  precio_unitario numeric(10,2) NOT NULL, -- precio al que fue devuelto el producto
+  ventas_exentas numeric(10,2),
+  ventas_gravadas numeric(10,2),
+  historial boolean,
+  id_notacredito integer NOT NULL,
+  id serial NOT NULL, -- Llave primaria
+  id_inv_producto_mov integer NOT NULL,
+  CONSTRAINT fac_notacreditodetalle_pkey PRIMARY KEY (id),
+  CONSTRAINT lnk_fac_notacredito_fac_notacreditodetalle FOREIGN KEY (id_notacredito)
+      REFERENCES fac_notacredito (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT lnk_inv_producto_mov_fac_notacreditodetalle FOREIGN KEY (id_inv_producto_mov)
+      REFERENCES inv_producto_mov (id) MATCH FULL
+      ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE fac_notacreditodetalle
+  OWNER TO postgres;
+COMMENT ON COLUMN fac_notacreditodetalle.cantidad IS 'establece la cantidad de producto a ser devuelto al inventario';
+COMMENT ON COLUMN fac_notacreditodetalle.precio_unitario IS 'precio al que fue devuelto el producto';
+COMMENT ON COLUMN fac_notacreditodetalle.id IS 'Llave primaria';
+
+
+-- Index: index_fac_notacredito_id
+
+-- DROP INDEX index_fac_notacredito_id;
+
+CREATE INDEX index_fac_notacredito_id
+  ON fac_notacreditodetalle
+  USING btree
+  (id_notacredito);
+
+-- Index: index_inv_producto_mov_id
+
+-- DROP INDEX index_inv_producto_mov_id;
+
+CREATE INDEX index_inv_producto_mov_id
+  ON fac_notacreditodetalle
+  USING btree
+  (id_inv_producto_mov);
+
+
+
+
+-- Table: ctl_motivo_notacredito
+
+-- DROP TABLE ctl_motivo_notacredito;
+
+CREATE TABLE ctl_motivo_notacredito
+(
+  id serial NOT NULL, -- llave primaria
+  nombre character varying(100) NOT NULL,
+  activo boolean NOT NULL,
+  CONSTRAINT pk_motivo_notacredito_id PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ctl_motivo_notacredito
+  OWNER TO postgres;
+COMMENT ON TABLE ctl_motivo_notacredito
+  IS 'almacena los motivos por lo que se elabora una nota de credito.
+1 Devolucion (producto dañado u otros arreglos) se devuelve producto
+2 Descuento/Rebajas Pronto pago (se devuelve efectivo o un porcentaje de la venta)';
+COMMENT ON COLUMN ctl_motivo_notacredito.id IS 'llave primaria';
+
