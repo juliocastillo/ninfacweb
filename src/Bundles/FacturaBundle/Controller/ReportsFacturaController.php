@@ -272,7 +272,7 @@ class ReportsFacturaController extends Controller {
                 );
             } elseif($formatoNombre == 'factura_cfinal_manual.html.twig') { //ccf con detalle manual
                 // renderizar la vista con los array de las consualtas
-                $vistaParaImpresion = $this->renderView('BundlesFacturaBundle:Reportes:factura_ccf_manual.html.twig', array(
+                $vistaParaImpresion = $this->renderView('BundlesFacturaBundle:Reportes:factura_cfinal_manual.html.twig', array(
                     'id'=>$id,
                     'factura'=>$factura,
                     'cliente'=>$cliente,
