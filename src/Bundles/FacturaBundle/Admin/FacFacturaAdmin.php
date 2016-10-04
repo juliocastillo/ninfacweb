@@ -242,7 +242,7 @@ class FacFacturaAdmin extends Admin {
          * para retener el iva correspondiente
          * al momento del desarrollo es 1%
          */
-        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2){ //calculo para Credito fiscal
+        if ($sumas > 100 && $factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
             $factura->setIvaRetenido($ivaretenido);
@@ -288,7 +288,7 @@ class FacFacturaAdmin extends Admin {
         /*
          * evaluar si es factura pagada en efectivo
          */
-        if ($factura->getIdTipofactura()->getId()==2){ // si la factura es de tipo Comprobante Credito Fiscal
+        if ($sumas > 100 && $factura->getIdTipofactura()->getId()==2){ // si la factura es de tipo Comprobante Credito Fiscal
             $iva = $sumas * 0.13;
             
             $subtotal = $sumas + $iva;

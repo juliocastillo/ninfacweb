@@ -107,7 +107,11 @@
                             {{ item.cantidad | number_format(0, '.', ',')}}</td>
                         <td style="height:{{ formato.detalleinterlineado }};font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.idinvproductomov }}; {{ item.idinvproductomov.idproducto.presentacion }}<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca:{{ item.idinvproductomov.idproducto.idmarca }};Lote:{{ item.idinvproductomov.lote }}; Vence:{{ item.idinvproductomov.fechavencimiento | date("d/m/Y")}}</td>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca:{{ item.idinvproductomov.idproducto.idmarca }};Lote:{{ item.idinvproductomov.lote }}
+                                                    {% if item.idinvproductomov.fechavencimiento != "" %}
+                                                        ; Vence:{{ item.idinvproductomov.fechavencimiento | date('d/m/Y') }}
+                                                    {% endif %}
+                        </td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.preciounitario }}</td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">

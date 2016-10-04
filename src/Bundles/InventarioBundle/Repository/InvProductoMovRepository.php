@@ -412,6 +412,7 @@ class InvProductoMovRepository extends EntityRepository {
                     t02.nombre,
                     t02.precio_costo,
                     t01.lote,
+                    t01.fecha_vencimiento AS vence,
                     t01.cantidad_inicial,
                     t03.cantidad AS cantidad_entrada,
                     t04.cantidad AS cantidad_salida

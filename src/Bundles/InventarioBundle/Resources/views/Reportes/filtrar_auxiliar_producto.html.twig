@@ -20,9 +20,9 @@ file that was distributed with this source code.
                 <option value="" selected="{{ id }}">...Seleccione...</option>
                 {% for producto in productos %}
                     {% if id == producto.id %}
-                        <option value="{{ producto.id }}" selected="{{ id }}">{{ producto.nombre }}</option>
+                        <option value="{{ producto.id }}" selected="{{ id }}">{{ producto.nombre }} {{producto.idmarca}}</option>
                     {% else %}
-                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                        <option value="{{ producto.id }}">{{ producto.nombre }} {{producto.idmarca}}</option>
                     {% endif %}
                 {% endfor %}
             </select>

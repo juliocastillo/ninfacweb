@@ -135,7 +135,7 @@ class ReportsInventarioController extends Controller {
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->AuxiliarProducto($id);
-            $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
+            $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre(). ' '. $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getIdMarca();
             $requestvalid = TRUE;
         } else {
             $id = '';
