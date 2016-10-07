@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Knp\Snappy\Pdf;
@@ -281,18 +282,46 @@ class ReportsCxcController extends Controller {
      */
 
     /**
-     * @Route("/exportar_a_excel", name="exportar_a_excel", options={"expose"=true})
+     * @Route("/exportar_a_excel/{id_cliente}", name="exportar_a_excel", options={"expose"=true})
      * @Method("GET")
      */
-    public function exportar_a_excelAction() {
-        header('Content-type: application(vnd.ms-excel');
-        header('Content-Desposition: attachment; filename=export.xls');
-        return $this->render('BundlesCxcBundle:Reportes:export.html.twig',array(
-            'id'=>'1'
-            
-        )
-                
-                );
-   
+    public function exportar_a_excelAction($id_cliente) {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        /* buscar el registro padre a traves de id */
+        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+
+        $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+        
+        if (isset($id_cliente)){
+            $id_cliente = $id_cliente;
+            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->cuentasCobrarResumen($id_cliente);
+            $nombrecliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($id_cliente)->getNombre();;
+            $requestvalid = TRUE; 
+        } else {
+            $id_cliente = '';
+            $movimientos = "";
+            $nombrecliente = "";
+            $requestvalid = FALSE;
+        }
+
+        $format = 'html'; // especifica el formato html, csv
+        $response = $this->render('BundlesCxcBundle:Reportes:export_cxc_resumen.' . $format . '.twig', array(
+            'id_cliente' => $id_cliente,
+            'movimientos'=>$movimientos,
+            'clientes' => $clientes,
+            'empresa' => $empresa,
+            'requestvalid' => $requestvalid,
+            'nombrecliente' => $nombrecliente,
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool')
+            )
+            ); // hace el pharse con el array de datos y la plantilla
+        $filename = "cxc_".$nombrecliente.date("Y_m_d_His").".csv"; //contruyendo el nombre del archivo
+        $response->headers->set('Content-Type', 'text/csv'); //establece el tipo de archivo salida
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename); // establece el archivo de salida
+        
+        return $response;  //ejecuta la accion
     }
 }

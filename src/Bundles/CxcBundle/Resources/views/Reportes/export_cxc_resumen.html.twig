@@ -1,0 +1,17 @@
+#;TIPO;NUMERO;FECHA;1 - 30 DIAS;31 - 60 DIAS;61 - 90 DIAS;> 90 DIAS;TOTAL
+{% set saldomenor30 = 0 %}
+{% set saldomenor60 = 0 %}
+{% set saldomenor90 = 0 %}
+{% set saldomayor90 = 0 %}
+{% set saldo = 0 %}
+{% set i = 0 %}
+{% for mov in movimientos %}
+    {% set i = i + 1 %}
+    {% set saldomenor30 = saldomenor30 + mov.menor30%}
+    {% set saldomenor60 = saldomenor60 + mov.menor60%}
+    {% set saldomenor90 = saldomenor90 + mov.menor90%}
+    {% set saldomayor90 = saldomayor90 + mov.mayor90%}
+    {% set saldo = saldo + mov.saldo %}
+    {{ i }};{{ mov.tipofactura }};{{ mov.numero }};{{ mov.fecha | date('d/m/Y')}};{{ mov.menor30 | number_format(2, '.', ',')}};{{ mov.menor60 | number_format(2, '.', ',')}};{{ mov.menor90 | number_format(2, '.', ',')}};{{ mov.mayor90 | number_format(2, '.', ',')}};{{ mov.saldo  | number_format(2, '.', ',') }}
+{% endfor %}
+{{ '' }};{{ 'TOTAL' }};{{ '' }};{{ '' }};{{ saldomenor30 | number_format(2, '.', ',') }};{{ saldomenor60 | number_format(2, '.', ',') }};{{ saldomenor90 | number_format(2, '.', ',') }};{{ saldomayor90 | number_format(2, '.', ',') }};{{ saldo  | number_format(2, '.', ',') }}

@@ -148,6 +148,7 @@ class CxcCobroReporteRepository extends EntityRepository {
         if ($id_cliente){
             $sql = "
                 SELECT 
+                    t.id,
                     t.nombre AS tipofactura,
                     f.numero,
                     f.fecha,
