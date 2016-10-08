@@ -52,6 +52,13 @@ class InvProductoMov
      * @ORM\Column(name="cantidad_inicial", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $cantidadInicial;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="precio_cif", type="decimal", precision=10, scale=4, nullable=false)
+     */
+    private $precioCif;
 
     /**
      * @var boolean
@@ -258,6 +265,29 @@ class InvProductoMov
     {
         return $this->cantidadInicial;
     }
+    
+    /**
+     * Set precioCif
+     *
+     * @param string $precioCif
+     * @return InvProductoMov
+     */
+    public function setPrecioCif($precioCif)
+    {
+        $this->precioCif = $precioCif;
+
+        return $this;
+    }
+
+    /**
+     * Get precioCif
+     *
+     * @return string 
+     */
+    public function getPrecioCif()
+    {
+        return $this->precioCif;
+    }    
 
     /**
      * Set activo

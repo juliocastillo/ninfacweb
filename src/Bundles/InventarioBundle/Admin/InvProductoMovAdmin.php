@@ -91,6 +91,10 @@ class InvProductoMovAdmin extends Admin
                     'label'=>'Cantidad en inventario inicial',
                     'required'=>FALSE,
                     'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
+            ->add('precioCif',null, array(
+                    'label'=>'Precio CIF (para inventario inicial)',
+                    'required'=>FALSE,
+                    'attr' => array('style' => 'width:200px', 'maxlength' => '25'),))
             ->add('tipoMov','choice',
                         array(
                             'label'=>'Tipo de movimiento de creación',

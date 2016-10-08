@@ -75,13 +75,14 @@ DATE: 9/4/16
                 <td align="right">INICIAL</td>
                 <td align="right">ENTRADA</td>
                 <td align="right">SALIDA</td>
-                <td align="right">IMPORTE</td>
                 <td align="right">SALDO</td>
+                <td align="right">PRECIO CIF</td>
+                <td align="right">IMPORTE</td>
             </tr>
             {% set total_importe = 0 %}
             {% for mov in movimientos %}
                 {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
-                {% set importe = total * mov.precio_costo %}
+                {% set importe = total * mov.preciocif %}
                 {% set total_importe = total_importe + importe %}
                 <tr>
                     <td>{{ mov.nombre }}</td>
@@ -94,8 +95,9 @@ DATE: 9/4/16
                     <td align="right">{{ mov.cantidad_inicial }}</td>
                     <td align="right">{{ mov.cantidad_entrada }}</td>
                     <td align="right">{{ mov.cantidad_salida }}</td>
+                    <td align="right">{{ total  | number_format(2, '.', ',')}}</td>                    
+                    <td align="right">{{ mov.preciocif  | number_format(2, '.', ',')}}</td>
                     <td align="right">{{ importe  | number_format(2, '.', ',')}}</td>
-                    <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
                 </tr>
             {% endfor %}
                 <tr>
@@ -105,8 +107,9 @@ DATE: 9/4/16
                     <td align="right"></td>
                     <td align="right"></td>
                     <td align="right"></td>
-                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>
                     <td align="right"></td>
+                    <td align="right"></td>
+                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>                    
                 </tr>
             
         </table>

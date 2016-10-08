@@ -415,11 +415,16 @@ class InvProductoMovRepository extends EntityRepository {
                     t01.fecha_vencimiento AS vence,
                     t01.cantidad_inicial,
                     t03.cantidad AS cantidad_entrada,
-                    t04.cantidad AS cantidad_salida
-            FROM
-                    inv_producto_mov 	t01
+                    t04.cantidad AS cantidad_salida,
+                    CASE
+                        WHEN (t01.tipo_mov = 'I') THEN 
+                            t01.precio_cif
+                        ELSE
+                            t03.preciocif_entrada
+                        END AS preciocif
+            FROM    inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
-                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad, costo_adicional AS preciocif_entrada FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov,costo_adicional) t03 ON t03.id_inv_producto_mov = t01.id
                     LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
