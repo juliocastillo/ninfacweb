@@ -251,14 +251,14 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(0);
+            $factura->setSubtotal(null);
             $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(0);
+            $factura->setSubtotal(null);
             $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
@@ -325,14 +325,14 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(0);
+            $factura->setSubtotal(null);
             $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
 	} elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(0);
+            $factura->setSubtotal(null);
             $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
