@@ -121,15 +121,9 @@ file that was distributed with this source code.
                             <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
 
 
-                                {# funcion de jQuery para crear el boton de imprimir #}
-                                <script type="text/javascript">
-                                            // $(document).ready(function () {
-                                            //     $('.sonata-ba-action').on("click", function () {
-                                            //     $('.btn-default').on("click", function () {
-                                            //         alert('hola');
-                                            //     });
-                                            // });
-
+                            {# funcion de jQuery para crear el boton de imprimir #}
+                            <script type="text/javascript">
+                                            $(document).ready(function () {
                                                 $('#imprimir').on("click", function () {
                                                     var tipo = "";
                                                     var parameters = [];
@@ -140,7 +134,7 @@ file that was distributed with this source code.
                                                     winParams['parameters'] = parameters;
                                                     openPostPopUpWindows(winParams);
                                                 });
-                                            // });
+                                            });
                                         </script>
                                         <a class="btn btn-success" id="imprimir"  role="button" title="Imprimir">
                                             <i class="fa fa-print"></i> {{ 'print_to_pdf'|trans({}, 'SonataAdminBundle') }} </a>
