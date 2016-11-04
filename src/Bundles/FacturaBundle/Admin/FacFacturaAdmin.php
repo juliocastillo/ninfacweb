@@ -25,7 +25,7 @@ class FacFacturaAdmin extends Admin {
         ;
     }
 
-    
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -81,7 +81,7 @@ class FacFacturaAdmin extends Admin {
                 ->with('Detalle', array('class' => 'col-md-12'))->end()
                 ->with('Resumen', array('class' => 'col-md-4'))->end()
         ;
-        
+
         $formMapper
             ->with('Factura')
                 ->add('idTipofactura','entity', array(
@@ -94,7 +94,7 @@ class FacFacturaAdmin extends Admin {
                           'attr' => array('style'=>'width:150px'),
                           'entity_alias' => 'formato_por_tipofactura',
                           'empty_value'=> '...Seleccionar...',
-                          'parent_field'=>'idTipofactura'))                
+                          'parent_field'=>'idTipofactura'))
 
                 ->add('numero', null, array(
                     'label' => 'Numero de factura',
@@ -115,6 +115,7 @@ class FacFacturaAdmin extends Admin {
                     'btn_add' => 'Agregar',
                     'btn_list' => 'Buscar cliente',
                     'btn_delete' => FALSE,
+                    'csrf_token_id' => 'lista.html.twig',
                     'btn_catalogue' => 'SonataNewBundle'
                         ), array(
                     'placeholder' => '*****'
@@ -158,17 +159,20 @@ class FacFacturaAdmin extends Admin {
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
+                    ->add('ventasExentas', null, array(
+                            'read_only' => TRUE,
+                            'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                        ))
                     ->add('iva', null, array(
-                        'read_only' => TRUE,
-                        'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
-                    ))
-                
-                    ->add('ivaRetenido', null, array(
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
 
                     ->add('subtotal', null, array(
+                        'read_only' => TRUE,
+                        'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
+                    ))
+                    ->add('ivaRetenido', null, array(
                         'read_only' => TRUE,
                         'attr' => array('style' => 'width:300px', 'maxlength' => '25'),
                     ))
@@ -204,16 +208,18 @@ class FacFacturaAdmin extends Admin {
             ->add('ventasExentas')
         ;
     }
-    
+
     public function prePersist($factura) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $factura->setIdUserAdd($user);
         $factura->setDateAdd(new \DateTime());
 
-        // calcular campos de factura
+        //instancienado variables
         $sumas = 0;
+        $iva = 0;
 
+        // calcular campos de factura
         foreach ($factura->getFacturaDetalle() as $facturaDetalle) {
             $facturaDetalle->setIdFactura($factura);
             $facturaDetalle->setVentasGravadas($facturaDetalle->getCantidad($factura) * $facturaDetalle->getPrecioUnitario($factura));
@@ -233,52 +239,59 @@ class FacFacturaAdmin extends Admin {
             //$iva = 0;
             $factura->setSumas($sumas);
             $factura->setIva(0);
-            $factura->setSubtotal(0);
+            $factura->setSubtotal($sumas);
             $factura->setVentaTotal($sumas);
-        }       
+        }
 
         /*
          * evaluar si el cliente es agente de retención
          * para retener el iva correspondiente
          * al momento del desarrollo es 1%
          */
-        if ($sumas > 100 && $factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2){ //calculo para Credito fiscal
+        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
+            $factura->setSubtotal(0);
+            $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
-        } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1){ // calculo para consumidor final
+        } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
+            $factura->setSubtotal(0);
+            $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         }
         else {
             $factura->setIvaRetenido(0);
         }
-        
+
         $factura->setVentasGravadas(0);
-        
+
         if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
             $factura->setEstado('PAGADO');
             $factura->setFechaPago($factura->getFecha());
         } elseif ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3){ //Evaluar si es pago en efectivo
             $factura->setEstado('PENDIENTE');
         }
-        
+
         // dejar la factura creada como activa
         $factura->setActivo(TRUE);
-    }    
-    
+    }
+
     public function preUpdate($factura) {
         // llenar campos de auditoria
-        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();        
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $factura->setIdUserMod($user);
         $factura->setDateMod(new \DateTime());
 
-        // calcular campos de factura
+        //instancienado variables
         $sumas = 0;
+        $iva = 0;
 
+
+        // calcular campos de factura
         foreach ($factura->getFacturaDetalle() as $facturaDetalle) {
             $facturaDetalle->setIdFactura($factura);
             $facturaDetalle->setVentasGravadas($facturaDetalle->getCantidad($factura) * $facturaDetalle->getPrecioUnitario($factura));
@@ -290,7 +303,7 @@ class FacFacturaAdmin extends Admin {
          */
         if ($factura->getIdTipofactura()->getId()==2){ // si la factura es de tipo Comprobante Credito Fiscal
             $iva = $sumas * 0.13;
-            
+
             $subtotal = $sumas + $iva;
             $factura->setSumas($sumas);
             $factura->setIva($iva);
@@ -300,9 +313,9 @@ class FacFacturaAdmin extends Admin {
             //$iva = 0;
             $factura->setSumas($sumas);
             $factura->setIva(0);
-            $factura->setSubtotal(0);
+            $factura->setSubtotal($sumas);
             $factura->setVentaTotal($sumas);
-        }       
+        }
 
         /*
          * evaluar si el cliente es agente de retención
@@ -312,11 +325,15 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
+            $factura->setSubtotal(0);
+            $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
 	} elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
+            $factura->setSubtotal(0);
+            $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         }
@@ -324,21 +341,21 @@ class FacFacturaAdmin extends Admin {
             $factura->setIvaRetenido(0);
         }
 
-        
+
         $factura->setVentasGravadas(0);
-        
+
         if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
             $factura->setEstado('PAGADO');
             $factura->setFechaPago($factura->getFecha());
         }
-        
+
     }
-    
+
     /*
      * permitir cuztomizar las acciones edit, create o show
      */
-    
-    
+
+
     public function getTemplate($name) {
         switch ($name) {
             case 'edit':
@@ -353,8 +370,8 @@ class FacFacturaAdmin extends Admin {
                 return parent::getTemplate($name);
                 break;
         }
-    }    
-    
+    }
+
     /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
@@ -373,12 +390,12 @@ class FacFacturaAdmin extends Admin {
                 $query
                         ->where($query->getRootAlias() . ".dateAdd = 'now()'")
 
-        );    
+        );
         }
     }
-    
-    
-    
+
+
+
     /*
      * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
      */
@@ -388,7 +405,7 @@ class FacFacturaAdmin extends Admin {
 //                    ->assertNotBlank()
 //                    ->assertNotNull()
 //                    ->end();
-//            
+//
 //            if ($factura->getFechaPago() < $factura->getFecha($factura)) {
 //            $errorElement->with('fechaPago')
 //                    ->addViolation('La Fecha de Pago debe ser mayor o igual a la fecha de facturación')

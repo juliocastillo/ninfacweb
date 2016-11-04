@@ -20,7 +20,7 @@ class CtlClienteAdmin extends Admin
         ;
     }
 
-    
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -47,6 +47,7 @@ class CtlClienteAdmin extends Admin
             ->add('direccion')
             ->add('exento')
             ->add('activo')
+            ->add('idTipoCliente',null,array('label'=>'Tipo cliente'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -96,11 +97,11 @@ class CtlClienteAdmin extends Admin
                       'attr' => array('style'=>'width:300px'),
                       'entity_alias' => 'muni_por_depto',
                       'empty_value'=> 'Seleccionar...',
-                      'parent_field'=>'idDepartamento'))                
+                      'parent_field'=>'idDepartamento'))
             ->add('idZona',NULL,array(
                 'label'=>'Zona',
                 'attr' => array('style'=>'width:300px'),))
-                
+
             ->add('email')
             ->add('agenteRetencion', NULL, array('label'=>'Agente de retencion'))
             ->add('exento', NULL, array('label'=>'Exento de IVA'))
@@ -145,9 +146,9 @@ class CtlClienteAdmin extends Admin
      * Metodo que se ejecuta antes de realizar una insercion.
      * Recibe como parametro una entidad; en este caso de tipo CtlPais
      * con los valores del formulario.
-     * 
+     *
      */
-   
+
     public function prePersist($val) {
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $val->setIdUserAdd($user);
@@ -158,7 +159,7 @@ class CtlClienteAdmin extends Admin
      * Metodo que se ejecuta antes de realizar una actualizacion.
      * Recibe como parametro una entidad; en este caso de tipo CtlPais
      * con los valores del formulario.
-     * 
+     *
      */
 
     public function preUpdate($val) {
@@ -166,7 +167,7 @@ class CtlClienteAdmin extends Admin
         $val->setIdUserMod($user);
         $val->setDateMod(new \DateTime());
     }
-    
+
     public function getTemplate($name) {
         switch ($name) {
             case 'list':
@@ -177,5 +178,5 @@ class CtlClienteAdmin extends Admin
                 break;
         }
     }
-    
+
 }
