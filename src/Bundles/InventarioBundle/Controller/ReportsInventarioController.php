@@ -205,33 +205,42 @@ class ReportsInventarioController extends Controller {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
 
+        //instanciar la variable request para acceder a todas las variables disponibles
+        $request = $this->getRequest();
+
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
 
-        if (isset($_REQUEST['id'])){
-            $id = $_REQUEST['id'];
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id);
+        if ($request->get('id')){
+            $id = $request->get('id');
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id,$request->get('fini'),$request->get('ffin'));
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
             $requestvalid = TRUE;
+            $fini           = $request->get('fini');
+            $ffin           = $request->get('ffin');
         } else {
-            $id = '';
-            $movimientos = "";
+            $id             = '';
+            $movimientos    = "";
             $nombreproducto = "";
-            $requestvalid = FALSE;
+            $requestvalid   = FALSE;
+            $fini           = date_format(new \DateTime(), 'Y-m-d'); //fecha de hoy
+            $ffin           = date_format(new \DateTime(), 'Y-m-d'); //fecha de hoy
         }
 
 
         return $this->render('BundlesInventarioBundle:Reportes:venta_producto.html.twig', array(
-            'id' => $id,
-            'movimientos'=>$movimientos,
-            'productos' => $productos,
-            'empresa' => $empresa,
-            'requestvalid' => $requestvalid,
-            'nombreproducto' => $nombreproducto,
-            'base_template' => $this->getBaseTemplate(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool')
+            'id'                => $id,
+            'fini'              => $fini,
+            'ffin'              => $ffin,
+            'movimientos'       =>$movimientos,
+            'productos'         => $productos,
+            'empresa'           => $empresa,
+            'requestvalid'      => $requestvalid,
+            'nombreproducto'    => $nombreproducto,
+            'base_template'     => $this->getBaseTemplate(),
+            'admin_pool'        => $this->container->get('sonata.admin.pool')
         )
         );
     }

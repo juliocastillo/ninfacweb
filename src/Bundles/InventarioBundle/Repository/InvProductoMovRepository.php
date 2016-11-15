@@ -360,38 +360,21 @@ class InvProductoMovRepository extends EntityRepository {
      */
     public function VentaProducto($id, $fini = null, $ffin = null){
         $em = $this->getEntityManager();
-        if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
-            $sql =
-            "SELECT
-                i.fecha AS fecha,
-                '3' AS tipo_movimiento,
-                t.nombre AS tipo,
-                i.numero AS numero,
-                c.nombre AS cliente,
-                m.lote,
-                e.cantidad AS cantidad_salida,
-                precio_unitario AS precio_unitario
-                FROM
-                fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
-                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id";
-        }
-        else { // devuelve todos los registros de un producto sin importar fecha
-            $sql =
-            "SELECT
-                i.fecha AS fecha,
-                '3' AS tipo_movimiento,
-                t.nombre AS tipo,
-                i.numero AS numero,
-                c.nombre AS cliente,
-                m.lote,
-                e.cantidad AS cantidad_salida,
-                precio_unitario AS precio_unitario
-                FROM
-                fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
-                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id";
-        }
+        $sql =
+        "SELECT
+            i.fecha AS fecha,
+            '3' AS tipo_movimiento,
+            t.nombre AS tipo,
+            i.numero AS numero,
+            c.nombre AS cliente,
+            m.lote,
+            e.cantidad AS cantidad_salida,
+            precio_unitario AS precio_unitario
+            FROM
+            fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
+            INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+            WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id AND
+                i.fecha >= '$fini' AND i.fecha <= '$ffin'";
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;
     }
@@ -417,7 +400,7 @@ class InvProductoMovRepository extends EntityRepository {
                     t03.cantidad AS cantidad_entrada,
                     t04.cantidad AS cantidad_salida,
                     CASE
-                        WHEN (t01.tipo_mov = 'I') THEN 
+                        WHEN (t01.tipo_mov = 'I') THEN
                             t01.precio_cif
                         ELSE
                             t03.preciocif_entrada

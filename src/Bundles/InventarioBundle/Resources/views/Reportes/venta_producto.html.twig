@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block show %}
     <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
         <b><center>REPORTE DE VENTAS POR PRODUCTO</center></b> <br>
-        <b>PRODUCTO:</b> 
+        <b>PRODUCTO:</b>
         <select id="productoseleccionado" name="id" required="required" >
             <option value="" selected="{{ id }}">...Seleccione...</option>
             {% for producto in productos %}
@@ -41,6 +41,17 @@ file that was distributed with this source code.
         </script>
         <table style="width: 50%; margin: 10px">
             <tr>
+                <td>Rango de fecha:</td>
+                <td>desde</td>
+                <td>
+                    <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                </td>
+                <td>hasta</td>
+                <td>
+                    <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                </td>
+            </tr>
+            <tr>
                 <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
             </tr>
         </table>
@@ -52,7 +63,7 @@ file that was distributed with this source code.
                     <td colspan="2" align="center">{{ empresa.nombre }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">Reporte Auxiliar de producto</td>
+                    <td colspan="2" align="center">Venta por producto</td>
                 </tr>
 
                 <tr>
@@ -83,7 +94,7 @@ file that was distributed with this source code.
                     </tr>
                 {% endfor %}
                 <tr>
-                    <td>TOTAL</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
