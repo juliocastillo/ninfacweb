@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * FacFactura
  *
- * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero", "id_tipofactura", "activo"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A58FB1E60D", columns={"id_notaremision"}), @ORM\Index(name="IDX_60ACA1A5E1FD3B5C", columns={"id_formato_documento"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"})})
+ * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero", "id_tipofactura", "fecha"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A58FB1E60D", columns={"id_notaremision"}), @ORM\Index(name="IDX_60ACA1A5E1FD3B5C", columns={"id_formato_documento"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"})})
  @ORM\Entity(repositoryClass="Bundles\FacturaBundle\Repository\FacFacturaRepository")
  * @UniqueEntity(
  *     fields={"numero", "idTipofactura"},
