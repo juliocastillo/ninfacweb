@@ -11,13 +11,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * FacFacturaManual
  *
- * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero", "id_tipofactura", "activo"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A58FB1E60D", columns={"id_notaremision"}), @ORM\Index(name="IDX_60ACA1A5E1FD3B5C", columns={"id_formato_documento"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"})})
+ * @ORM\Table(name="fac_factura", uniqueConstraints={@ORM\UniqueConstraint(name="uk_tipofactura_numero", columns={"numero", "id_tipofactura", "fecha"})}, indexes={@ORM\Index(name="IDX_60ACA1A52A813255", columns={"id_cliente"}), @ORM\Index(name="IDX_60ACA1A546D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_60ACA1A5AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_60ACA1A5890253C7", columns={"id_empleado"}), @ORM\Index(name="IDX_60ACA1A58FB1E60D", columns={"id_notaremision"}), @ORM\Index(name="IDX_60ACA1A5E1FD3B5C", columns={"id_formato_documento"}), @ORM\Index(name="IDX_60ACA1A538BCA62A", columns={"id_condicionpago"}), @ORM\Index(name="IDX_60ACA1A58D737C65", columns={"id_tipofactura"})})
  @ORM\Entity(repositoryClass="Bundles\FacturaBundle\Repository\FacFacturaRepository")
- * @UniqueEntity(
- *     fields={"numero", "idTipofactura"},
- *     message="Ya existe este numero de factura"
- *  )
- */
+  */
 class FacFacturaManual
 {
     /**
@@ -57,9 +53,9 @@ class FacFacturaManual
      * @ORM\Column(name="sin_detalle", type="boolean", nullable=true)
      */
     private $sinDetalle;
-    
-    
-    
+
+
+
     /**
      * @var \DateTime
      *
@@ -129,14 +125,14 @@ class FacFacturaManual
      * @ORM\Column(name="cobro_total", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $cobroTotal;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="cobro_total_sin_detalle", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $cobroTotalSinDetalle;
-    
+
 
     /**
      * @var \DateTime
@@ -238,14 +234,14 @@ class FacFacturaManual
      * })
      */
     private $idTipofactura;
-    
+
 
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -268,7 +264,7 @@ class FacFacturaManual
     /**
      * Get numero
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumero()
     {
@@ -291,7 +287,7 @@ class FacFacturaManual
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -314,7 +310,7 @@ class FacFacturaManual
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {
@@ -337,15 +333,15 @@ class FacFacturaManual
     /**
      * Get sinDetalle
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSinDetalle()
     {
         return $this->sinDetalle;
     }
-    
-    
-    
+
+
+
     /**
      * Set dateAdd
      *
@@ -362,7 +358,7 @@ class FacFacturaManual
     /**
      * Get dateAdd
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAdd()
     {
@@ -385,7 +381,7 @@ class FacFacturaManual
     /**
      * Get dateMod
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateMod()
     {
@@ -408,7 +404,7 @@ class FacFacturaManual
     /**
      * Get iva
      *
-     * @return string 
+     * @return string
      */
     public function getIva()
     {
@@ -431,7 +427,7 @@ class FacFacturaManual
     /**
      * Get ivaRetenido
      *
-     * @return string 
+     * @return string
      */
     public function getIvaRetenido()
     {
@@ -454,7 +450,7 @@ class FacFacturaManual
     /**
      * Get subtotal
      *
-     * @return string 
+     * @return string
      */
     public function getSubtotal()
     {
@@ -477,7 +473,7 @@ class FacFacturaManual
     /**
      * Get ventaTotal
      *
-     * @return string 
+     * @return string
      */
     public function getVentaTotal()
     {
@@ -500,7 +496,7 @@ class FacFacturaManual
     /**
      * Get ventasGravadas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasGravadas()
     {
@@ -523,7 +519,7 @@ class FacFacturaManual
     /**
      * Get estado
      *
-     * @return string 
+     * @return string
      */
     public function getEstado()
     {
@@ -546,7 +542,7 @@ class FacFacturaManual
     /**
      * Get sumas
      *
-     * @return string 
+     * @return string
      */
     public function getSumas()
     {
@@ -569,7 +565,7 @@ class FacFacturaManual
     /**
      * Get cobroTotal
      *
-     * @return string 
+     * @return string
      */
     public function getCobroTotal()
     {
@@ -592,16 +588,16 @@ class FacFacturaManual
     /**
      * Get cobroTotalSinDetalle
      *
-     * @return string 
+     * @return string
      */
     public function getCobroTotalSinDetalle()
     {
         return $this->cobroTotalSinDetalle;
-    }    
-    
-    
-    
-    
+    }
+
+
+
+
     /**
      * Set fechaPago
      *
@@ -618,7 +614,7 @@ class FacFacturaManual
     /**
      * Get fechaPago
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaPago()
     {
@@ -641,7 +637,7 @@ class FacFacturaManual
     /**
      * Get ventasNosujetas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasNosujetas()
     {
@@ -664,7 +660,7 @@ class FacFacturaManual
     /**
      * Get ventasExentas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasExentas()
     {
@@ -687,7 +683,7 @@ class FacFacturaManual
     /**
      * Get idCliente
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlCliente 
+     * @return \Bundles\CatalogosBundle\Entity\CtlCliente
      */
     public function getIdCliente()
     {
@@ -710,7 +706,7 @@ class FacFacturaManual
     /**
      * Get idUserAdd
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -733,7 +729,7 @@ class FacFacturaManual
     /**
      * Get idUserMod
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserMod()
     {
@@ -756,7 +752,7 @@ class FacFacturaManual
     /**
      * Get idEmpleado
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado 
+     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado
      */
     public function getIdEmpleado()
     {
@@ -779,7 +775,7 @@ class FacFacturaManual
     /**
      * Get idNotaremision
      *
-     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
+     * @return \Bundles\FacturaBundle\Entity\FacNotaremision
      */
     public function getIdNotaremision()
     {
@@ -802,7 +798,7 @@ class FacFacturaManual
     /**
      * Get idFormatoDocumento
      *
-     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento 
+     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento
      */
     public function getIdFormatoDocumento()
     {
@@ -825,7 +821,7 @@ class FacFacturaManual
     /**
      * Get idCondicionpago
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago 
+     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago
      */
     public function getIdCondicionpago()
     {
@@ -848,12 +844,12 @@ class FacFacturaManual
     /**
      * Get idTipofactura
      *
-     * @return \Bundles\CatalogosBundle\Entity\Entity\CtlTipofactura 
+     * @return \Bundles\CatalogosBundle\Entity\Entity\CtlTipofactura
      */
     public function getIdTipofactura()
     {
         return $this->idTipofactura;
     }
 
-    
+
 }
