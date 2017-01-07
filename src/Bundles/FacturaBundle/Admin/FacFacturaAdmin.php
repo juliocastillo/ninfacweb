@@ -347,6 +347,13 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCondicionpago()->getId()==1){ //Evaluar si es pago en efectivo
             $factura->setEstado('PAGADO');
             $factura->setFechaPago($factura->getFecha());
+        } else {
+            //Evaluar si la factura es de credito y aún no ha sido candelada,
+            //evaluar suma y cobro_total y se la diferencia es positiva establecer
+            // el estado a PENDIENTE
+            if ($factura->getSumas() > $factura->getCobroTotal()){
+                $factura->setEstado('PENDIENTE');
+            }
         }
 
     }

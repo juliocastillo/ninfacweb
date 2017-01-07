@@ -213,9 +213,12 @@ class ReportsInventarioController extends Controller {
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
 
+        $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+
         if ($request->get('id')){
             $id = $request->get('id');
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id,$request->get('fini'),$request->get('ffin'));
+            $id_cliente = $request->get('id_cliente');
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->VentaProducto($id,$request->get('fini'),$request->get('ffin'),$id_cliente);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
             $requestvalid = TRUE;
             $fini           = $request->get('fini');
@@ -224,6 +227,7 @@ class ReportsInventarioController extends Controller {
             $id             = '';
             $movimientos    = "";
             $nombreproducto = "";
+            $id_cliente     = '';
             $requestvalid   = FALSE;
             $fini           = date_format(new \DateTime(), 'Y-m-d'); //fecha de hoy
             $ffin           = date_format(new \DateTime(), 'Y-m-d'); //fecha de hoy
@@ -234,8 +238,10 @@ class ReportsInventarioController extends Controller {
             'id'                => $id,
             'fini'              => $fini,
             'ffin'              => $ffin,
-            'movimientos'       =>$movimientos,
+            'movimientos'       => $movimientos,
             'productos'         => $productos,
+            'clientes'          => $clientes,
+            'id_cliente'        => $id_cliente,
             'empresa'           => $empresa,
             'requestvalid'      => $requestvalid,
             'nombreproducto'    => $nombreproducto,
@@ -258,18 +264,20 @@ class ReportsInventarioController extends Controller {
 
         $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(array('activo'=>TRUE));
 
-        if (isset($_REQUEST['fini'])){
-            $fini = $_REQUEST['fini'];
+        if (isset($_REQUEST['ffin'])){
+            // $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
+            isset($_REQUEST['ocultarsaldoscero']) ? $ocultarsaldoscero = $_REQUEST['ocultarsaldoscero'] : $ocultarsaldoscero=false;
             $id_marca = $_REQUEST['id_marca'];
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($fini,$ffin,$id_marca);
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($ffin,$id_marca);
             $requestvalid = TRUE;
         } else {
             $id_marca = '';
-            $fini = Date('Y-m-d');
+            // $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
             $movimientos = "";
             $requestvalid = FALSE;
+            $ocultarsaldoscero=FALSE;
         }
 
 
@@ -278,7 +286,8 @@ class ReportsInventarioController extends Controller {
             'marcas'=>$marcas,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,
-            'fini' => $fini,
+            // 'fini' => $fini,
+            'ocultarsaldoscero' => $ocultarsaldoscero,
             'ffin' => $ffin,
             'requestvalid' => $requestvalid,
             'base_template' => $this->getBaseTemplate(),

@@ -14,11 +14,11 @@ DATE: 9/4/16
             <b><center>REPORTE DE INVENTARIO AL DIA</center></b> <br>
             <script type="text/javascript">
             $(function() {
-              $('#fini').datetimepicker({ 
+              $('#fini').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
-               $('#ffin').datetimepicker({ 
+               $('#ffin').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
@@ -27,18 +27,19 @@ DATE: 9/4/16
             <table style="width: 60%; margin: 10px">
                 <tr>
                     <td>Rango de fecha:</td>
+
                     <td>desde</td>
                     <td>
-                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                        <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
-                    <td>hasta</td>
                     <td>
-                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                        <input type="checkbox" name="ocultarsaldoscero" id="ocultarsaldoscero" {{ (ocultarsaldoscero) ? "checked" : '' }} >
+                        <label for="ocultarsaldoscero">Ocultar saldos a cero</label>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                    <p>Marca de producto:</p> 
+                    <td colspan="4">
+                    <p>Marca de producto:</p>
                         <select id="productoseleccionado" name="id_marca" required="required">
                             <option value="" selected="{{ id_marca }}">...Seleccione...</option>
                             <option value="000">Todas</option>
@@ -84,21 +85,25 @@ DATE: 9/4/16
                 {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
                 {% set importe = total * mov.preciocif %}
                 {% set total_importe = total_importe + importe %}
-                <tr>
-                    <td>{{ mov.nombre }}</td>
-                    <td>{{ mov.lote }}</td>
-                    <td>
-                        {% if mov.vence != "" %}
-                            {{ mov.vence | date('d/m/Y')}}
-                        {% endif %}
-                    </td>
-                    <td align="right">{{ mov.cantidad_inicial }}</td>
-                    <td align="right">{{ mov.cantidad_entrada }}</td>
-                    <td align="right">{{ mov.cantidad_salida }}</td>
-                    <td align="right">{{ total  | number_format(2, '.', ',')}}</td>                    
-                    <td align="right">{{ mov.preciocif  | number_format(2, '.', ',')}}</td>
-                    <td align="right">{{ importe  | number_format(2, '.', ',')}}</td>
-                </tr>
+                {% if ocultarsaldoscero == TRUE and total == 0 %}
+                    {# evitar fila#}
+                {% else %}
+                    <tr>
+                        <td>{{ mov.nombre }}</td>
+                        <td>{{ mov.lote }}</td>
+                        <td>
+                            {% if mov.vence != "" %}
+                                {{ mov.vence | date('d/m/Y')}}
+                            {% endif %}
+                        </td>
+                        <td align="right">{{ mov.cantidad_inicial }}</td>
+                        <td align="right">{{ mov.cantidad_entrada }}</td>
+                        <td align="right">{{ mov.cantidad_salida }}</td>
+                        <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ mov.preciocif  | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ importe  | number_format(2, '.', ',')}}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
                 <tr>
                     <td>TOTAL</td>
@@ -109,9 +114,9 @@ DATE: 9/4/16
                     <td align="right"></td>
                     <td align="right"></td>
                     <td align="right"></td>
-                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>                    
+                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>
                 </tr>
-            
+
         </table>
 
         {% endif %}

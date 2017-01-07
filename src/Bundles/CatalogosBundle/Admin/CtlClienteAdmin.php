@@ -31,6 +31,7 @@ class CtlClienteAdmin extends Admin
                 'class'=>'form-control',
                 'placeholder'=>'Search'
                 ))
+            ->add('nombreComercial')
             ->add('nrc')
             ->add('exento')
         ;

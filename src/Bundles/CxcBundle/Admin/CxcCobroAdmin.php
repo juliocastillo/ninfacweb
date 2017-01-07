@@ -23,7 +23,7 @@ class CxcCobroAdmin extends Admin
         $datagridMapper
             ->add('numeroRecibo')
             ->add('fecha')
-            
+
         ;
     }
 
@@ -43,7 +43,7 @@ class CxcCobroAdmin extends Admin
                                 'attr' => array('style'=>'width:100px', 'maxlength' => '10',
                                     'format' => 'Y-m-d'),
                 ))
-            
+
             ->add('monto')
             ->add('idFactura',null, array(    // permitir buscar un item de un catalogo
                     'label'=>'Número de Factura'
@@ -65,22 +65,22 @@ class CxcCobroAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        
+
         $entity = $this->getSubject();   //obtiene el elemento seleccionado en un objeto
         $id = $entity->getId();
-        
+
         $empleado = new \Bundles\CatalogosBundle\Entity\CtlEmpleado;
         $banco = new \Bundles\CatalogosBundle\Entity\CtlBanco;
         $factura = new \Bundles\FacturaBundle\Entity\FacFactura;
-        
+
         $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.autorizarCobro=TRUE');
         $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
         $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado = 'PENDIENTE'");
-        
+
         if (!$id) { // Se mostrara al agregar un ITEM
             $formMapper
 
-                    
+
                 ->add('idFactura','sonata_type_model', array(
                     'empty_value'=>'...ninguno...',
                     'label' => 'Factura (seleccione factura)',
@@ -88,8 +88,8 @@ class CxcCobroAdmin extends Admin
                     'btn_add' => FALSE,
                     'query' => $qry_factura,
                     'attr' => array(
-                        'style'=>'width:500px')))     
-                    
+                        'style'=>'width:500px')))
+
                 ->add('numeroRecibo','integer',array(
                     'attr' => array(
                         'style'=>'width:300px', 'maxlength' => '25')))
@@ -142,7 +142,7 @@ class CxcCobroAdmin extends Admin
             ;
         } else { // mode de modificacion el registro
             $formMapper
-                
+
                 ->add('numeroRecibo','integer',array(
                     'attr' => array(
                         'style'=>'width:300px', 'maxlength' => '25')))
@@ -210,20 +210,20 @@ class CxcCobroAdmin extends Admin
             ->add('activo')
         ;
     }
-    
-    
+
+
     public function prePersist($cobro) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $cobro->setIdUserAdd($user);
         $cobro->setDateAdd(new \DateTime());
-        
+
         $cobro->setActivo(TRUE);
 
         $cobro->setEstado('PENDIENTE');
-        
+
     }
- 
+
     public function preUpdate($cobro) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
@@ -231,39 +231,40 @@ class CxcCobroAdmin extends Admin
         $cobro->setDateMod(new \DateTime());
 
         $cobro->setEstado('PENDIENTE');
-        
+
         //accediendo al objeto de una entidad a través del EntityManager
 //        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
 //        $factura = $cobro->getIdFactura();
 //        $factura->setCobroTotal(21);
 //        $em->persist($factura);
     }
-    
+
     public function postPersist($cobro) {
         //accediendo al objeto de una entidad a través del EntityManager
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
         $idFactura = $cobro->getIdFactura()->getId();
         // actualizando campo pago_total en la factura
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaPagos($idFactura);
-        
+
         // actualizar estado en caso que la factura sea liquidada
-        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);        
+        $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
     }
 
     public function postUpdate($cobro) {
         //accediendo al objeto de una entidad a través del EntityManager
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
         $idFactura = $cobro->getIdFactura()->getId();
-        // actualizando campo pago_total en la factura
+
+        // actualizando campo pago_total en la factura y estado ABONADO
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaPagos($idFactura);
-        
+
         // actualizar estado en caso que la factura sea liquidada
         $em->getRepository('BundlesFacturaBundle:FacFactura')->actualizaEstado($idFactura);
     }
-    
-    
-    
-    
+
+
+
+
     /*
      * funcion para valida si un campo dependiente es obligatorio en base a la ingresado en otro
      */
@@ -287,14 +288,14 @@ class CxcCobroAdmin extends Admin
                     ->assertNull()
                     ->end();
 
-            
-            
+
+
 //            if (is_null($cobro->getNumeroCheque($cobro))) {
 //                $errorElement->with('numeroCheque')
 //                        ->addViolation('El número de cheque es obligatorio')
 //                        ->end();
 //            }
-            
+
 //            if (is_null($cobro->getIdBanco($cobro))) {
 //                $errorElement->with('idBanco')
 //                        ->addViolation('El banco es obligatorio')
@@ -311,11 +312,11 @@ class CxcCobroAdmin extends Admin
 //                        ->addViolation('Si el pago es efectivo no seleccione el banco')
 //                        ->end();
 //            }
-            
+
         }
-            
+
     } // fin validate()
-    
+
     /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
@@ -334,9 +335,9 @@ class CxcCobroAdmin extends Admin
                 $query
                         ->where($query->getRootAlias() . ".dateAdd = 'now()'")
 
-        );    
+        );
         }
     }
 
-           
+
 }

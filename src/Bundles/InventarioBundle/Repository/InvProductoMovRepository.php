@@ -150,7 +150,7 @@ class InvProductoMovRepository extends EntityRepository {
                 ctl_producto p
                 LEFT JOIN inv_producto_mov m ON m.id_producto = p.id
                 WHERE p.id = '$id'
-                UNION
+                UNION /* unir las entradas */
                 SELECT
                 i.fecha AS fecha,
                 '2' AS tipo_movimiento,
@@ -160,12 +160,12 @@ class InvProductoMovRepository extends EntityRepository {
                 0 AS cantidad_inicial,
                 e.cantidad AS cantidad_entrada,
                 0 AS cantidad_salida,
-                e.precio_unitario AS precio_costo
+                e.costo_adicional AS precio_costo
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) != true
-                UNION
+                UNION  /* unir las salida  */
                 SELECT
                 i.fecha AS fecha,
                 '3' AS tipo_movimiento,
@@ -200,7 +200,7 @@ class InvProductoMovRepository extends EntityRepository {
                 ctl_producto p
                 LEFT JOIN inv_producto_mov m ON m.id_producto = p.id AND m.tipo_mov = 'I'
                 WHERE p.id = '$id'
-                UNION
+                UNION  /* unir las entradas */
                 SELECT
                 i.fecha AS fecha,
                 '2' AS tipo_movimiento,
@@ -210,12 +210,12 @@ class InvProductoMovRepository extends EntityRepository {
                 0 AS cantidad_inicial,
                 e.cantidad AS cantidad_entrada,
                 0 AS cantidad_salida,
-                e.precio_unitario AS precio_costo
+                e.costo_adicional AS precio_costo
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_entrada  AND COALESCE(e.historial,false) != true
-                UNION
+                UNION  /* unir las salidas */
                 SELECT
                 i.fecha AS fecha,
                 '3' AS tipo_movimiento,
@@ -358,8 +358,9 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function VentaProducto($id, $fini = null, $ffin = null){
+    public function VentaProducto($id, $fini = null, $ffin = null, $id_cliente = null){
         $em = $this->getEntityManager();
+        if ($id_cliente != NULL ){ $where = " AND i.id_cliente = '$id_cliente'"; } else {$where = ""; }
         $sql =
         "SELECT
             i.fecha AS fecha,
@@ -374,7 +375,7 @@ class InvProductoMovRepository extends EntityRepository {
             fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
             INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
             WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id AND
-                i.fecha >= '$fini' AND i.fecha <= '$ffin'";
+                i.fecha >= '$fini' AND i.fecha <= '$ffin' $where ";
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;
     }
@@ -384,12 +385,12 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function InventarioAldia($fini = null, $ffin = null, $id_marca = null){
+    public function InventarioAldia($ffin = null, $id_marca = null){
         $em = $this->getEntityManager();
-
+        $fini = null;
         if ($id_marca!='000'){ $where = "WHERE t02.id_marca = '$id_marca'"; } else {$where = ""; }
 
-        if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
+        if (isset($ffin)){ //filtra todos los movimientos de un producto por fechas
             $sql =
             "SELECT
                     t02.nombre,
@@ -407,8 +408,8 @@ class InvProductoMovRepository extends EntityRepository {
                         END AS preciocif
             FROM    inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
-                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad, avg(costo_adicional) AS preciocif_entrada FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
-                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad, avg(costo_adicional) AS preciocif_entrada FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
         }
@@ -424,8 +425,8 @@ class InvProductoMovRepository extends EntityRepository {
             FROM
                     inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
-                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha >= '$fini' AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
-                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha >= '$fini' AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
+                    LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
         }

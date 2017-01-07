@@ -2,7 +2,7 @@
     <head>
         <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
+
         <style type="text/css">
 
             html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
@@ -33,18 +33,18 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {{ factura.fecha | date('d') }}
 						{{ ' de ' }}
-						{% if factura.fecha | date('m') == 1 %} {{ 'enero' }}
-						{% elseif factura.fecha | date('m') == 2 %} {{ 'febrero' }}
-						{% elseif factura.fecha | date('m') == 3 %} {{ 'marzo' }}
-						{% elseif factura.fecha | date('m') == 4 %} {{ 'abril' }}
-						{% elseif factura.fecha | date('m') == 5 %} {{ 'mayo' }}
-						{% elseif factura.fecha | date('m') == 6 %} {{ 'junio' }}
-						{% elseif factura.fecha | date('m') == 7 %} {{ 'julio' }}
-						{% elseif factura.fecha | date('m') == 8 %} {{ 'agosto' }}
-						{% elseif factura.fecha | date('m') == 9 %} {{ 'septiembre' }}
-						{% elseif factura.fecha | date('m') == 10 %} {{ 'octubre' }}
-						{% elseif factura.fecha | date('m') == 11 %} {{ 'noviembre' }}
-						{% else %} {{ 'diciembre' }} {% endif %}
+                        {% if factura.fecha | date('m') == 1 %} {{ 'Enero' }}
+                        {% elseif factura.fecha | date('m') == 2 %} {{ 'Febrero' }}
+                        {% elseif factura.fecha | date('m') == 3 %} {{ 'Marzo' }}
+                        {% elseif factura.fecha | date('m') == 4 %} {{ 'Abril' }}
+                        {% elseif factura.fecha | date('m') == 5 %} {{ 'Mayo' }}
+                        {% elseif factura.fecha | date('m') == 6 %} {{ 'Junio' }}
+                        {% elseif factura.fecha | date('m') == 7 %} {{ 'Julio' }}
+                        {% elseif factura.fecha | date('m') == 8 %} {{ 'Agosto' }}
+                        {% elseif factura.fecha | date('m') == 9 %} {{ 'Septiembre' }}
+                        {% elseif factura.fecha | date('m') == 10 %} {{ 'Octubre' }}
+                        {% elseif factura.fecha | date('m') == 11 %} {{ 'Noviembre' }}
+                        {% else %} {{ 'Diciembre' }} {% endif %}
 						{{ ' de ' }}
 						{{ factura.fecha | date('Y') }}
 						</td>
@@ -116,7 +116,7 @@
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca:{{ item.idinvproductomov.idproducto.idmarca }}; Lote:{{ item.idinvproductomov.lote }}
                                                     {% if item.idinvproductomov.fechavencimiento != "" %}
                                                         ; Vence:{{ item.idinvproductomov.fechavencimiento | date('d/m/Y') }}
-                                                    {% endif %}                            
+                                                    {% endif %}
                         </td>
                         <td style="height:{{ formato.detalleinterlineado }}; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.preciounitario }}</td>

@@ -12,7 +12,7 @@ DATE: 9/4/16
 {% block show %}
         <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
             <b><center>REPORTE DE FACTURAS DETALLE</center></b> <br>
-            <b>CLIENTE:</b> 
+            <b>CLIENTE:</b>
             <select id="clienteseleccionado" name="id" required="required" >
                 <option value="">...Seleccione...</option>
                 {% set nombre = '' %}
@@ -27,11 +27,11 @@ DATE: 9/4/16
             </select>
             <script type="text/javascript">
             $(function() {
-              $('#fini').datetimepicker({ 
+              $('#fini').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
-               $('#ffin').datetimepicker({ 
+               $('#ffin').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
@@ -67,7 +67,7 @@ DATE: 9/4/16
                     </td>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>
-                
+
             </table>
         </form>
         <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
@@ -114,14 +114,14 @@ DATE: 9/4/16
                     {% set total_ccf = total_ccf + mov.total %}
                 {% endif %}
                 <tr>
-                    
+
                     {% if mov.numero != numero_texto %}
                             <td>{{ mov.tipo }}</td><td>{{ mov.numero }}</td><td>{{ mov.fecha | date('d/m/Y')}} </td><td> {{ mov.condicion }}</td>
                         {% else %}
                             <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                         {% endif %}
                     </td>
-                    <td>{{ mov.nombre_producto }}</td>
+                    <td>{{ mov.nombre_producto }}, {{ mov.id_marca }}</td>
                     <td style="text-align: right">{{ mov.cantidad }}</td>
                     <td style="text-align: right">{{ mov.precio_unitario }}</td>
                     <td style="text-align: right">{{ mov.ventas_gravadas  | number_format(2, '.', ',') }}</td>
@@ -146,7 +146,7 @@ DATE: 9/4/16
                 <td colspan="3" style="text-align: right">SUMA </td>
                 <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
             </tr>
-            
+
             <tr>
                 <td></td>
                 <td></td>
@@ -163,7 +163,7 @@ DATE: 9/4/16
                 <td colspan="3" style="text-align: right">Total consumidor final </td>
                 <td style="text-align: right">{{ total_cf  | number_format(2, '.', ',') }}</td>
             </tr>
-            
+
         </table>
 
         {% endif %}
