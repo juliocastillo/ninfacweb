@@ -173,7 +173,8 @@ class ReportsInventarioController extends Controller {
 
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->HistorialAuxiliarProducto($id);
+            $fecha = $_REQUEST['fecha'];
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->HistorialAuxiliarProducto($id,$fecha);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre();
             $requestvalid = TRUE;
         } else {

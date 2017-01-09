@@ -243,7 +243,7 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function HistorialAuxiliarProducto($id, $fini = null, $ffin = null){
+    public function HistorialAuxiliarProducto($id, $fini = null){
         $em = $this->getEntityManager();
         if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
             $sql =
@@ -261,7 +261,9 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 ctl_producto p
                 LEFT JOIN inv_producto_mov_historial m ON m.id_producto = p.id
-                WHERE p.id = '$id'
+                WHERE
+                    m.fecha_cierre = '$fini' AND
+                    p.id = '$id'
                 UNION /* unir las entradas al inventario*/
                 SELECT
                 i.fecha AS fecha,
@@ -276,7 +278,8 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov_historial m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) = true
+                WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) = true AND
+                e.fecha_cierre = '$fini'
                 UNION /* unir las salidas del inventario */
                 SELECT
                 i.fecha AS fecha,
@@ -291,7 +294,8 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 fac_factura i, fac_facturadetalle e
                 INNER JOIN inv_producto_mov_historial m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) = true
+                WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) = true AND
+                e.fecha_cierre = '$fini'
                 ) d
             ORDER BY lote, tipo_movimiento, fecha";
         }
@@ -311,7 +315,8 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 ctl_producto p
                 LEFT JOIN inv_producto_mov_historial m ON m.id_producto = p.id AND m.tipo_mov = 'I'
-                WHERE p.id = '$id'
+                WHERE 
+                 m.fecha_cierre = '$fini' AND p.id = '$id'
                 UNION
                 SELECT
                 i.fecha AS fecha,
@@ -326,7 +331,8 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov_historial m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_entrada  AND COALESCE(e.historial,false) = true
+                WHERE i.id = e.id_entrada  AND COALESCE(e.historial,false) = true AND
+                e.fecha_cierre = '$fini'
                 UNION
                 SELECT
                 i.fecha AS fecha,
