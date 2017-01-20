@@ -75,7 +75,7 @@ class CxcCobroAdmin extends Admin
 
         $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.autorizarCobro=TRUE');
         $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
-        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado = 'PENDIENTE'");
+        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado != 'CANCELADO'");
 
         if (!$id) { // Se mostrara al agregar un ITEM
             $formMapper
