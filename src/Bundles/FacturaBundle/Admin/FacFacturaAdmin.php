@@ -332,7 +332,7 @@ class FacFacturaAdmin extends Admin {
 	} elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(null);
+            $factura->setSubtotal($sumas); //se imcorporo calculo de sumas en base a solicitud 02-12-2017
             $factura->setVentasExentas($sumas);
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
@@ -395,7 +395,7 @@ class FacFacturaAdmin extends Admin {
         $query = parent::createQuery($context);
         return new ProxyQuery(
                 $query
-                        ->where($query->getRootAlias() . ".dateAdd = 'now()'")
+                        ->where($query->getRootAlias() . ".activo = TRUE")
 
         );
         }
