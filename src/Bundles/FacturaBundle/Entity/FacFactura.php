@@ -130,8 +130,8 @@ class FacFactura
      * @ORM\Column(name="sin_detalle", type="boolean", nullable=true)
      */
     private $sinDetalle;
-    
-    
+
+
     /**
      * @var string
      *
@@ -225,21 +225,21 @@ class FacFactura
      * })
      */
     private $idTipofactura;
-    
-    
+
+
      /**
      *
      * @ORM\OneToMany(targetEntity="FacFacturadetalle", mappedBy="idFactura", cascade={"all"}, orphanRemoval=true)
      *
      */
-    private $facturaDetalle;    
+    private $facturaDetalle;
 
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -262,7 +262,7 @@ class FacFactura
     /**
      * Get numero
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumero()
     {
@@ -285,7 +285,7 @@ class FacFactura
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -308,7 +308,7 @@ class FacFactura
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {
@@ -331,7 +331,7 @@ class FacFactura
     /**
      * Get dateAdd
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAdd()
     {
@@ -354,7 +354,7 @@ class FacFactura
     /**
      * Get dateMod
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateMod()
     {
@@ -377,7 +377,7 @@ class FacFactura
     /**
      * Get iva
      *
-     * @return string 
+     * @return string
      */
     public function getIva()
     {
@@ -400,7 +400,7 @@ class FacFactura
     /**
      * Get ivaRetenido
      *
-     * @return string 
+     * @return string
      */
     public function getIvaRetenido()
     {
@@ -423,7 +423,7 @@ class FacFactura
     /**
      * Get subtotal
      *
-     * @return string 
+     * @return string
      */
     public function getSubtotal()
     {
@@ -446,7 +446,7 @@ class FacFactura
     /**
      * Get ventaTotal
      *
-     * @return string 
+     * @return string
      */
     public function getVentaTotal()
     {
@@ -469,7 +469,7 @@ class FacFactura
     /**
      * Get ventasGravadas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasGravadas()
     {
@@ -492,7 +492,7 @@ class FacFactura
     /**
      * Get estado
      *
-     * @return string 
+     * @return string
      */
     public function getEstado()
     {
@@ -515,7 +515,7 @@ class FacFactura
     /**
      * Get sumas
      *
-     * @return string 
+     * @return string
      */
     public function getSumas()
     {
@@ -538,7 +538,7 @@ class FacFactura
     /**
      * Get cobroTotal
      *
-     * @return string 
+     * @return string
      */
     public function getCobroTotal()
     {
@@ -561,7 +561,7 @@ class FacFactura
     /**
      * Get fechaPago
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaPago()
     {
@@ -584,7 +584,7 @@ class FacFactura
     /**
      * Get ventasNosujetas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasNosujetas()
     {
@@ -607,7 +607,7 @@ class FacFactura
     /**
      * Get ventasExentas
      *
-     * @return string 
+     * @return string
      */
     public function getVentasExentas()
     {
@@ -630,7 +630,7 @@ class FacFactura
     /**
      * Get idCliente
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlCliente 
+     * @return \Bundles\CatalogosBundle\Entity\CtlCliente
      */
     public function getIdCliente()
     {
@@ -653,7 +653,7 @@ class FacFactura
     /**
      * Get idUserAdd
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -676,7 +676,7 @@ class FacFactura
     /**
      * Get idUserMod
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserMod()
     {
@@ -699,7 +699,7 @@ class FacFactura
     /**
      * Get idEmpleado
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado 
+     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado
      */
     public function getIdEmpleado()
     {
@@ -722,7 +722,7 @@ class FacFactura
     /**
      * Get idNotaremision
      *
-     * @return \Bundles\FacturaBundle\Entity\FacNotaremision 
+     * @return \Bundles\FacturaBundle\Entity\FacNotaremision
      */
     public function getIdNotaremision()
     {
@@ -745,7 +745,7 @@ class FacFactura
     /**
      * Get idFormatoDocumento
      *
-     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento 
+     * @return \Bundles\CatalogosBundle\Entity\CfgFormatoDocumento
      */
     public function getIdFormatoDocumento()
     {
@@ -768,7 +768,7 @@ class FacFactura
     /**
      * Get idCondicionpago
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago 
+     * @return \Bundles\CatalogosBundle\Entity\CtlCondicionpago
      */
     public function getIdCondicionpago()
     {
@@ -791,7 +791,7 @@ class FacFactura
     /**
      * Get idTipofactura
      *
-     * @return \Bundles\CatalogosBundle\Entity\Entity\CtlTipofactura 
+     * @return \Bundles\CatalogosBundle\Entity\Entity\CtlTipofactura
      */
     public function getIdTipofactura()
     {
@@ -843,7 +843,7 @@ class FacFactura
     /**
      * Get sinDetalle
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSinDetalle()
     {
@@ -853,15 +853,20 @@ class FacFactura
     /**
      * Get facturaDetalle
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFacturaDetalle()
     {
         return $this->facturaDetalle;
     }
-    
-    public function __toString() {
-        return $this->numero .' ' . $this->idTipofactura;
+
+    public function getFacturaFecha()
+    {
+        return date_format($this->fecha, 'd-m-Y');
     }
-    
+
+    public function __toString() {
+        return $this->numero .' / ' . $this->idTipofactura . ' / ' . $this->getFacturaFecha();
+    }
+
 }
