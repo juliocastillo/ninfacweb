@@ -107,11 +107,11 @@ DATE: 9/4/16
                 {% set descuento = descuento + mov.descuento %}
                 {% set ventaneta = ventaneta + mov.ventaneta %}
                 {% set iva = iva + mov.iva %}
-                {% set total = total + mov.total %}
+                {% set total = total + mov.ventas_gravadas %}
                 {% if mov.id_tipo == 1 %}
-                    {% set total_cf = total_cf + mov.total %}
+                    {% set total_cf = total_cf + mov.ventas_gravadas %}
                 {% else %}
-                    {% set total_ccf = total_ccf + mov.total %}
+                    {% set total_ccf = total_ccf + mov.ventas_gravadas %}
                 {% endif %}
                 <tr>
 
@@ -165,7 +165,7 @@ DATE: 9/4/16
             </tr>
 
         </table>
-
+            * Totales no incluyen iva
         {% endif %}
         </div>
 {% endblock %}
