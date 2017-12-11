@@ -860,13 +860,14 @@ class FacFactura
         return $this->facturaDetalle;
     }
 
-    public function getFacturaFecha()
+    // funcion customizada para desplegar mas datos de la factura
+    public function factura()
     {
-        return date_format($this->fecha, 'd-m-Y');
+        return $this->numero .' / ' . $this->idTipofactura . ' / ' . date_format($this->fecha, 'd-m-Y') . ' / '. $this->idCliente;
     }
 
     public function __toString() {
-        return $this->numero .' / ' . $this->idTipofactura . ' / ' . $this->getFacturaFecha();
+        return $this->numero .' / ' . $this->idTipofactura;
     }
 
 }

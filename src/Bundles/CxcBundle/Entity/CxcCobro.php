@@ -30,7 +30,7 @@ class CxcCobro
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="date", nullable=false)
-     * 
+     *
      */
     private $fecha;
 
@@ -38,7 +38,7 @@ class CxcCobro
      * @var integer
      *
      * @ORM\Column(name="numero_recibo", type="integer", nullable=false)
-     * 
+     *
      * @Assert\Range(min="1")
      */
     private $numeroRecibo;
@@ -47,7 +47,7 @@ class CxcCobro
      * @var string
      *
      * @ORM\Column(name="numero_cheque", type="string", length=25, nullable=true)
-     * 
+     *
      */
     private $numeroCheque;
 
@@ -76,7 +76,7 @@ class CxcCobro
      * @var string
      *
      * @ORM\Column(name="monto", type="decimal", precision=10, scale=2, nullable=false)
-     * 
+     *
      * @Assert\Range(
      *      min = "0.01",
      * )
@@ -90,7 +90,7 @@ class CxcCobro
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
      * })
-     * 
+     *
      * @Assert\NotNull()
      */
     private $idEmpleado;
@@ -145,14 +145,14 @@ class CxcCobro
      */
     private $idBanco;
 
-    
+
      /**
      * @var string
      *
      * @ORM\Column(name="observacion", type="string", length=2044, nullable=true)
      */
     private $observacion;
-    
+
      /**
      * @var string
      *
@@ -160,14 +160,14 @@ class CxcCobro
      */
     private $estado;
 
-    
-    
+
+
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -190,13 +190,13 @@ class CxcCobro
     /**
      * Get observacion
      *
-     * @return string 
+     * @return string
      */
     public function getObservacion()
     {
         return $this->observacion;
-    }    
-    
+    }
+
     /**
      * Set fecha
      *
@@ -213,7 +213,7 @@ class CxcCobro
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -236,7 +236,7 @@ class CxcCobro
     /**
      * Get numeroRecibo
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumeroRecibo()
     {
@@ -259,7 +259,7 @@ class CxcCobro
     /**
      * Get numeroCheque
      *
-     * @return string 
+     * @return string
      */
     public function getNumeroCheque()
     {
@@ -282,7 +282,7 @@ class CxcCobro
     /**
      * Get dateAdd
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAdd()
     {
@@ -305,7 +305,7 @@ class CxcCobro
     /**
      * Get dateMod
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateMod()
     {
@@ -328,7 +328,7 @@ class CxcCobro
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {
@@ -351,7 +351,7 @@ class CxcCobro
     /**
      * Get monto
      *
-     * @return string 
+     * @return string
      */
     public function getMonto()
     {
@@ -374,7 +374,7 @@ class CxcCobro
     /**
      * Get idEmpleado
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado 
+     * @return \Bundles\CatalogosBundle\Entity\CtlEmpleado
      */
     public function getIdEmpleado()
     {
@@ -397,7 +397,7 @@ class CxcCobro
     /**
      * Get idFormaPago
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlFormapago 
+     * @return \Bundles\CatalogosBundle\Entity\CtlFormapago
      */
     public function getIdFormaPago()
     {
@@ -420,7 +420,7 @@ class CxcCobro
     /**
      * Get idFactura
      *
-     * @return \Bundles\CatalogosBundle\Entity\FacFactura 
+     * @return \Bundles\CatalogosBundle\Entity\FacFactura
      */
     public function getIdFactura()
     {
@@ -443,7 +443,7 @@ class CxcCobro
     /**
      * Get idUserAdd
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserAdd()
     {
@@ -466,7 +466,7 @@ class CxcCobro
     /**
      * Get idUserMod
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getIdUserMod()
     {
@@ -489,17 +489,17 @@ class CxcCobro
     /**
      * Get idBanco
      *
-     * @return \Bundles\CatalogosBundle\Entity\CtlBanco 
+     * @return \Bundles\CatalogosBundle\Entity\CtlBanco
      */
     public function getIdBanco()
     {
         return $this->idBanco;
     }
-    
+
     public function __toString() {
         return 'Recibo: '.$this->numeroRecibo;
     }
-    
+
      /**
      * Set estado
      *
@@ -522,8 +522,6 @@ class CxcCobro
     {
         return $this->estado;
     }
-    
 
-    
     
 }

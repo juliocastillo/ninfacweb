@@ -75,21 +75,31 @@ class CxcCobroAdmin extends Admin
 
         $qry_empleado = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlEmpleado s WHERE s.activo = TRUE AND s.autorizarCobro=TRUE');
         $qry_banco = $this->modelManager->getEntityManager($empleado)->createQuery('SELECT s FROM \Bundles\CatalogosBundle\Entity\CtlBanco s WHERE s.activo = TRUE');
-        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado != 'CANCELADO'");
+        $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery(
+            "SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado != 'PAGADO' AND s.estado != 'ANULADO' ORDER BY s.fecha, s.numero, s.idTipofactura");
 
         if (!$id) { // Se mostrara al agregar un ITEM
             $formMapper
-
-
                 ->add('idFactura','sonata_type_model', array(
                     'empty_value'=>'...ninguno...',
-                    'label' => 'Factura (seleccione factura)',
-                    'required' => TRUE,
-                    'btn_add' => FALSE,
-                    'query' => $qry_factura,
-                    'attr' => array(
+                    'label'     => 'Factura (seleccione factura)',
+                    'required'  => TRUE,
+                    'btn_add'   => FALSE,
+                    'class'     => 'BundlesFacturaBundle:FacFactura',
+                    'property'  => 'factura',
+                    'query'     => $qry_factura,
+                    'attr'      => array(
                         'style'=>'width:500px')))
 
+                // ->add('idFactura','sonata_type_model', array(
+                //     'empty_value'=>'...ninguno...',
+                //     'label' => 'Factura (seleccione factura)',
+                //     'required' => TRUE,
+                //     'btn_add' => FALSE,
+                //     'query' => $qry_factura,
+                //     'attr' => array(
+                //         'style'=>'width:500px')))
+                //
                 ->add('numeroRecibo','integer',array(
                     'attr' => array(
                         'style'=>'width:300px', 'maxlength' => '25')))
@@ -142,6 +152,17 @@ class CxcCobroAdmin extends Admin
             ;
         } else { // mode de modificacion el registro
             $formMapper
+
+            ->add('idFactura','sonata_type_model', array(
+                'class'     => 'BundlesFacturaBundle:FacFactura',
+                'property'  => 'factura',
+                'empty_value'=>'...ninguno...',
+                'label' => 'Factura (seleccione factura)',
+                'required' => TRUE,
+                'btn_add' => FALSE,
+                'attr' => array(
+                    'style'=>'width:500px')))
+
 
                 ->add('numeroRecibo','integer',array(
                     'attr' => array(
