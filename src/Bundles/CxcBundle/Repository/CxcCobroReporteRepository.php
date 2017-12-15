@@ -39,8 +39,8 @@ class CxcCobroReporteRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
-    
-    
+
+
      /*
      * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
      * Julio Castillo
@@ -50,7 +50,7 @@ class CxcCobroReporteRepository extends EntityRepository {
         $em = $this->getEntityManager();
         if ($id_tipofactura && $id_cliente){
             $sql = "
-                SELECT 
+                SELECT
                     c.nombre AS cliente,
                     t.nombre AS tipofactura,
                     f.numero,
@@ -72,7 +72,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                 ORDER BY f.id_tipofactura, f.numero";
         } elseif ($id_tipofactura && !$id_cliente) {
             $sql = "
-                SELECT 
+                SELECT
                     c.nombre AS cliente,
                     t.nombre AS tipofactura,
                     f.numero,
@@ -90,10 +90,10 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
                     f.estado = 'PENDIENTE' AND
                     f.id_tipofactura = '$id_tipofactura'
-                ORDER BY f.id_tipofactura, f.numero";                     
+                ORDER BY f.id_tipofactura, f.numero";
         } elseif (!$id_tipofactura && $id_cliente) {
             $sql = "
-                SELECT 
+                SELECT
                     c.nombre AS cliente,
                     t.nombre AS tipofactura,
                     f.numero,
@@ -112,10 +112,10 @@ class CxcCobroReporteRepository extends EntityRepository {
                     f.id_cliente = '$id_cliente' AND
                     f.estado = 'PENDIENTE'
                 ORDER BY f.id_tipofactura, f.numero";
-                    
+
         } else {
             $sql = "
-                SELECT 
+                SELECT
                     c.nombre AS cliente,
                     t.nombre AS tipofactura,
                     f.numero,
@@ -133,11 +133,11 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
                     f.estado = 'PENDIENTE'
                 ORDER BY f.id_tipofactura, f.numero";
-                    
+
         }
         return $em->getConnection()->executeQuery($sql);
     }
-    
+
     /*
      * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
      * Julio Castillo
@@ -147,7 +147,7 @@ class CxcCobroReporteRepository extends EntityRepository {
         $em = $this->getEntityManager();
         if ($id_cliente){
             $sql = "
-                SELECT 
+                SELECT
                     t.id,
                     t.nombre AS tipofactura,
                     f.numero,
@@ -159,14 +159,14 @@ class CxcCobroReporteRepository extends EntityRepository {
                     (f.venta_total-(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0))) AS saldo
                 FROM fac_factura f
                 LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND                    
+                WHERE f.id_condicionpago != 1 AND
                     f.id_cliente = '$id_cliente' AND
                     f.estado = 'PENDIENTE'
                 ORDER BY f.id_tipofactura, f.numero";
         }
         return $em->getConnection()->executeQuery($sql);
     }
-    
+
     /*
      * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
      * Julio Castillo
@@ -184,8 +184,12 @@ class CxcCobroReporteRepository extends EntityRepository {
                         t02.numero AS factura,
                         t03.nombre AS cliente,
                         t04.nombre AS tipo,
-                        t02.venta_total,
-                        t02.venta_total - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0)) AS saldo,
+                        (case when t03.agente_retencion = FALSE then t02.venta_total else
+                            t02.subtotal
+                         end) AS venta_total,
+                        (case when t03.agente_retencion = FALSE then t02.venta_total - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0)) else
+                            t02.subtotal - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0))
+                         end) AS saldo,
                         t02.estado
 
                     FROM
@@ -196,7 +200,7 @@ class CxcCobroReporteRepository extends EntityRepository {
                         LEFT JOIN ctl_condicionpago	t05 ON t05.id = t02.id_condicionpago
                     WHERE
                         t02.id = t01.id_factura AND t01.fecha >= '$fini' AND t01.fecha <= '$ffin'
-                    ORDER BY t01.numero_recibo                
+                    ORDER BY t01.numero_recibo
                     ";
         }
         return $em->getConnection()->executeQuery($sql);
