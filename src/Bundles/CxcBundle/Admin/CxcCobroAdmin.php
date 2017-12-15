@@ -23,7 +23,9 @@ class CxcCobroAdmin extends Admin
         $datagridMapper
             ->add('numeroRecibo')
             ->add('fecha')
-
+			->add('idFactura',null, array(    // permitir buscar un item de un catalogo
+                    'label'=>'Número de Factura'
+                    ))
         ;
     }
 
