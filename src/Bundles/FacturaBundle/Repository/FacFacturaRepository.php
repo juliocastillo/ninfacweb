@@ -52,11 +52,20 @@ class FacFacturaRepository extends EntityRepository {
     public function actualizaEstado($idFactura){
         //actualizar estado de factura en base a los pagos realizados
         $em = $this->getEntityManager();
-        $sql = "UPDATE fac_factura SET estado = 'PAGADO'
-                WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) AND
-                estado != 'PAGADO' AND id='$idFactura'";
+        $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->find($idFactura);
+        $cliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findOneById($factura->getIdCliente());
+        if ($cliente->getAgenteRetencion() == FALSE) { // para cliente normal 15-12-2017
+            // var_dump($cliente->getAgenteRetencion());exit();
+            $em = $this->getEntityManager();
+            $sql = "UPDATE fac_factura SET estado = 'PAGADO'
+                    WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) AND
+                    estado != 'PAGADO' AND id='$idFactura'";
+        } else { // para cliente agente de retención
+            $sql = "UPDATE fac_factura SET estado = 'PAGADO'
+                    WHERE subtotal <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) AND
+                    estado != 'PAGADO' AND id='$idFactura'";
+        }
         $em->getConnection()->executeQuery($sql);
-
         return;
     }
 
