@@ -46,95 +46,45 @@ class CxcCobroReporteRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function estadoCuentasCobrar($id_cliente=null, $id_tipofactura=null){
+    public function estadoCuentasCobrar($id_cliente=null, $id_tipofactura=null, $fini='', $ffin=''){
         $em = $this->getEntityManager();
-        if ($id_tipofactura && $id_cliente){
-            $sql = "
-                SELECT
-                    c.nombre AS cliente,
-                    t.nombre AS tipofactura,
-                    f.numero,
-                    f.fecha,
-                    (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
-                    p.nombre AS condicionpago,
-                    f.venta_total,
-                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
-                    (f.venta_total-f.cobro_total) AS saldo
-                FROM fac_factura f
-                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
-                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND
-                    (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
-                    f.id_cliente = '$id_cliente' AND
-                    f.estado = 'PENDIENTE' AND
-                    f.id_tipofactura = '$id_tipofactura'
-                ORDER BY f.id_tipofactura, f.numero";
-        } elseif ($id_tipofactura && !$id_cliente) {
-            $sql = "
-                SELECT
-                    c.nombre AS cliente,
-                    t.nombre AS tipofactura,
-                    f.numero,
-                    f.fecha,
-                    (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
-                    p.nombre AS condicionpago,
-                    f.venta_total,
-                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
-                    (f.venta_total-f.cobro_total) AS saldo
-                FROM fac_factura f
-                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
-                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND
-                    (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
-                    f.estado = 'PENDIENTE' AND
-                    f.id_tipofactura = '$id_tipofactura'
-                ORDER BY f.id_tipofactura, f.numero";
-        } elseif (!$id_tipofactura && $id_cliente) {
-            $sql = "
-                SELECT
-                    c.nombre AS cliente,
-                    t.nombre AS tipofactura,
-                    f.numero,
-                    f.fecha,
-                    (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
-                    p.nombre AS condicionpago,
-                    f.venta_total,
-                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
-                    (f.venta_total-f.cobro_total) AS saldo
-                FROM fac_factura f
-                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
-                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND
-                    (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
-                    f.id_cliente = '$id_cliente' AND
-                    f.estado = 'PENDIENTE'
-                ORDER BY f.id_tipofactura, f.numero";
-
+        if ($id_tipofactura && $id_cliente)
+        {
+            $cadenawhere = "AND f.id_cliente = '$id_cliente' AND f.id_tipofactura = '$id_tipofactura'";
+        } elseif ($id_tipofactura && !$id_cliente)
+        {
+            $cadenawhere = "AND f.id_tipofactura = '$id_tipofactura'";
+        } elseif (!$id_tipofactura && $id_cliente)
+        {
+            $cadenawhere = "AND f.id_cliente = '$id_cliente'";
         } else {
-            $sql = "
-                SELECT
-                    c.nombre AS cliente,
-                    t.nombre AS tipofactura,
-                    f.numero,
-                    f.fecha,
-                    (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
-                    p.nombre AS condicionpago,
-                    f.venta_total,
-                    (COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
-                    (f.venta_total-f.cobro_total) AS saldo
-                FROM fac_factura f
-                LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
-                LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
-                LEFT JOIN ctl_tipofactura t ON t.id = f.id_tipofactura
-                WHERE f.id_condicionpago != 1 AND
-                    (now()::date - (f.fecha::date-'0 day'::interval)) >= '30 days' AND
-                    f.estado = 'PENDIENTE'
-                ORDER BY f.id_tipofactura, f.numero";
-
+            $cadenawhere = "";
         }
+        $sql = "
+            SELECT
+            c.nombre AS cliente,
+            f.numero,
+            f.fecha,
+            (now()::date - (f.fecha::date-'0 day'::interval)) as dias_transcurridos,
+            t.nombre AS tipofactura,
+            (case when c.agente_retencion = FALSE then f.venta_total else
+                f.subtotal
+             end) AS venta_total,
+            f.cobro_total as cobro_total,
+            --(COALESCE(f.cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) as cobro_total,
+            --(f.venta_total-sum(b.monto)) AS saldo,
+            string_agg(to_char(b.numero_recibo, '99999'), '<br>') as recibo,
+            string_agg(to_char(b.fecha, 'DD/MM/YYYY'), '<br>') as fecha_abono
+        FROM fac_factura 		f
+        LEFT JOIN cxc_cobro 		b ON b.id_factura = f.id
+        LEFT JOIN ctl_cliente 		c ON c.id = f.id_cliente
+        LEFT JOIN ctl_condicionpago 	p ON p.id = id_condicionpago
+        LEFT JOIN ctl_tipofactura 	t ON t.id = f.id_tipofactura
+        WHERE f.id_condicionpago != 1 $cadenawhere AND
+            (f.estado != 'PAGADO' AND f.estado !='ANULADO') AND
+            f.fecha >= '$fini' AND f.fecha <= '$ffin'
+        GROUP BY c.nombre, f.numero, f.fecha, t.nombre, f.venta_total, f.cobro_total, f.subtotal, cobro_total_sin_detalle, c.agente_retencion
+        ORDER BY c.nombre, f.numero";
         return $em->getConnection()->executeQuery($sql);
     }
 

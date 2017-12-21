@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block show %}
         <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
             <b><center>CUENTAS POR COBRAR LISTADO</center></b> <br>
-            <b>CLIENTE:</b> 
+            <b>CLIENTE:</b>
             <select id="clienteseleccionado" name="id" required="required" >
                 <option value="" selected="{{ id }}">...Seleccione...</option>
                 <option value="0">Todos</option>
@@ -27,14 +27,14 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endfor %}
             </select>
-            
+
             <script type="text/javascript">
             $(function() {
-              $('#fini').datetimepicker({ 
+              $('#fini').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
-               $('#ffin').datetimepicker({ 
+               $('#ffin').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
@@ -59,6 +59,17 @@ file that was distributed with this source code.
 
                     </td>
                     <td><input type="checkbox" value="" disabled checked='checked'>Más de 30 días</td>
+                </tr>
+                <tr>
+                    <td>Rango de fecha:</td>
+                    <td>desde</td>
+                    <td>
+                        <input  class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
                 </tr>
                 <tr>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>

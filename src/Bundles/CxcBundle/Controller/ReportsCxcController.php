@@ -20,12 +20,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Knp\Snappy\Pdf;
 
 class ReportsCxcController extends Controller {
-    
-    
+
+
     /*
      * agregar para usarlo en admin con el templete de sonata
      */
-    
+
     /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
@@ -56,16 +56,16 @@ class ReportsCxcController extends Controller {
         }
         return $this->getAdminPool()->getTemplate('layout');
     }
-    
-    
-    
+
+
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
     /**
      * Funcion que permite crear el reporte de cuentas por cobrar
-     * por cliente. 
-     * 
+     * por cliente.
+     *
      * @Route("/estado_cuentas_cobrar", name="imprimir_estado_cuentas_cobrar", options={"expose"=true})
      * @Method("GET")
      */
@@ -74,52 +74,56 @@ class ReportsCxcController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         /* buscar el registro padre a traves de id */
-        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
-
-        $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
-        
-        $tipos = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
-        
+        $empresa    = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+        $clientes   = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+        $tipos      = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
+        // var_dump($request);exit();
         if (isset($_REQUEST['id'])){
             $id_cliente = $_REQUEST['id'];
             $id_tipofactura = $_REQUEST['id_tipofactura'];
-            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->estadoCuentasCobrar($id_cliente,$id_tipofactura);
+            $fini = $_REQUEST['fini'];
+            $ffin = $_REQUEST['ffin'];
+            $movimientos = $em
+                ->getRepository('BundlesCxcBundle:CxcCobro')
+                ->estadoCuentasCobrar($id_cliente,$id_tipofactura, $fini, $ffin);
             $id_tipofactura = $_REQUEST['id_tipofactura'];
             $nombrecliente = "";
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id_cliente = '';
             $id_tipofactura = '';
-            $fini = Date('Y-m-d');
+            $fini = date ( 'Y-m-j', strtotime ( '-30 day' , strtotime ( Date('Y-m-d') ) ) );
             $ffin = Date('Y-m-d');
             $movimientos = "";
             $nombrecliente = "";
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesCxcBundle:Reportes:filtrar_estado_cuentas_cobrar.html.twig', array(
-            'id' => $id_cliente,
-            'tipos' => $tipos,
-            'id_tipofactura'=>$id_tipofactura,
-            'movimientos'=>$movimientos,
-            'clientes' => $clientes,
-            'empresa' => $empresa,
-            'requestvalid' => $requestvalid,
+            'id'            => $id_cliente,
+            'tipos'         => $tipos,
+            'id_tipofactura'=> $id_tipofactura,
+            'movimientos'   => $movimientos,
+            'clientes'      => $clientes,
+            'empresa'       => $empresa,
+            'requestvalid'  => $requestvalid,
             'nombrecliente' => $nombrecliente,
             'base_template' => $this->getBaseTemplate(),
+            'fini'          => $fini,
+            'ffin'          => $ffin,
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
-    
+
     /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
     /**
      * Funcion que permite crear el reporte de cuentas por cobrar
-     * por cliente. 
-     * 
+     * por cliente.
+     *
      * @Route("/cuentas_cobrar_resumen", name="imprimir_cuentas_cobrar_resumen", options={"expose"=true})
      * @Method("GET")
      */
@@ -131,12 +135,12 @@ class ReportsCxcController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
-        
+
         if (isset($_REQUEST['id_cliente'])){
             $id_cliente = $_REQUEST['id_cliente'];
             $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->cuentasCobrarResumen($id_cliente);
             $nombrecliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($id_cliente)->getNombre();;
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id_cliente = '';
             $movimientos = "";
@@ -144,7 +148,7 @@ class ReportsCxcController extends Controller {
             $requestvalid = FALSE;
         }
 
-        
+
         return $this->render('BundlesCxcBundle:Reportes:cuentas_cobrar_resumen.html.twig', array(
             'id_cliente' => $id_cliente,
             'movimientos'=>$movimientos,
@@ -155,9 +159,9 @@ class ReportsCxcController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
-    
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
@@ -169,7 +173,7 @@ class ReportsCxcController extends Controller {
     public function reportsCxcAction($path, $name, $format) {
 
         $parameters = array();
-        
+
         $path = urldecode("%2F".$path."%2F");
         $request = $this->getRequest();
         $jasperReport = $this->container->get('jasper.build.reports');
@@ -179,10 +183,10 @@ class ReportsCxcController extends Controller {
         $jasperReport->setReportParams($parameters);
         return $jasperReport->buildReport();
     }
-    
-    
-    
-    
+
+
+
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
@@ -195,7 +199,7 @@ class ReportsCxcController extends Controller {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
 
-        
+
         /*
          * Usando consulta nativa de symfony
          */
@@ -205,10 +209,10 @@ class ReportsCxcController extends Controller {
 
         /* buscar el registro padre a traves de id */
         $reporte = $em->getRepository('BundlesCxcBundle:CxcCobroReporte')->find($id);
-        
+
         /* buscar el registro padre a traves de id */
         $cobros = $em->getRepository('BundlesCxcBundle:CxcCobro')->findBy(array('fecha'=>$reporte->getFecha()));
-        
+
         $vistaParaImpresion = $this->renderView('BundlesCxcBundle:Reportes:cobros_diarios.html.twig', array(
             'id'=>$id,
             'reporte'=>$reporte,
@@ -234,9 +238,9 @@ class ReportsCxcController extends Controller {
                         'Content-Disposition' => 'inline'
                     )
         );
-        
+
     }
-    
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
@@ -251,12 +255,12 @@ class ReportsCxcController extends Controller {
 
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
-        
+
         if (isset($_REQUEST['fini'])){
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
             $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->recibosCobro($fini,$ffin);
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $movimientos = "";
             $requestvalid = FALSE;
@@ -264,7 +268,7 @@ class ReportsCxcController extends Controller {
             $ffin = Date('Y-m-d');
         }
 
-        
+
         return $this->render('BundlesCxcBundle:Reportes:recibos_cobro.html.twig', array(
             'fini' => $fini,
             'ffin' => $ffin,
@@ -274,9 +278,9 @@ class ReportsCxcController extends Controller {
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
-        );        
+        );
     }
-    
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
@@ -293,12 +297,12 @@ class ReportsCxcController extends Controller {
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $clientes = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
-        
+
         if (isset($id_cliente)){
             $id_cliente = $id_cliente;
             $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->cuentasCobrarResumen($id_cliente);
             $nombrecliente = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->find($id_cliente)->getNombre();;
-            $requestvalid = TRUE; 
+            $requestvalid = TRUE;
         } else {
             $id_cliente = '';
             $movimientos = "";
@@ -321,7 +325,7 @@ class ReportsCxcController extends Controller {
         $filename = "cxc_".$nombrecliente.date("Y_m_d_His").".csv"; //contruyendo el nombre del archivo
         $response->headers->set('Content-Type', 'text/csv'); //establece el tipo de archivo salida
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename); // establece el archivo de salida
-        
+
         return $response;  //ejecuta la accion
     }
 }

@@ -2,7 +2,7 @@
     <head>
         <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
+
         <style type="text/css">
 
             html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
@@ -34,45 +34,126 @@
             <tr>
                 <td colspan="2" align="center">Cuentas por Cobrar listado</td>
             </tr>
-           
+
             <tr>
                 <td colspan="2">CLIENTE:  {{ nombrecliente }}</td>
             </tr>
         </table>
         <table width="100%" style="border-collapse: collapse;">
             <tr>
-                <td></td>
-                <td colspan="3" align="center">DOCUMENTO</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>CLIENTE</td>
-                <td>TIPO</td>
-                <td>NUMERO</td>
                 <td>FECHA</td>
-                <td>DIAS.TRANS</td>
-                <td>COND.PAGO</td>
-                <td>VENTA TOTAL</td>
-                <td>ABONO TOTAL</td>
-                <td>SALDO</td>
+                <td>NUMERO</td>
+                <td>TIPO</td>
+                <td>CLIENTE</td>
+                <td>MONTO</td>
+                <td>ABONO</td>
+                <td>RECIBO</td>
+                <td>FECHA ABONO</td>
+                <td align="right">SALDO PENDIENTE</td>
             </tr>
             {% set saldo = 0 %}
+            {% set subtotal = 0.00 %}
+            {% set cliente = "" %}
             {% for mov in movimientos %}
-                {% set saldo = saldo + (mov.venta_total-mov.cobro_total) %}
+                {% if mov.cliente != cliente and subtotal != 0.00 %}
+                    <tr>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td></td>
+                        <td></td>
+                        <td valign="top" align="right">==============</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td></td>
+                        <td></td>
+                        <td valign="top" align="right"><strong>{{ subtotal  | number_format(2, '.', ',') }}</strong></td>
+                        {% set subtotal = 0.00 %}
+                        {% set cliente = mov.cliente %}
+                    </tr>
+                    {% set cliente = mov.cliente %}
+                    {% set subtotal = 0.00 %}
+                {% else %}
+                    {% set cliente = mov.cliente %}
+                {% endif %}
+
+                {% set saldo = (mov.venta_total-mov.cobro_total) %}
                 <tr>
-                    <td>{{ mov.cliente }}</td>
-                    <td>{{ mov.tipofactura }}</td>
-                    <td>{{ mov.numero }}</td>
-                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
-                    <td>{{ mov.dias_transcurridos }}</td>
-                    <td>{{ mov.condicionpago }}</td>
-                    <td>{{ mov.venta_total | number_format(2, '.', ',')}}</td>
-                    <td>{{ mov.cobro_total | number_format(2, '.', ',')}}</td>
-                    <td>{{ saldo  | number_format(2, '.', ',') }}</td>
+                    <td valign="top">{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td valign="top">{{ mov.numero }}</td>
+                    <td valign="top">{{ mov.tipofactura }}</td>
+                    <td valign="top">{{ mov.cliente }}</td>
+                    <td valign="top">{{ mov.venta_total | number_format(2, '.', ',')}}</td>
+                    <td valign="top">{{ mov.cobro_total | number_format(2, '.', ',')}}</td>
+                    <td>{{ mov.recibo|raw }}</td>
+                    <td>{{ mov.fecha_abono|raw }}</td>
+                    <td valign="top" align="right">{{ saldo  | number_format(2, '.', ',') }}</td>
                 </tr>
+                {% if mov.cliente != cliente and subtotal != 0.00 %}
+                    <tr>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td></td>
+                        <td></td>
+                        <td valign="top" align="right">==============</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td valign="top"></td>
+                        <td></td>
+                        <td></td>
+                        <td valign="top" align="right"><strong>{{ subtotal  | number_format(2, '.', ',') }}</strong></td>
+                    </tr>
+                    {% set cliente = mov.cliente %}
+                    {% set subtotal = 0.00 %}
+                {% else %}
+                    {% set cliente = mov.cliente %}
+                    {% set subtotal = subtotal + (mov.venta_total-mov.cobro_total) %}
+                {% endif %}
             {% endfor %}
+
+
+            {% if subtotal != 0 %}
+                <tr>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td></td>
+                    <td></td>
+                    <td valign="top" align="right">==============</td>
+                </tr>
+                <tr>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td valign="top"></td>
+                    <td></td>
+                    <td></td>
+                    <td valign="top" align="right">{{ subtotal  | number_format(2, '.', ',') }}</td>
+                </tr>
+            {% endif %}
         </table>
     </body>
 </html>
