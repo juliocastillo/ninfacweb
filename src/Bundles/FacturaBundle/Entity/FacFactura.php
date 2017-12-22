@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Bundles\FacturaBundle\Entity\FacNotacredito;
 
 
 /**
@@ -145,6 +146,13 @@ class FacFactura
      * @ORM\Column(name="ventas_exentas", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $ventasExentas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total_notacredito", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $totalNotacredito;
 
     /**
      * @var \Bundles\CatalogosBundle\Entity\CtlCliente
@@ -612,6 +620,29 @@ class FacFactura
     public function getVentasExentas()
     {
         return $this->ventasExentas;
+    }
+
+    /**
+     * Set totalNotacredito
+     *
+     * @param string $totalNotacredito
+     * @return FacNotacredito
+     */
+    public function setTotalNotacredito($totalNotacredito)
+    {
+        $this->totalNotacredito = $totalNotacredito;
+
+        return $this;
+    }
+
+    /**
+     * Get totalNotacredito
+     *
+     * @return string
+     */
+    public function getTotalNotacredito()
+    {
+        return $this->totalNotacredito;
     }
 
     /**

@@ -393,3 +393,9 @@ COMMENT ON TABLE ctl_motivo_notacredito
 2 Descuento/Rebajas Pronto pago (se devuelve efectivo o un porcentaje de la venta)';
 COMMENT ON COLUMN ctl_motivo_notacredito.id IS 'llave primaria';
 
+
+
+-- 22 - 12 - 2017
+
+ALTER TABLE fac_factura ADD COLUMN total_notacredito numeric(10,2)
+

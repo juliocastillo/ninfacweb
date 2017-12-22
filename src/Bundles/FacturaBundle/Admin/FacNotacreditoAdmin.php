@@ -64,8 +64,8 @@ class FacNotacreditoAdmin extends Admin
         /* filtrar solo CFF */
         $factura = new \Bundles\FacturaBundle\Entity\FacFactura;
         $qry_factura = $this->modelManager->getEntityManager($factura)->createQuery("SELECT s FROM \Bundles\FacturaBundle\Entity\FacFactura s WHERE s.estado != 'ANULADA' AND s.idTipofactura = 2");
-        
-        
+
+
         $formMapper
                 ->with('Nota_credito', array('class' => 'col-md-8'))->end()
                 ->with('Detalle', array('class' => 'col-md-12'))->end()
@@ -91,7 +91,7 @@ class FacNotacreditoAdmin extends Admin
                     'btn_add' => FALSE,
                     'query' => $qry_factura,
                     'attr' => array(
-                        'style'=>'width:300px')))     
+                        'style'=>'width:300px')))
 
                 ->add('idMotivoNotacredito',null,array('label'=>'Motivo de la nota de crédito',
                     'attr' => array(
@@ -136,8 +136,8 @@ class FacNotacreditoAdmin extends Admin
             ->with('Elementos del Catalogo')
                 ->add('notacreditoDetalle', 'sonata_type_collection', array('label'=>'Elemento','route' => array('name' => 'show')),
                                                                    array('edit' => 'inline','inline' => 'table'))
-            ->end()    
-            ->with('resumen')    
+            ->end()
+            ->with('resumen')
             ->add('sumas')
             ->add('iva')
             ->add('subtotal')
@@ -150,42 +150,46 @@ class FacNotacreditoAdmin extends Admin
             ->end()
         ;
     }
-    
-    public function prePersist($factura) {
+
+    public function prePersist($notacredito) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
-        $factura->setIdUserAdd($user);
-        $factura->setDateAdd(new \DateTime());
-
-        // calcular campos de factura
+        $notacredito->setIdUserAdd($user);
+        $notacredito->setDateAdd(new \DateTime());
+        // calcular campos de notacredito
         $sumas = 0;
-
-        foreach ($factura->getNotacreditoDetalle() as $facturaDetalle) {
-            $facturaDetalle->setIdNotacredito($factura);
-            $facturaDetalle->setVentasGravadas($facturaDetalle->getCantidad($factura) * $facturaDetalle->getPrecioUnitario($factura));
-            $sumas = $sumas + $facturaDetalle->getVentasGravadas($factura);
+        foreach ($notacredito->getNotacreditoDetalle() as $notacreditoDetalle) {
+            $notacreditoDetalle->setIdNotacredito($notacredito);
+            $notacreditoDetalle->setVentasGravadas($notacreditoDetalle->getCantidad($notacredito) * $notacreditoDetalle->getPrecioUnitario($notacredito));
+            $sumas = $sumas + $notacreditoDetalle->getVentasGravadas($notacredito);
         }
-       
-        
-        // dejar la factura creada como activa
-        $factura->setActivo(TRUE);
-    }    
-    
-    public function preUpdate($factura) {
-        // llenar campos de auditoria
-        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();        
-        $factura->setIdUserMod($user);
-        $factura->setDateMod(new \DateTime());
-        
-        // calcular campos de factura
-        $sumas = 0;
 
-        foreach ($factura->getNotacreditoDetalle() as $facturaDetalle) {
-            $facturaDetalle->setIdNotacredito($factura);
-            $facturaDetalle->setVentasGravadas($facturaDetalle->getCantidad($factura) * $facturaDetalle->getPrecioUnitario($factura));
-            $sumas = $sumas + $facturaDetalle->getVentasGravadas($factura);
-        }
-        
+        // dejar la notacredito creada como activa
+        $notacredito->setActivo(TRUE);
     }
-   
+
+    public function postPersist($notacredito) {
+        // var_dump($factura); exit();
+        $factura = $notacredito->getIdFactura();
+        $factura->setTotalNotacredito($notacredito->getSubtotal());
+    }
+
+
+    public function preUpdate($notacredito) {
+        // llenar campos de auditoria
+        $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
+        $notacredito->setIdUserMod($user);
+        $notacredito->setDateMod(new \DateTime());
+        // calcular campos de notacredito
+        $sumas = 0;
+        foreach ($notacredito->getNotacreditoDetalle() as $notacreditoDetalle) {
+            $notacreditoDetalle->setIdNotacredito($notacredito);
+            $notacreditoDetalle->setVentasGravadas($notacreditoDetalle->getCantidad($notacredito) * $notacreditoDetalle->getPrecioUnitario($notacredito));
+            $sumas = $sumas + $notacreditoDetalle->getVentasGravadas($notacredito);
+        }
+
+        // var_dump($factura); exit();
+        $factura = $notacredito->getIdFactura();
+        $factura->setTotalNotacredito($notacredito->getSubtotal());
+    }
 }

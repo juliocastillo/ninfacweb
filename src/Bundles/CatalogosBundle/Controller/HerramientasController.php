@@ -23,7 +23,7 @@ class HerramientasController extends Controller {
     /*
      * agregar para usarlo en admin con el templete de sonata
      */
-    
+
     /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
@@ -54,16 +54,16 @@ class HerramientasController extends Controller {
         }
         return $this->getAdminPool()->getTemplate('layout');
     }
-    
-    
-    
+
+
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
     /**
      * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
-     * por cliente. 
-     * 
+     * por cliente.
+     *
      * @Route("/actualizar_saldos", name="actualizar_saldos", options={"expose"=true})
      * @Method("GET")
      */
@@ -71,6 +71,7 @@ class HerramientasController extends Controller {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
@@ -78,26 +79,26 @@ class HerramientasController extends Controller {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
 
-        return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(            
+        return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool')
         )
         );
     }
-    
+
      /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
     /**
      * Funcion para hacer la copia de respaldo
-     * 
+     *
      * @Route("/copia_respaldo", name="copia_respaldo", options={"expose"=true})
      * @Method("GET")
      */
     public function copia_respaldoAction() {
         // instanciar el EntityManager
-        
-        
+
+
         /* Respalda una base de datos de postgresql en un archivo ASCII
         * Copyright GPL(C) 2003-2004 Manuel Montoya (wistar@biomedicas.unam.mx)
         * http://www.atenas.ath.cx/members/mmontoya/index.php?idp=48
@@ -142,19 +143,19 @@ class HerramientasController extends Controller {
         //unlink ('/home/julio/Documents/copia.sql');
 
         //E voila!!
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
 //        $em = $this->getDoctrine()->getManager();
 //        $sql = "SELECT * FROM ctl_cliente";
 //        $query = $em->createQuery($sql);
 //        $result = $query->getResult();
-//        
-//        
-//        
+//
+//
+//
 //        /* buscar el registro padre a traves de id */
 //        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 

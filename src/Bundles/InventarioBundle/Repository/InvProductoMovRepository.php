@@ -36,6 +36,28 @@ class InvProductoMovRepository extends EntityRepository {
         return;
     }
      /*
+     * DESCRIPCION: Actualizar saldo de entrada de producto en base a las devoluciones
+     * Julio Castillo
+     * Analista programador
+     */
+    public function actualizarEntradasNotaCredito(){
+        /*verifica que los registros aún no hayan sido enviados al historico
+         * por cierre de periodo funcion COALESCE para evitar problemas con
+         * datos sin ningún valor
+         */
+        $em = $this->getEntityManager();
+        $sql = "
+            UPDATE inv_producto_mov SET cantidad_entrada = cantidad_entrada + (
+                SELECT
+                sum(cantidad)
+                FROM fac_notacreditodetalle f
+                WHERE f.id_inv_producto_mov = inv_producto_mov.id AND
+                    COALESCE(f.historial,false) != true)
+            ";
+        $em->getConnection()->executeQuery($sql);
+        return;
+    }
+     /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programador
@@ -315,7 +337,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM
                 ctl_producto p
                 LEFT JOIN inv_producto_mov_historial m ON m.id_producto = p.id AND m.tipo_mov = 'I'
-                WHERE 
+                WHERE
                  m.fecha_cierre = '$fini' AND p.id = '$id'
                 UNION
                 SELECT
