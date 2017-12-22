@@ -78,6 +78,7 @@ class HerramientasController extends Controller {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
 
         return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(
             'base_template' => $this->getBaseTemplate(),

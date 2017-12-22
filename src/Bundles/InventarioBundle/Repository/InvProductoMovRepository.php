@@ -147,6 +147,20 @@ class InvProductoMovRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
+    /*
+     * DESCRIPCION: inactivar producto saldo cero true.
+     * Julio Castillo
+     * Analista programador
+     */
+    public function recalcularEstadoFacturas(){
+        $em = $this->getEntityManager();
+        $sql = "
+            UPDATE fac_factura SET estado = 'PAGADO'
+                    WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito
+            ";
+        $em->getConnection()->executeQuery($sql);
+        return;
+    }
 
          /*
      * DESCRIPCION: Reporte Auxiliar de producto (kardex).
