@@ -156,7 +156,8 @@ class InvProductoMovRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE fac_factura SET estado = 'PAGADO'
-                    WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito
+                    WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito AND
+                    id_condicionpago = 2 AND estado != 'ANULADO'
             ";
         $em->getConnection()->executeQuery($sql);
         return;
