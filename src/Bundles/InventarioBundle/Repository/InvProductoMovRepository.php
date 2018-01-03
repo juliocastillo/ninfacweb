@@ -47,12 +47,14 @@ class InvProductoMovRepository extends EntityRepository {
          */
         $em = $this->getEntityManager();
         $sql = "
-            UPDATE inv_producto_mov SET cantidad_entrada = cantidad_entrada + (
+            UPDATE inv_producto_mov SET cantidad_entrada = cantidad_entrada +
+                (
                 SELECT
-                sum(cantidad)
+                COALESCE(sum(cantidad),0)
                 FROM fac_notacreditodetalle f
                 WHERE f.id_inv_producto_mov = inv_producto_mov.id AND
-                    COALESCE(f.historial,false) != true)
+                    COALESCE(f.historial,false) != true
+                    )
             ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -154,12 +156,23 @@ class InvProductoMovRepository extends EntityRepository {
      */
     public function recalcularEstadoFacturas(){
         $em = $this->getEntityManager();
+        // recalculando facturas para clientes no agentes de retención
+        // para clientes no agentes de retencion
         $sql = "
-            UPDATE fac_factura SET estado = 'PAGADO'
-                    WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito AND
-                    id_condicionpago = 2 AND estado != 'ANULADO'
+                UPDATE fac_factura SET estado = 'PAGADO'
+                    FROM ctl_cliente WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito AND
+                    (id_condicionpago = 2 OR id_condicionpago = 3) AND fac_factura.estado != 'ANULADO' AND ctl_cliente.agente_retencion = FALSE;
             ";
         $em->getConnection()->executeQuery($sql);
+
+        // para agentes de retención
+        $sql = "
+            UPDATE fac_factura SET estado = 'PAGADO'
+            FROM ctl_cliente WHERE venta_total <= (COALESCE(cobro_total,0) + COALESCE(cobro_total_sin_detalle,0)) + total_notacredito AND
+            (id_condicionpago = 2 OR id_condicionpago = 3) AND fac_factura.estado != 'ANULADO' AND ctl_cliente.agente_retencion = FALSE;
+            ";
+        $em->getConnection()->executeQuery($sql);
+
         return;
     }
 
