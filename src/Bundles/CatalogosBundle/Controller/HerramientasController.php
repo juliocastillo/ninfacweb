@@ -71,8 +71,8 @@ class HerramientasController extends Controller {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
-        // $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
