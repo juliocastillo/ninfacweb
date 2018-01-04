@@ -45,36 +45,52 @@
                 <td style="text-align: right">CREDITO</td>
                 <td style="text-align: right">VENTA-NETA</td>
                 <td style="text-align: right">IVA</td>
+                <td style="text-align: right">1%</td>
                 <td style="text-align: right">TOTAL</td>
             </tr>
                 {% set subtotal = 0 %}
                 {% set descuento = 0 %}
-                {% set ventaneta = 0 %}
-                {% set iva = 0 %}
+                {% set total_ventaneta = 0 %}
+                {% set total_iva = 0 %}
                 {% set total = 0 %}
-
                 {% set total_contado = 0 %}
                 {% set total_creditos = 0 %}
             {% for mov in movimientos %}
-                {% set subtotal = subtotal + mov.subtotal %}
-                {% set descuento = descuento + mov.descuento %}
-                {% set ventaneta = ventaneta + mov.ventaneta %}
-                {% set iva = iva + mov.iva %}
-                {% set total = total + mov.total %}
                 {% if mov.id_condicionpago == 1 %}
                     {% set total_contado = total_contado + mov.total %}
                 {% else %}
                     {% set total_creditos = total_creditos + mov.total %}
                 {% endif %}
+                {% if mov.agente_retencion == true %}
+                    {% set unoporciento = (mov.sumas / 1.13) * 0.01 %}
+                    {% set ivacalculado = mov.sumas * 0.13 %}
+                    {% set ventaneta = mov.sumas / 1.13 %}
+                    {% set iva = ventaneta * 0.13 %}
+                    {% set sumas = mov.sumas %}
+                {% else %}
+                    {% set unoporciento = 0 %}
+                    {% set ventaneta = mov.ventaneta %}
+                    {% set iva = mov.iva %}
+                    {% set sumas = mov.sumas %}
+                    {% if mov.id_tipofactura == 2 %}{% set sumas = mov.total %} {% else %} {% set sumas = mov.sumas %} {% endif %}
+                {% endif %}
+                {% set subtotal = subtotal + mov.subtotal %}
+                {% set descuento = descuento + mov.descuento %}
+                {% set total_ventaneta = total_ventaneta + ventaneta %}
+                {% set total_iva = total_iva + iva %}
+                {% set total = total + mov.total %}
+
+
                 <tr>
                     <td>{{ mov.tipo }}</td>
                     <td>{{ mov.numero }}</td>
                     <td>{{ mov.fecha | date('d/m/Y')}}</td>
                     <td>{{ mov.cliente }}</td>
-                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %}{{ mov.total | number_format(2, '.', ',')}} {% else %} &nbsp; {% endif %}</td>
-                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %} &nbsp; {% else %} {{ mov.total | number_format(2, '.', ',')}} {% endif %}</td>
-                    <td style="text-align: right">{% if mov.id_tipofactura == 1 %} {{ mov.total  | number_format(2, '.', ',') }} {% else %} {{ mov.ventaneta | number_format(2, '.', ',')}} {% endif %}</td>
-                    <td style="text-align: right">{{ mov.iva  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %}{{ sumas | number_format(2, '.', ',')}} {% else %} &nbsp; {% endif %}</td>
+                    <td style="text-align: right">{% if mov.id_condicionpago == 1 %} &nbsp; {% else %} {{ sumas | number_format(2, '.', ',')}} {% endif %}</td>
+                    <td style="text-align: right">{{ ventaneta | number_format(2, '.', ',')}}</td>
+                    <td style="text-align: right">{{ iva  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ unoporciento  | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ mov.total  | number_format(2, '.', ',') }}</td>
                 </tr>
             {% endfor %}
@@ -88,6 +104,7 @@
                 <td style="text-align: right">======</td>
                 <td style="text-align: right">======</td>
                 <td style="text-align: right">======</td>
+                <td style="text-align: right">======</td>
             </tr>
             <tr>
                 <td>SUMAS</td>
@@ -96,8 +113,9 @@
                 <td></td>
                 <td style="text-align: right">{{ total_contado  | number_format(2, '.', ',') }}</td>
                 <td style="text-align: right">{{ total_creditos  | number_format(2, '.', ',') }}</td>
-                <td style="text-align: right">{{ ventaneta  | number_format(2, '.', ',') }}</td>
-                <td style="text-align: right">{{ iva  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ total_ventaneta  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ total_iva  | number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">&nbsp;</td>
                 <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
             </tr>
 

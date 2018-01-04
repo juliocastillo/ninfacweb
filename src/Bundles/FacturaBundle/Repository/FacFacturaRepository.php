@@ -86,15 +86,20 @@ class FacFacturaRepository extends EntityRepository {
                     f.numero,
                     f.fecha,
                     c.nombre AS cliente,
+                    c.exento,
+                    c.agente_retencion,
                     p.nombre AS condicion,
                     f.id_condicionpago,
                     f.id_tipofactura,
                     t.nombre AS tipo,
                     f.sumas AS subtotal,
                     0 AS descuento,
-                    f.sumas AS ventaneta,
-                    f.iva AS iva,
-                    f.venta_total AS total
+                    (CASE WHEN f.id_tipofactura = 1 THEN f.sumas - (f.sumas * 0.13) ELSE
+                    f.sumas END) AS ventaneta,
+                    (CASE WHEN f.id_tipofactura = 1 THEN (f.sumas * 0.13) ELSE
+                    f.iva END) AS iva,
+                    f.venta_total AS total,
+                    f.sumas
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
@@ -110,15 +115,20 @@ class FacFacturaRepository extends EntityRepository {
                     f.numero,
                     f.fecha,
                     c.nombre AS cliente,
+                    c.exento,
+                    c.agente_retencion,
                     p.nombre AS condicion,
                     f.id_condicionpago,
                     f.id_tipofactura,
                     t.nombre AS tipo,
                     f.sumas AS subtotal,
                     0 AS descuento,
-                    f.sumas AS ventaneta,
-                    f.iva AS iva,
-                    f.venta_total AS total
+                    (CASE WHEN f.id_tipofactura = 1 THEN f.sumas - (f.sumas * 0.13) ELSE
+                    f.sumas END) AS ventaneta,
+                    (CASE WHEN f.id_tipofactura = 1 THEN (f.sumas * 0.13) ELSE
+                    f.iva END) AS iva,
+                    f.venta_total AS total,
+                    f.sumas
                 FROM fac_factura f
                 LEFT JOIN ctl_cliente c ON c.id = f.id_cliente
                 LEFT JOIN ctl_condicionpago p ON p.id = id_condicionpago
