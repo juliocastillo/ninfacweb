@@ -112,9 +112,17 @@
                         <td style="height:{{ formato.detalleinterlineado }};vertical-align: top; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
                             {{ item.ventasnosujetas }}</td>
                         <td style="height:{{ formato.detalleinterlineado }};vertical-align: top; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            {{ item.ventasexentas }}</td>
+							{% if cliente.exento == true %}
+								{{ item.ventasgravadas }}
+							{% else %}
+								{{ item.ventasexentas }}
+							{% endif %}</td>
                         <td style="height:{{ formato.detalleinterlineado }};vertical-align: top; text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                            {{ item.ventasgravadas }}</td>
+                            {% if cliente.exento == false %}
+								{{ item.ventasgravadas }}
+							{% else %}
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							{% endif %}</td>
                     </tr>
                 {% endfor %}
                 {% for i in numItems .. formato.detallenumeroitems - 1 %}
@@ -145,12 +153,21 @@
                 <tr>
                     <td style="text-align: right;"></td>
                     <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                        {# factura.ventasexentas #}  </td>
+                        {% if cliente.exento == true %}
+								{{ factura.subtotal }}
+							{% else %}
+								{# factura.ventasexentas #}
+						{% endif %}  
+					</td>
                 </tr>
                 <tr>
                     <td style="text-align: right;">&nbsp;</td>
                     <td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
-                        &nbsp;{{ factura.subtotal }}</td>
+                        &nbsp;                        
+						{% if cliente.exento == false %}
+								{{ factura.subtotal }}
+						{% endif %}  
+					</td>
                 </tr>
                 <tr>
                     <td style="text-align: right;">&nbsp;</td>
