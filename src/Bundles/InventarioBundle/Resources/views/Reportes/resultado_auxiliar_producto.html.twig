@@ -2,7 +2,7 @@
     <head>
         <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
+
         <style type="text/css">
 
             html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
@@ -34,7 +34,7 @@
             <tr>
                 <td colspan="2" align="center">Reporte Auxiliar de producto</td>
             </tr>
-           
+
             <tr>
                 <td colspan="2">PRODUCTO:  {{ nombreproducto }}</td>
             </tr>
@@ -85,7 +85,11 @@
                 {% set entrada_importe = mov.cantidad_entrada * mov.precio_costo %}
                 {% set salida_importe = mov.cantidad_salida * costo %}
                 {% set saldo_importe = saldo_unidades * costo %}
-                <tr>
+                {% if saldo_unidades == 0 and saldocero == true %}
+                    <tr hidden="hidden">
+                {% else %}
+                    <tr>
+                {% endif %}
                     <td>{{ mov.fecha | date('d/m/Y')}}</td>
                     <td>{{ mov.documento }}</td>
                     <td>{{ mov.tipo_movimiento }}</td>

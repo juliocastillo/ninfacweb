@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block show %}
         <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
             <b><center>REPORTE AUXILIAR DE PRODUCTOS</center></b> <br>
-            <b>PRODUCTO:</b> 
+            <b>PRODUCTO:</b>
             <select id="productoseleccionado" name="id" required="required" >
                 <option value="" selected="{{ id }}">...Seleccione...</option>
                 {% for producto in productos %}
@@ -26,14 +26,15 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endfor %}
             </select>
-            
+            <br />
+            <input type="checkbox" name="saldocero" id="saldocero" /> <label for="saldocero"> No mostrar LOTE con saldo cero</label>
             <script type="text/javascript">
             $(function() {
-              $('#fini').datetimepicker({ 
+              $('#fini').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });
-               $('#ffin').datetimepicker({ 
+               $('#ffin').datetimepicker({
                 pickTime: false,
                 format: "YYYY-MM-DD"
               });

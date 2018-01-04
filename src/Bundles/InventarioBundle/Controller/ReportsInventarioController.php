@@ -134,11 +134,17 @@ class ReportsInventarioController extends Controller {
 
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
+            if (isset($_REQUEST['saldocero'])) {
+                $saldocero = true;
+            } else {
+                $saldocero = false;
+            }
             $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->AuxiliarProducto($id);
             $nombreproducto = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getNOmbre(). ' '. $em->getRepository('BundlesCatalogosBundle:CtlProducto')->find($id)->getIdMarca();
             $requestvalid = TRUE;
         } else {
             $id = '';
+            $saldocero = false;
             $movimientos = "";
             $nombreproducto = "";
             $requestvalid = FALSE;
@@ -149,6 +155,7 @@ class ReportsInventarioController extends Controller {
             'id' => $id,
             'movimientos'=>$movimientos,
             'productos' => $productos,
+            'saldocero' => $saldocero,
             'empresa' => $empresa,
             'requestvalid' => $requestvalid,
             'nombreproducto' => $nombreproducto,
