@@ -2,7 +2,7 @@
     <head>
         <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
+
         <style type="text/css">
 
             html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
@@ -52,7 +52,7 @@
                 {% set ventaneta = 0 %}
                 {% set iva = 0 %}
                 {% set total = 0 %}
-                
+
                 {% set total_contado = 0 %}
                 {% set total_creditos = 0 %}
             {% for mov in movimientos %}
@@ -73,7 +73,7 @@
                     <td>{{ mov.cliente }}</td>
                     <td style="text-align: right">{% if mov.id_condicionpago == 1 %}{{ mov.total | number_format(2, '.', ',')}} {% else %} &nbsp; {% endif %}</td>
                     <td style="text-align: right">{% if mov.id_condicionpago == 1 %} &nbsp; {% else %} {{ mov.total | number_format(2, '.', ',')}} {% endif %}</td>
-                    <td style="text-align: right">{{ mov.ventaneta  | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right">{% if mov.id_tipofactura == 1 %} {{ mov.total  | number_format(2, '.', ',') }} {% else %} {{ mov.ventaneta | number_format(2, '.', ',')}} {% endif %}</td>
                     <td style="text-align: right">{{ mov.iva  | number_format(2, '.', ',') }}</td>
                     <td style="text-align: right">{{ mov.total  | number_format(2, '.', ',') }}</td>
                 </tr>
@@ -100,7 +100,7 @@
                 <td style="text-align: right">{{ iva  | number_format(2, '.', ',') }}</td>
                 <td style="text-align: right">{{ total  | number_format(2, '.', ',') }}</td>
             </tr>
-            
+
         </table>
     </body>
 </html>

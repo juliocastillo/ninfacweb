@@ -1,0 +1,16 @@
+{% extends base_template %}
+{% block show %}
+    <script type="text/javascript">
+    $(function() {
+      $('#fini').datetimepicker({
+        pickTime: false,
+        format: "YYYY-MM-DD"
+      });
+    });
+    </script>
+<form>
+    <b>Fecha de corte:</b>
+    <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+    <td><input class="btn btn-small btn-primary" type="submit" value="Realizar cierre de periodo"></td>
+</form>
+{% endblock %}

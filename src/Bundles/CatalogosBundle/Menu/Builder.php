@@ -51,6 +51,7 @@ class Builder extends ContainerAware {
 
         $this->menu['Herramientas']->addChild('Actualizar saldos', array('route' => 'actualizar_saldos')); //
         $this->menu['Herramientas']->addChild('Copia de respaldo', array('route' => 'copia_respaldo')); //
+        $this->menu['Herramientas']->addChild('Cierre de perido', array('route' => 'cierre_periodo')); //
         } else { // la opcion aparecerá si no esta logeado el usuario
             $this->menu->addChild('Acerca de')->setUri('#')->setAttribute('dropdown', true)->setAttribute('icon', 'glyphicon glyphicon-file')->setAttribute('class', 'custom-menu');
         }

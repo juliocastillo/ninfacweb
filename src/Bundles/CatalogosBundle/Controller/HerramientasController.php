@@ -92,6 +92,32 @@ class HerramientasController extends Controller {
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
     /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/cierre_periodo", name="cierre_periodo", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function cierre_periodoAction() {
+        // instanciar el EntityManager
+
+        if (isset($_REQUEST['fini'])) {
+            $fini = $_REQUEST['fini'];
+        } else {
+            $fini = "";
+        }
+        return $this->render('BundlesCatalogosBundle:HerramientasController:cierre_periodo.html.twig', array(
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool'    => $this->container->get('sonata.admin.pool'),
+            'fini'          => $fini,
+        )
+        );
+    }
+
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+    /**
      * Funcion para hacer la copia de respaldo
      *
      * @Route("/copia_respaldo", name="copia_respaldo", options={"expose"=true})
