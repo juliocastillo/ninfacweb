@@ -164,7 +164,7 @@
 					<td width="8%" style="height:{{ formato.pieinterlineado }};text-align: right;font-size: {{ formato.idfontsize.size }}; font-family: {{ formato.idfontname.nombre }}">
 						&nbsp;
 						{% if cliente.agenteretencion == true %}
-								{{ (factura.sumas * 0.01) | number_format(2, '.', ',') }}
+								{{ factura.ivaretenido }}
 						{% endif %}
 					</td>
                 </tr>
