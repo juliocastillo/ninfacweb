@@ -61,6 +61,7 @@ file that was distributed with this source code.
                 <td>FECHA</td>
                 <td align="center">COND.PAGO</td>
                 <td align="right">MONTO</td>
+                <td align="right">NOTA CREDITO</td>
                 <td align="center" style="background-color: gainsboro;">FACTURA</td>
                 <td align="center" style="background-color: gainsboro;">TIPO</td>
                 <td align="center" style="background-color: gainsboro;">CLIENTE</td>
@@ -71,16 +72,19 @@ file that was distributed with this source code.
             {% set monto = 0 %}
             {% for mov in movimientos %}
                 {% set monto = monto + mov.monto %}
+                {% set saldo = mov.saldo - mov.total_notacredito %}
+
                 <tr>
                     <td>{{ mov.numero_recibo }}</td>
                     <td>{{ mov.fecha | date('d/m/Y')}}</td>
                     <td align="right">{{ mov.condicion_pago }}</td>
-                    <td align="right">{{ mov.monto }}</td>
+                    <td style="text-align: right;">{{ mov.monto }}</td>
+                    <td style="text-align: right;">{{ mov.total_notacredito }}</td>
                     <td align="center" style="background-color: gainsboro;">{{ mov.factura }}</td>
                     <td style="background-color: gainsboro;">{{ mov.tipo }}</td>
                     <td style="background-color: gainsboro;">{{ mov.cliente }}</td>
-                    <td style="background-color: gainsboro;">{{ mov.venta_total }}</td>
-                    <td align="right">{{ mov.saldo }}</td>
+                    <td style="background-color: gainsboro; text-align: right;">{{ mov.venta_total | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right;">{{ saldo | number_format(2, '.', ',') }}</td>
                     <td style="background-color: gainsboro;">{{ mov.estado }}</td>
                 </tr>
             {% endfor %}

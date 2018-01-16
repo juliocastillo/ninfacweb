@@ -134,11 +134,12 @@ class CxcCobroReporteRepository extends EntityRepository {
                         t02.numero AS factura,
                         t03.nombre AS cliente,
                         t04.nombre AS tipo,
+                        t02.total_notacredito,
                         (case when t03.agente_retencion = FALSE then t02.venta_total else
                             t02.subtotal
                          end) AS venta_total,
-                        (case when t03.agente_retencion = FALSE then t02.venta_total - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0)) else
-                            t02.subtotal - (COALESCE(t02.cobro_total,0) + COALESCE(t02.cobro_total_sin_detalle,0))
+                        (case when t03.agente_retencion = FALSE then t02.venta_total - (COALESCE(t02.cobro_total,0)) else
+                            t02.subtotal - (COALESCE(t02.cobro_total,0))
                          end) AS saldo,
                         t02.estado
 

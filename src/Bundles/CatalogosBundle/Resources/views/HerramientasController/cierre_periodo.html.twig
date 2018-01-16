@@ -10,7 +10,22 @@
     </script>
 <form>
     <b>Fecha de corte:</b>
-    <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
-    <td><input class="btn btn-small btn-primary" type="submit" value="Realizar cierre de periodo"></td>
+    <input class=" form-control" id="fini" type="text" maxlength="10" style="width:120px" required="required" name="fini">
+    <br />
+    <label> El cierre de periodo incluye la presente lista de acciones el cual es irreversible después de realizado <br />
+            No realice esta acción hasta estar seguro de haber hecho todos los movimientos de correspondientes</label><br />
+    <input type="checkbox"  checked="true" disabled="true"/> Actualizar respaldo de la base de datos del sistema <br />
+    <input type="checkbox"  checked="true" disabled="true"/> Crear historial de movimiento de inventario del periodo actual <br />
+    <input type="checkbox"  checked="true" disabled="true"/> Crear nuevo saldo incial para todos los LOTES de productos <br />
+    <input type="checkbox"  checked="true" disabled="true"/> Incorporar LOTES de nuevos productos al inventario inicial <br />
+    <input type="checkbox"  checked="true" disabled="true"/> Reseteo de saldos de movimientos de LOTES de productos <br />
+    <input type="checkbox"  checked="true" disabled="true"/> Preparar tablas de entrada, salidas y devoluciones para el nuevo periodo <br />
+    <br />
+    <input type="checkbox" name="confirmado" id="confirmado" required="required" /> <label>Estoy seguro de querer realizar el cierre de periodo </label> <br />
+    <br />
+    <br />
+    <br />
+    <td><input class="btn btn-small btn-primary" type="submit" value="Realizar cierre de periodo"></td> <br />
+    <label>{{ mensaje }}</label>
 </form>
 {% endblock %}

@@ -17,6 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Bundles\InventarioBundle\Entity\InvCierrePeriodo as cierrePeriodo;
+
 
 class HerramientasController extends Controller {
 
@@ -70,12 +72,11 @@ class HerramientasController extends Controller {
     public function actualizar_saldosAction() {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas(); //entrada
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero(); //entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas(); //factoras
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero(); //facturas
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
@@ -102,14 +103,36 @@ class HerramientasController extends Controller {
         // instanciar el EntityManager
 
         if (isset($_REQUEST['fini'])) {
-            $fini = $_REQUEST['fini'];
+            //ejecutar proceso de cierre_periodo
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->beginTransaction();
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearHistorial($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearSaldoInicial($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearInventarioInicial($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialMovimientos($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialDevoluciones($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialEntradas($_REQUEST['fini']);
+                $fechacierre = \DateTime::createFromFormat('Y-m-d',  $_REQUEST['fini']);
+                $cierre = new cierrePeriodo;
+                $cierre->setFechaCierre($fechacierre);
+                $cierre->setActivo(TRUE);
+                $em->persist($cierre);
+                $em->flush();
+                $em->getConnection()->commit();
+                $mensaje = "el proceso se finalzó con éxito";
+            } catch (\Exception $e) {
+                $em->getConnection()->rollback();
+                // throw $e;
+                $mensaje =  "No se realizo la actualización, por error en el proceso, notifique al administrador ".$e;
+            }
         } else {
-            $fini = "";
+            $mensaje = "";
         }
         return $this->render('BundlesCatalogosBundle:HerramientasController:cierre_periodo.html.twig', array(
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
-            'fini'          => $fini,
+            "mensaje"       => $mensaje
         )
         );
     }

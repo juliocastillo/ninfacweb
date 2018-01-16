@@ -420,4 +420,18 @@ class FacFacturaAdmin extends Admin {
 //            }
 //        }
     }
+
+    public function postPersist($factura) {
+        //actualizar saldos
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+    }
+    public function postUpdate($factura) {
+        //actualizar saldos
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+    }
+
 }

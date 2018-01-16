@@ -178,6 +178,8 @@ class ReportsInventarioController extends Controller {
 
         $productos = $em->getRepository('BundlesCatalogosBundle:CtlProducto')->findBy(array('activo'=>TRUE));
 
+        $fechascierre = $em->getRepository('BundlesInventarioBundle:InvCierrePeriodo')->findBy(array('activo'=>TRUE));
+
         if (isset($_REQUEST['id'])){
             $id = $_REQUEST['id'];
             $fecha = $_REQUEST['fecha'];
@@ -200,7 +202,8 @@ class ReportsInventarioController extends Controller {
             'requestvalid' => $requestvalid,
             'nombreproducto' => $nombreproducto,
             'base_template' => $this->getBaseTemplate(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool')
+            'admin_pool'    => $this->container->get('sonata.admin.pool'),
+            'fechacierre'   => $fechascierre
         )
         );
     }

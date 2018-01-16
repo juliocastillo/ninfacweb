@@ -66,13 +66,13 @@ class InvEntradaAdmin extends Admin
                       'format' => 'dd/MM/y',
                       'attr'=> array(
                           'class'=>'bootstrap-datepicker now',
-                          'style' => 'width:200px')))    
+                          'style' => 'width:200px')))
                 ->add('idTipoentrada',null, array(
                     'label'=>'Tipo de entrada',
                     'attr'=> array(
                           'style' => 'width:400px'
                         )))
-                
+
                 ->add('tipoCompra', 'choice', array(
                     'label'=>'Tipo de compra',
                     'attr'=> array(
@@ -107,7 +107,7 @@ class InvEntradaAdmin extends Admin
                         array(
                             'label' =>'Items'),
                                 array(
-                                    'edit' => 'inline', 
+                                    'edit' => 'inline',
                                     'inline' => 'standard'
                              ))
                 ->end()
@@ -134,13 +134,13 @@ class InvEntradaAdmin extends Admin
                 ->add('entradaDetalle','sonata_type_collection',array(
                                                                     'label' =>'Items'),
                                                                         array(
-                                                                            'edit' => 'inline', 
+                                                                            'edit' => 'inline',
                                                                             'inline' => 'table'
                                                                      ))
             ->end()
                 ;
     }
-    
+
     public function getExportFields() {
         return array('id',
             'numero',
@@ -150,34 +150,45 @@ class InvEntradaAdmin extends Admin
             'idAlmacen'
             );
     }
-    
-    
+
+
     public function prePersist($entrada) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $entrada->setIdUserAdd($user);
         $entrada->setDateAdd(new \DateTime());
-         
+
         foreach ($entrada->getEntradaDetalle() as $entradaDetalle) {
             $entradaDetalle->setIdEntrada($entrada);
-            
+
         }
         $entrada->setActivo(TRUE);
     }
- 
+
     public function preUpdate($entrada) {
         // llenar campos de auditoria
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
         $entrada->setIdUserMod($user);
         $entrada->setDateMod(new \DateTime());
-        
-    
+
+
         foreach ($entrada->getEntradaDetalle() as $entradaDetalle) {
             $entradaDetalle->setIdEntrada($entrada);
         }
-        
     }
 
+    public function postPersist($entrada) {
+        //actualizar saldos
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+    }
+    public function postUpdate($entrada) {
+        //actualizar saldos
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+    }
     public function getTemplate($name) {
         switch ($name) {
             case 'edit':

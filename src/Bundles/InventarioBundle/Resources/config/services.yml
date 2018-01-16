@@ -29,3 +29,9 @@ services:
         arguments: [~, Bundles\InventarioBundle\Entity\InvProductoMovVentas, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, show_in_dashboard: false}
+
+    bundles_inventario.admin.inv_cierre_periodo:
+        class: Bundles\InventarioBundle\Admin\InvCierrePeriodoAdmin
+        arguments: [~, Bundles\InventarioBundle\Entity\InvCierrePeriodo, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, show_in_dashboard: false}

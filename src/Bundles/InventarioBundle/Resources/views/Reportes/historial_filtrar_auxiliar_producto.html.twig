@@ -29,8 +29,9 @@ file that was distributed with this source code.
             <br>
             <b>Movimientos del cierre de:</b>
             <select id="fechacierre" name="fecha" required="required" >
-                <option value="2016-8-11" selected="">2016-8-11</option>
-                <option value="2017-1-8" selected="">2017-1-8</option>
+                {% for fecha in fechacierre %}
+                        <option value="{{ fecha.fechacierre | date("Y-m-d") }}">{{ fecha.fechacierre | date("d-m-Y") }}</option>
+                {% endfor %}
             </select>
 
 
