@@ -90,6 +90,25 @@ class CtlProductoRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
+    public function actualizarPrecioCif($fini=null){
+        $em = $this->getEntityManager();
+        $sql    = "
+        UPDATE inv_producto_mov SET precio_cif = 
+		(CASE WHEN 
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0 
+		 ELSE
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null  GROUP BY id_inv_producto_mov limit 1) 
+		 END)
+		 WHERE precio_cif = 0
+        ";
+        $em->getConnection()->executeQuery($sql);
+        return;
+    }	
+    /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
     public function enviarHistorialDevoluciones($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
