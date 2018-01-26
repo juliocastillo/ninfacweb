@@ -14,6 +14,7 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
+config_backup_admin.php
  
 # Archivos de configuración
 app/config/parameters.ini
