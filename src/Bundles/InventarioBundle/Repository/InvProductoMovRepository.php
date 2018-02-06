@@ -194,6 +194,7 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 m.cantidad_inicial AS cantidad_inicial,
                 0 AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 0 AS cantidad_salida,
                 p.precio_costo AS precio_costo
                 FROM
@@ -209,12 +210,29 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 0 AS cantidad_inicial,
                 e.cantidad AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 0 AS cantidad_salida,
                 e.costo_adicional AS precio_costo
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) != true
+				UNION  /* unir las notas de credito  */
+                SELECT
+                i.fecha AS fecha,
+                '4' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                e.cantidad AS cantidad_entrada_nc,
+				0 AS cantidad_salida,
+                0 AS precio_costo
+                FROM
+                fac_notacredito i, fac_notacreditodetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_notacredito AND i.activo = true AND COALESCE(e.historial,false) != true				
                 UNION  /* unir las salida  */
                 SELECT
                 i.fecha AS fecha,
@@ -224,6 +242,7 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 0 AS cantidad_inicial,
                 0 AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 e.cantidad AS cantidad_salida,
                 0 AS precio_costo
                 FROM
@@ -231,7 +250,7 @@ class InvProductoMovRepository extends EntityRepository {
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) != true
                 ) d
-            ORDER BY lote, tipo_movimiento, fecha";
+            ORDER BY fecha, lote, tipo_movimiento";
         }
         else { // devuelve todos los registros de un producto sin importar fecha
             $sql =
@@ -244,13 +263,14 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 m.cantidad_inicial AS cantidad_inicial,
                 0 AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 0 AS cantidad_salida,
                 p.precio_costo AS precio_costo
                 FROM
                 ctl_producto p
-                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id AND m.tipo_mov = 'I'
+                LEFT JOIN inv_producto_mov m ON m.id_producto = p.id
                 WHERE p.id = '$id'
-                UNION  /* unir las entradas */
+                UNION /* unir las entradas */
                 SELECT
                 i.fecha AS fecha,
                 '2' AS tipo_movimiento,
@@ -259,13 +279,30 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 0 AS cantidad_inicial,
                 e.cantidad AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 0 AS cantidad_salida,
                 e.costo_adicional AS precio_costo
                 FROM
                 inv_entrada i, inv_entradadetalle e
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-                WHERE i.id = e.id_entrada  AND COALESCE(e.historial,false) != true
-                UNION  /* unir las salidas */
+                WHERE i.id = e.id_entrada AND COALESCE(e.historial,false) != true
+				UNION  /* unir las notas de credito  */
+                SELECT
+                i.fecha AS fecha,
+                '4' AS tipo_movimiento,
+                i.numero AS documento,
+                '??' AS nombre,
+                m.lote,
+                0 AS cantidad_inicial,
+                0 AS cantidad_entrada,
+                e.cantidad AS cantidad_entrada_nc,
+				0 AS cantidad_salida,
+                0 AS precio_costo
+                FROM
+                fac_notacredito i, fac_notacreditodetalle e
+                INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
+                WHERE i.id = e.id_notacredito AND i.activo = true AND COALESCE(e.historial,false) != true				
+                UNION  /* unir las salida  */
                 SELECT
                 i.fecha AS fecha,
                 '3' AS tipo_movimiento,
@@ -274,6 +311,7 @@ class InvProductoMovRepository extends EntityRepository {
                 m.lote,
                 0 AS cantidad_inicial,
                 0 AS cantidad_entrada,
+				0 AS cantidad_entrada_nc,
                 e.cantidad AS cantidad_salida,
                 0 AS precio_costo
                 FROM
@@ -281,7 +319,7 @@ class InvProductoMovRepository extends EntityRepository {
                 INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
                 WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) != true
                 ) d
-            ORDER BY lote, tipo_movimiento, fecha";
+            ORDER BY fecha, lote, tipo_movimiento";
         }
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;
