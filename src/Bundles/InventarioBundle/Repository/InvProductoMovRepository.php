@@ -17,9 +17,9 @@ class InvProductoMovRepository extends EntityRepository {
      /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
-     * Analista programador
+     * Analista programadors
      */
-    public function actualizarEntradas(){
+    public function actualizarEntradas($fecha=null){
         /*verifica que los registros aún no hayan sido enviados al historico
          * por cierre de periodo funcion COALESCE para evitar problemas con
          * datos sin ningún valor
@@ -30,7 +30,9 @@ class InvProductoMovRepository extends EntityRepository {
             SELECT
             sum(cantidad)
             FROM inv_entradadetalle f
-            WHERE f.id_inv_producto_mov = inv_producto_mov.id AND COALESCE(f.historial,false) != true)
+            WHERE f.id_inv_producto_mov = inv_producto_mov.id AND 
+            COALESCE(f.historial,false) != true AND fecha <= '$fecha')
+            
             ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -40,7 +42,7 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarEntradasNotaCredito(){
+    public function actualizarEntradasNotaCredito($fecha=null){
         /*verifica que los registros aún no hayan sido enviados al historico
          * por cierre de periodo funcion COALESCE para evitar problemas con
          * datos sin ningún valor
@@ -53,7 +55,7 @@ class InvProductoMovRepository extends EntityRepository {
                 COALESCE(sum(cantidad),0)
                 FROM fac_notacreditodetalle f
                 WHERE f.id_inv_producto_mov = inv_producto_mov.id AND
-                    COALESCE(f.historial,false) != true
+                    COALESCE(f.historial,false) != true AND fecha <= '$fecha'
                     )
             ";
         $em->getConnection()->executeQuery($sql);
@@ -78,7 +80,7 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarSalidas(){
+    public function actualizarSalidas($fecha=null){
         $em = $this->getEntityManager();
         $sql = "
                 UPDATE inv_producto_mov SET cantidad_salida = (
@@ -87,7 +89,7 @@ class InvProductoMovRepository extends EntityRepository {
                 FROM fac_factura f, fac_facturadetalle d
                 WHERE f.id = d.id_factura AND
                 d.id_inv_producto_mov = inv_producto_mov.id AND
-                f.estado!='ANULADO' AND COALESCE(d.historial,false) != true)
+                f.estado!='ANULADO' AND COALESCE(d.historial,false) != true AND fecha <= '$fecha')
             ";
         $em->getConnection()->executeQuery($sql);
         return;

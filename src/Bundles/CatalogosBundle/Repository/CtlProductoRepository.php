@@ -60,7 +60,7 @@ class CtlProductoRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function crearInventarioInicial($fini=null){
+    public function enviarDetallesEntradaHistorial($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
         UPDATE inv_entradadetalle SET
@@ -75,7 +75,7 @@ class CtlProductoRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function enviarHistorialMovimientos($fini=null){
+    public function enviarHistorialMovimientosSalidas($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
         UPDATE fac_facturadetalle SET
@@ -129,7 +129,7 @@ class CtlProductoRepository extends EntityRepository {
         $sql    = "
         UPDATE inv_entrada SET
         fecha_cierre = '$fini',
-        historial = TRUE WHERE historial is null
+        historial = TRUE WHERE historial is null and fecha <= '$fini'
         ";
         $em->getConnection()->executeQuery($sql);
         return;

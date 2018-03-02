@@ -71,11 +71,12 @@ class HerramientasController extends Controller {
      */
     public function actualizar_saldosAction() {
         // instanciar el EntityManager
+        $fecha = date("Y-m-d");
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas(); //entrada
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($fecha); //entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero(); //entrada
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas(); //factoras
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha);
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($fecha); //factoras
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero(); //facturas
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
@@ -107,11 +108,14 @@ class HerramientasController extends Controller {
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->beginTransaction();
+                $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($_REQUEST['fini']); //entrada
+                $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($_REQUEST['fini']);
+                $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($_REQUEST['fini']); //factoras
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearHistorial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearSaldoInicial($_REQUEST['fini']);
-                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearInventarioInicial($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarDetallesEntradaHistorial($_REQUEST['fini']);
 				$em->getRepository('BundlesCatalogosBundle:CtlProducto')->actualizarPrecioCif($_REQUEST['fini']);
-                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialMovimientos($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialMovimientosSalidas($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialDevoluciones($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialEntradas($_REQUEST['fini']);
                 $fechacierre = \DateTime::createFromFormat('Y-m-d',  $_REQUEST['fini']);
