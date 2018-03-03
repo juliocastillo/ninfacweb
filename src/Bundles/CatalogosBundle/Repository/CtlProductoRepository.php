@@ -64,8 +64,11 @@ class CtlProductoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $sql    = "
         UPDATE inv_entradadetalle SET
-        fecha_cierre = '$fini',
-        historial = TRUE WHERE historial is null
+            fecha_cierre = '$fini',
+            historial = TRUE
+    	FROM inv_entrada e, inv_entradadetalle d
+        WHERE
+            e.id = d.id_entrada AND e.fecha <='$fini' AND d.historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -79,8 +82,10 @@ class CtlProductoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $sql    = "
         UPDATE fac_facturadetalle SET
-        fecha_cierre = '$fini',
-        historial = TRUE WHERE historial is null
+            fecha_cierre = '$fini',
+            historial = TRUE 
+        FROM fac_factura e, fac_facturadetalle d
+        WHERE e.id = d.id_factura AND e.fecha <='$fini' AND d.historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -93,17 +98,17 @@ class CtlProductoRepository extends EntityRepository {
     public function actualizarPrecioCif($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
-        UPDATE inv_producto_mov SET precio_cif = 
-		(CASE WHEN 
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0 
+        UPDATE inv_producto_mov SET precio_cif =
+		(CASE WHEN
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0
 		 ELSE
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null  GROUP BY id_inv_producto_mov limit 1) 
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null  GROUP BY id_inv_producto_mov limit 1)
 		 END)
 		 WHERE precio_cif = 0
         ";
         $em->getConnection()->executeQuery($sql);
         return;
-    }	
+    }
     /*
      * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
      * Julio Castillo
@@ -113,8 +118,10 @@ class CtlProductoRepository extends EntityRepository {
         $em = $this->getEntityManager();
         $sql    = "
         UPDATE fac_notacreditodetalle SET
-        fecha_cierre = '$fini',
-        historial = TRUE WHERE historial is null
+            fecha_cierre = '$fini',
+            historial = TRUE
+        FROM fac_notacredito e, fac_notacreditodetalle d
+        WHERE e.id = d.id_notacredito AND e.fecha <='$fini' AND d.historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
