@@ -172,6 +172,22 @@ class FacNotacreditoAdmin extends Admin
         // var_dump($factura); exit();
         $factura = $notacredito->getIdFactura();
         $factura->setTotalNotacredito($notacredito->getSubtotal());
+        
+        //actualizar saldos
+        $fecha = date("Y-m-d");
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha);
+    }
+
+    public function postUpdate($notacredito) {
+        // var_dump($factura); exit();
+        $factura = $notacredito->getIdFactura();
+        $factura->setTotalNotacredito($notacredito->getSubtotal());
+        
+        //actualizar saldos
+        $fecha = date("Y-m-d");
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha);
     }
 
 

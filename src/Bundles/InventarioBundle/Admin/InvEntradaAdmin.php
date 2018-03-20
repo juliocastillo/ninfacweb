@@ -182,12 +182,18 @@ class InvEntradaAdmin extends Admin
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
     }
     public function postUpdate($entrada) {
         //actualizar saldos
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
     }
     public function getTemplate($name) {
         switch ($name) {

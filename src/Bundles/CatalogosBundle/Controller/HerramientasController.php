@@ -75,13 +75,13 @@ class HerramientasController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($fecha); //entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero(); //entrada
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha);
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha); //nota de credito 
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($fecha); //factoras
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero(); //facturas
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto();
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos(); //factura y entrada
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero(); //entrada
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto(); //entrada
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas(); //factura
 
         return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(
             'base_template' => $this->getBaseTemplate(),
