@@ -179,8 +179,9 @@ class InvEntradaAdmin extends Admin
 
     public function postPersist($entrada) {
         //actualizar saldos
+        $fecha = date("Y-m-d");
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($fecha);
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
@@ -188,8 +189,9 @@ class InvEntradaAdmin extends Admin
     }
     public function postUpdate($entrada) {
         //actualizar saldos
+        $fecha = date("Y-m-d");
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($fecha);
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero();
