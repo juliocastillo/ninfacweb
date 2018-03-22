@@ -439,16 +439,18 @@ class FacFacturaAdmin extends Admin {
 
     public function postPersist($factura) {
         //actualizar saldos
+        $fecha = date("Y-m-d");
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($fecha);
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
     }
     public function postUpdate($factura) {
         //actualizar saldos
+        $fecha = date("Y-m-d");
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas();
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($fecha);
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
