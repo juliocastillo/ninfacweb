@@ -5,6 +5,6 @@ $database		= 'ninfac';
 $user			= 'postgres';
 $password		= 'postgres';
 $backups_path	= '\backups_prodylab';
-$backups_path_externo	= 'e:\backups';
+$backups_path_externo	= 'g:\backups_prodylab';
 $logs_path		= '\logs_prodylab';
 $notify 		= 'admin@prodylab.com';
