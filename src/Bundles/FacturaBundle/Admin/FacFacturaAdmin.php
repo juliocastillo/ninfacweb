@@ -251,7 +251,7 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(null);
+            //$factura->setSubtotal(null); // no aplica cuando sea credito fiscal
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
 			} else {
@@ -333,7 +333,7 @@ class FacFacturaAdmin extends Admin {
         if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
-            $factura->setSubtotal(null);
+            //$factura->setSubtotal(null); // no aplica cuando sea credito fiscal segun solicitud de 09-07-2018
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
 			} else {
