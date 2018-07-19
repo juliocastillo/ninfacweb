@@ -1,0 +1,71 @@
+{% extends base_template %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/css/select2.min.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/datatable/css/jquery.dataTables.min.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bundlescatalogos/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('bundles/bundlescatalogos/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/bundlescatalogos/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_municipio').select2();
+        });
+        $(document).ready(function () {
+            $('#id_departamento').select2();
+        });
+       
+        /* cambiar sub-servicio deacuerdo a la departamentos */
+        function getMunicipios(departamento) {
+            $municipio = $('#id_municipio');
+            $municipio.empty();
+            $municipio.append($('<option>', {value: 0, text: '...Todos...'})); //agrega al combo
+            $.ajax({
+                url: "{{ path('get_municipios') }}",
+                data: {depto: departamento},
+                async: true,
+                dataType: 'json',
+                success: function (data) { //si fue exitosa la llamada del ajax
+                    $.each(data, function (idx, val) { // los datos devueltos
+                        $municipio.append($('<option>', {value: val.id, text: val.nombre})); //agrega al combo
+                    });
+                }
+            });
+        }
+    </script>
+{% endblock %}
+{% block show %}
+    <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+        <b><center>CLIENTES POR DEPARTAMENTO Y MUNICIPIO</center></b> <br>
+        <b>DEPARTAMENTO:</b>
+        <select id="id_departamento" name="id_departamento" required="required"  style="width: 250px" onchange="getMunicipios(this.value);">
+            <option value="0">...Seleccione...</option>
+            {% for departamento in departamentos %}
+                {% if id_departamento == departamento.id %}
+                    <option value="{{ departamento.id }}" selected="{{ id_departamento }}">{{ departamento.nombre }}</option>
+                {% else %}
+                    <option value="{{ departamento.id }}">{{ departamento.nombre }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <b>MUNICIPIO:</b>
+        <select id="id_municipio" name="id_municipio" required="required" style="width: 250px">
+            <option value="0">...Todos...</option>
+        </select>
+        <input class="btn btn-small btn-primary" type="submit" value="Generar reporte">
+
+        <script type="text/javascript">
+        </script>
+    </form>
+    <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+            {% include 'BundlesCxcBundle:Reportes:resultado_cliente_departamento.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock %}

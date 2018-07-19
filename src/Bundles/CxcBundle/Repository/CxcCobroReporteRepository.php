@@ -88,6 +88,33 @@ class CxcCobroReporteRepository extends EntityRepository {
         return $em->getConnection()->executeQuery($sql);
     }
 
+     /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
+    public function clienteDepartamento($id_departamento=null, $id_municipio=null){
+        if ($id_departamento && $id_municipio)
+        {
+            $cadenawhere = " AND t01.id_municipio = $id_municipio";
+        } else {
+            $cadenawhere = "";
+        }
+        $em = $this->getEntityManager();
+        $sql = "
+            SELECT
+                t01.id, t01.nombre, t01.nombre_comercial, t03.nombre as municipio, t06.nombres as vendedor
+            FROM ctl_cliente            t01
+            LEFT JOIN ctl_departamento  t02 ON t02.id = t01.id_departamento
+            LEFT JOIN ctl_municipio     t03 ON t03.id = t01.id_municipio
+            LEFT JOIN ctl_zona	    t04 ON t04.id = t01.id_zona
+            LEFT JOIN mnt_empleado_zona t05 ON t05.id_zona = t04.id
+            LEFT JOIN ctl_empleado	    t06 ON t06.id = t05.id_empleado
+            WHERE t01.activo = true AND t01.id_departamento = $id_departamento$cadenawhere
+            ORDER BY t01.nombre, t01.id_municipio";
+        return $em->getConnection()->executeQuery($sql);
+    }
+
     /*
      * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
      * Julio Castillo

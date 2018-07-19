@@ -79,6 +79,22 @@ class ReportsCatalogosController extends Controller {
         return $jasperReport->buildReport();
     }
     
-    
-    
+     /**
+     * @Route("/get/municipios", name="get_municipios", options={"expose"=true})
+     * @Method("GET")
+     *
+     */
+    public function getMunicipiosAction() {
+        $request = $this->getRequest();
+//        var_dump($request);exit();
+        $id_departamento = $request->get('depto');
+        $sql = "
+            SELECT id, nombre FROM ctl_municipio WHERE id_departamento = ".$id_departamento;
+
+        $stm = $this->container->get('database_connection')->prepare($sql);
+        $stm->execute();
+        $result = $stm->fetchAll();
+
+        return new Response(json_encode($result));
+    }
 }

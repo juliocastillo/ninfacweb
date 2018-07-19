@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+    </head>
+    <body>
+        <table width="100%" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+            </tr>
+            
+        </table>
+        <table width="100%" class="display" id="tblresult">
+            <thead>
+                <tr>
+                    <th>MUNICIPIO</th>
+                    <th>NOMBRE</th>
+                    <th>NOMBRE COMERCIAL</th>
+                    <th>VENDEDOR</th>
+                </tr>
+            <thead>
+            <tbody>
+                {% set saldo = 0 %}
+                {% set subtotal = 0.00 %}
+                {% set cliente = "" %}
+                {% for mov in clientes %}
+                    <tr>
+                        <td valign="top">{{ mov.municipio }}</td>
+                        <td valign="top">{{ mov.nombre }}</td>
+                        <td valign="top">{{ mov.nombre_comercial }}</td>
+                        <td valign="top">{{ mov.vendedor }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    <script>
+         $(document).ready( function () {
+            $('#tblresult').DataTable();
+        } );
+    </script>
+</html>

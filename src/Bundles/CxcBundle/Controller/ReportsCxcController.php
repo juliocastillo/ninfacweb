@@ -117,6 +117,56 @@ class ReportsCxcController extends Controller {
         );
     }
 
+     /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+    /**
+     * Funcion que permite crear el reporte de cuentas por cobrar
+     * por cliente.
+     *
+     * @Route("/cliente_departamento", name="imprimir_cliente_departamento", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function cliente_departamentoAction() {
+        // instanciar el EntityManager
+        $em = $this->getDoctrine()->getManager();
+        /* buscar el registro padre a traves de id */
+        $request         = $this->getRequest();
+        $id_departamento = $request->get('id_departamento');
+        $id_municipio    = $request->get('id_municipio');        
+        $empresa         = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
+        $departamentos   = $em->getRepository('BundlesCatalogosBundle:CtlDepartamento')->findAll();
+        $municipios      = $em->getRepository('BundlesCatalogosBundle:CtlMunicipio')->findAll();
+           
+        if (isset($_REQUEST['id_municipio'])){
+             $clientes = $em
+                ->getRepository('BundlesCxcBundle:CxcCobro')
+                ->clienteDepartamento($id_departamento, $id_municipio);
+            $requestvalid = TRUE;
+        } else {
+            $clientes = $em
+                ->getRepository('BundlesCxcBundle:CxcCobro')
+                ->clienteDepartamento($id_departamento);
+            $id_departamento    = 0;
+            $id_municipio       = 0;
+            $requestvalid       = FALSE;
+            $clientes           = 0;
+        }
+
+        return $this->render('BundlesCxcBundle:Reportes:filtrar_cliente_departamento.html.twig', array(
+            'id_departamento'   => $id_departamento,
+            'id_municipio'      => $id_municipio,
+            'departamentos'     => $departamentos,
+            'municipios'        => $municipios,
+            'clientes'          => $clientes,
+            'empresa'           => $empresa,
+            'requestvalid'      => $requestvalid,
+            'base_template'     => $this->getBaseTemplate(),
+            'admin_pool'        => $this->container->get('sonata.admin.pool')
+        )
+        );
+    }    
+    
     /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
