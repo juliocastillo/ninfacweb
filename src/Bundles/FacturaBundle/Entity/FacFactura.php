@@ -242,6 +242,13 @@ class FacFactura
      */
     private $facturaDetalle;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="excepcion_retencion_iva", type="boolean", nullable=true)
+     */
+    private $excepcionRetencionIva;
+
 
 
     /**
@@ -858,6 +865,7 @@ class FacFactura
     {
         $this->facturaDetalle->removeElement($facturaDetalle);
     }
+    
     /**
      * Set sinDetalle
      *
@@ -879,6 +887,30 @@ class FacFactura
     public function getSinDetalle()
     {
         return $this->sinDetalle;
+    }
+
+    
+    /**
+     * Set excepcionRetencionIva
+     *
+     * @param boolean $excepcionRetencionIva
+     * @return FacFactura
+     */
+    public function setExcepcionRetencionIva($excepcionRetencionIva)
+    {
+        $this->excepcionRetencionIva = $excepcionRetencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get excepcionRetencionIva
+     *
+     * @return boolean
+     */
+    public function getExcepcionRetencionIva()
+    {
+        return $this->excepcionRetencionIva;
     }
 
     /**
