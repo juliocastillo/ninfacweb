@@ -66,9 +66,13 @@ class CtlProductoRepository extends EntityRepository {
         UPDATE inv_entradadetalle SET
             fecha_cierre = '$fini',
             historial = TRUE
-    	FROM inv_entrada e, inv_entradadetalle d
-        WHERE
-            e.id = d.id_entrada AND e.fecha <='$fini' AND d.historial is null
+    	        WHERE
+            id_entrada IN (select e.id from  inv_entrada e, inv_entradadetalle d
+                            WHERE e.id = d.id_entrada AND e.fecha <='$fini' AND d.historial is null
+                            GROUP BY e.id
+                            order by e.id)
+            AND historial is null
+
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -81,11 +85,15 @@ class CtlProductoRepository extends EntityRepository {
     public function enviarHistorialMovimientosSalidas($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
-        UPDATE fac_facturadetalle SET
-            fecha_cierre = '$fini',
-            historial = TRUE 
-        FROM fac_factura e, fac_facturadetalle d
-        WHERE e.id = d.id_factura AND e.fecha <='$fini' AND d.historial is null
+                    UPDATE fac_facturadetalle SET
+                                fecha_cierre = '$fini',
+                                historial = TRUE         
+                            WHERE id_factura in (
+                                select e.id from  fac_factura e, fac_facturadetalle d
+                                WHERE e.id = d.id_factura AND e.fecha <='$fini' AND d.historial is null
+                                GROUP BY e.id
+                                order by e.id)
+                    AND historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
