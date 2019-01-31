@@ -108,9 +108,16 @@ class CtlProductoRepository extends EntityRepository {
         $sql    = "
         UPDATE inv_producto_mov SET precio_cif =
 		(CASE WHEN
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
+                        WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
+                        inv_entradadetalle.costo_adicional > 0 AND 
+                        historial is null 
+                        GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0
 		 ELSE
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null  GROUP BY id_inv_producto_mov limit 1)
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
+                        WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
+                        inv_entradadetalle.costo_adicional > 0 AND historial is null  
+                        GROUP BY id_inv_producto_mov limit 1)
 		 END)
 		 WHERE precio_cif = 0
         ";
@@ -118,18 +125,22 @@ class CtlProductoRepository extends EntityRepository {
         return;
     }
     /*
-     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * DESCRIPCION: Devolver el listado de notas de credito del periodo
      * Julio Castillo
      * Analista programador
      */
     public function enviarHistorialDevoluciones($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
-        UPDATE fac_notacreditodetalle SET
+       UPDATE fac_notacreditodetalle SET
             fecha_cierre = '$fini',
             historial = TRUE
-        FROM fac_notacredito e, fac_notacreditodetalle d
-        WHERE e.id = d.id_notacredito AND e.fecha <='$fini' AND d.historial is null
+        WHERE id_notacredito in (
+                                select e.id from  fac_notacredito e, fac_notacreditodetalle d
+                                WHERE e.id = d.id_notacredito AND e.fecha <='$fini' AND d.historial is null
+                                GROUP BY e.id
+                                order by e.id)
+                    AND historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
