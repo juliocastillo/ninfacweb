@@ -111,15 +111,28 @@ class CtlProductoRepository extends EntityRepository {
 			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
                         WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
                         inv_entradadetalle.costo_adicional > 0 AND 
-                        historial is null 
-                        GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0
+                        historial is null and inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id) IS NULL THEN 0
 		 ELSE
 			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
                         WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
-                        inv_entradadetalle.costo_adicional > 0 AND historial is null  
-                        GROUP BY id_inv_producto_mov limit 1)
+                        inv_entradadetalle.costo_adicional > 0 AND 
+                        historial is null and inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id)
 		 END)
-		 WHERE precio_cif = 0
+		 WHERE precio_cif = 0;
+
+        UPDATE ctl_producto SET precio_costo =
+		(CASE WHEN
+			(SELECT precio_cif FROM inv_producto_mov 
+                        WHERE inv_producto_mov.id_producto = ctl_producto.id AND 
+                        inv_producto_mov.precio_cif > 0 AND 
+                        inv_producto_mov.tipo_mov = 'E'  ORDER BY id DESC LIMIT 1) IS NULL THEN 0
+		 ELSE
+			(SELECT precio_cif FROM inv_producto_mov 
+                        WHERE inv_producto_mov.id_producto = ctl_producto.id AND 
+                        inv_producto_mov.precio_cif > 0 AND 
+                        inv_producto_mov.tipo_mov = 'E' ORDER BY id DESC LIMIT 1)
+		 END)
+		 WHERE precio_costo = 0;    
         ";
         $em->getConnection()->executeQuery($sql);
         return;
