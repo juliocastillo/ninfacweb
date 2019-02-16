@@ -114,6 +114,7 @@ class HerramientasController extends Controller {
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearHistorial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearSaldoInicial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->actualizarPrecioCif($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->actualizarPrecioCosto($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarDetallesEntradaHistorial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialMovimientosSalidas($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialDevoluciones($_REQUEST['fini']);

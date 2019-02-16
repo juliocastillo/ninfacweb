@@ -118,8 +118,19 @@ class CtlProductoRepository extends EntityRepository {
                         inv_entradadetalle.costo_adicional > 0 AND 
                         historial is null and inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id)
 		 END)
-		 WHERE precio_cif = 0;
-
+		 WHERE precio_cif = 0;   
+        ";
+        $em->getConnection()->executeQuery($sql);
+        return;
+    }
+    /*
+     * DESCRIPCION: Devolver el listado de facturas pendientes de cobros
+     * Julio Castillo
+     * Analista programador
+     */
+    public function actualizarPrecioCosto($fini=null){
+        $em = $this->getEntityManager();
+        $sql    = "
         UPDATE ctl_producto SET precio_costo =
 		(CASE WHEN
 			(SELECT precio_cif FROM inv_producto_mov 
