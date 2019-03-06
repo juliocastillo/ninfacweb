@@ -503,7 +503,7 @@ class InvProductoMovRepository extends EntityRepository {
             WHERE 
                 t01.fecha > current_date - $dias
             ORDER BY t01.id DESC, t01.fecha DESC
-            LIMIT 25";
+            ";
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;
     }
