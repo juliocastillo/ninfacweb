@@ -1,0 +1,44 @@
+{% extends base_template %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+{% endblock %}
+{% block show %}
+    <h1>Pedidos a bodega</h1>
+    <form method="get" action="">
+        <meta http-equiv="refresh" content="{{ sec }};URL=''">
+        <input type="submit" value="Query refresh">
+        <label>Dias transcurridos despues de la creacion:</label>
+        <input type="text" style="width:25px" value="{{ dias }}" name="dias">
+    </form>
+    <table  id="myTable" class="display">
+        <thead>
+            <tr>
+        <th>#ID_PEDIDO</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Estado</th>
+        <th>Accion</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for fac in facturas %}
+            <tr>
+                <td>{{ fac.id_factura }}</td>
+                <td>{{ fac.fecha }}</td>
+                <td>{{ fac.nombre_cliente }}</td>
+                <td>{{ fac.estado }}</td>
+                <td><a class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-print"></i></a>
+                    <a class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-ok"></i></a>
+                    <a class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-remove"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

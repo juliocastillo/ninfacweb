@@ -283,7 +283,7 @@ class FacFacturaAdmin extends Admin {
         } elseif ($factura->getIdCondicionpago()->getId()==2 || $factura->getIdCondicionpago()->getId()==3){ //Evaluar si es pago en efectivo
             $factura->setEstado('PENDIENTE');
         }
-
+        $factura->setEstadoPedidoBodega('DIGITADO');
         // dejar la factura creada como activa
         $factura->setActivo(TRUE);
     }

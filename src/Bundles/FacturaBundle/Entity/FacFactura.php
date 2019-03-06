@@ -107,6 +107,13 @@ class FacFactura
     /**
      * @var string
      *
+     * @ORM\Column(name="estado_pedido_bodega", type="string", length=10, nullable=true)
+     */
+    private $estadoPedidoBodega;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="sumas", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $sumas;
@@ -505,6 +512,29 @@ class FacFactura
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set estadoPedidoBodega
+     *
+     * @param string $estadoPedidoBodega
+     * @return FacFactura
+     */
+    public function setEstadoPedidoBodega($estadoPedidoBodega)
+    {
+        $this->estadoPedidoBodega = $estadoPedidoBodega;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoPedidoBodega
+     *
+     * @return string
+     */
+    public function getEstadoPedidoBodega()
+    {
+        return $this->estadoPedidoBodega;
     }
 
     /**

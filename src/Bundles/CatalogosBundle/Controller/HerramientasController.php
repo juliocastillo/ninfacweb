@@ -10,6 +10,7 @@
  * @author julio castillo
  * analista programador
  */
+
 namespace Bundles\CatalogosBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,9 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bundles\InventarioBundle\Entity\InvCierrePeriodo as cierrePeriodo;
 
-
 class HerramientasController extends Controller {
-
     /*
      * agregar para usarlo en admin con el templete de sonata
      */
@@ -29,24 +28,23 @@ class HerramientasController extends Controller {
     /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
-    protected function getAdminPool()
-    {
+    protected function getAdminPool() {
         return $this->container->get('sonata.admin.pool');
     }
+
     /**
      * @return \Sonata\AdminBundle\Search\SearchHandler
      */
-    protected function getSearchHandler()
-    {
+    protected function getSearchHandler() {
         return $this->get('sonata.admin.search.handler');
     }
+
     /**
      * @param Request $request
      *
      * @return string
      */
-    protected function getBaseTemplate(Request $request = null)
-    {
+    protected function getBaseTemplate(Request $request = null) {
         // to be BC
         if (null === $request) {
             $request = $this->getRequest();
@@ -57,11 +55,10 @@ class HerramientasController extends Controller {
         return $this->getAdminPool()->getTemplate('layout');
     }
 
-
-
-     /*
+    /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
+
     /**
      * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
      * por cliente.
@@ -84,15 +81,53 @@ class HerramientasController extends Controller {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas(); //factura
 
         return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(
-            'base_template' => $this->getBaseTemplate(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool')
-        )
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin_pool' => $this->container->get('sonata.admin.pool')
+                        )
         );
     }
 
-     /*
+    /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
+
+    /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/pedidos_bodega", name="pedidos_bodega", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function pedidos_bodega() {
+        // instanciar el EntityManager
+        $request = $this->getRequest();
+        if($request->get('dias') != NULL ){
+            $dias = $request->get('dias');
+        } else {
+            $dias = 5;
+        }
+        $fecha = date("Y-m-d");
+        $em = $this->getDoctrine()->getManager();
+
+        $page = $_SERVER['PHP_SELF'];
+        $sec = "60";
+        $facturas = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->pedidosBodega($dias); //entrada
+
+        return $this->render('BundlesCatalogosBundle:HerramientasController:pedidos_bodega.html.twig', array(
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin_pool' => $this->container->get('sonata.admin.pool'),
+                    'page' => $page,
+                    'sec' => $sec,
+                    'dias' => $dias,
+                    'facturas' => $facturas
+                        )
+        );
+    }
+
+    /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+
     /**
      * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
      * por cliente.
@@ -114,11 +149,11 @@ class HerramientasController extends Controller {
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearHistorial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->crearSaldoInicial($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarDetallesEntradaHistorial($_REQUEST['fini']);
-				$em->getRepository('BundlesCatalogosBundle:CtlProducto')->actualizarPrecioCif($_REQUEST['fini']);
+                $em->getRepository('BundlesCatalogosBundle:CtlProducto')->actualizarPrecioCif($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialMovimientosSalidas($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialDevoluciones($_REQUEST['fini']);
                 $em->getRepository('BundlesCatalogosBundle:CtlProducto')->enviarHistorialEntradas($_REQUEST['fini']);
-                $fechacierre = \DateTime::createFromFormat('Y-m-d',  $_REQUEST['fini']);
+                $fechacierre = \DateTime::createFromFormat('Y-m-d', $_REQUEST['fini']);
                 $cierre = new cierrePeriodo;
                 $cierre->setFechaCierre($fechacierre);
                 $cierre->setActivo(TRUE);
@@ -129,22 +164,23 @@ class HerramientasController extends Controller {
             } catch (\Exception $e) {
                 $em->getConnection()->rollback();
                 // throw $e;
-                $mensaje =  "No se realizo la actualización, por error en el proceso, notifique al administrador ".$e;
+                $mensaje = "No se realizo la actualización, por error en el proceso, notifique al administrador " . $e;
             }
         } else {
             $mensaje = "";
         }
         return $this->render('BundlesCatalogosBundle:HerramientasController:cierre_periodo.html.twig', array(
-            'base_template' => $this->getBaseTemplate(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool'),
-            "mensaje"       => $mensaje
-        )
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin_pool' => $this->container->get('sonata.admin.pool'),
+                    "mensaje" => $mensaje
+                        )
         );
     }
 
-     /*
+    /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
+
     /**
      * Funcion para hacer la copia de respaldo
      *
@@ -156,18 +192,18 @@ class HerramientasController extends Controller {
 
 
         /* Respalda una base de datos de postgresql en un archivo ASCII
-        * Copyright GPL(C) 2003-2004 Manuel Montoya (wistar@biomedicas.unam.mx)
-        * http://www.atenas.ath.cx/members/mmontoya/index.php?idp=48
-        */
+         * Copyright GPL(C) 2003-2004 Manuel Montoya (wistar@biomedicas.unam.mx)
+         * http://www.atenas.ath.cx/members/mmontoya/index.php?idp=48
+         */
 
         //Fecha del backup
-        $hoy=(date("d-M-Y"));
+        $hoy = (date("d-M-Y"));
 
         //Nombre del archivo
-        $name="/home/julio/Documents/centauro-". $hoy . "-backup";
+        $name = "/home/julio/Documents/centauro-" . $hoy . "-backup";
 
         //Extensi?n
-        $RESPALDO='/home/julio/Documents/copia.sql';
+        $RESPALDO = '/home/julio/Documents/copia.sql';
 
         // Limpio el cache
         header("Pragma: cache");
@@ -175,15 +211,14 @@ class HerramientasController extends Controller {
         // Especifico el mime-type
         //header("Content-type: text/plain;");
         //header("Content-Disposition: attachment; filename=".urlencode($name).".sql");
-
         //Limpio el cabezal HTTP
         ob_start();
 
         //Donde est? el pgdump?
-        $pg_dump="/usr/bin/pg_dump";
+        $pg_dump = "/usr/bin/pg_dump";
 
         //Comando
-        $comando="pg_dump -i -h localhost -p 5432 -d ninfac -U postgres -f '/home/julio/Documents/copia.sql'";
+        $comando = "pg_dump -i -h localhost -p 5432 -d ninfac -U postgres -f '/home/julio/Documents/copia.sql'";
 
         //"$comando <b>r"; // s?lo lo pinto para pruebas
 
@@ -191,20 +226,11 @@ class HerramientasController extends Controller {
 
         //-- Lee el archivo y colocalo en el buffer
         //readfile ('/home/julio/Documents/copia.sql');
-
 //        //-- Lo cierro pero no lo borro (s?lo para pruebas)
         //fclose('/home/julio/Documents/copia.sql');
-
         //-- Borrar el archivo
         //unlink ('/home/julio/Documents/copia.sql');
-
         //E voila!!
-
-
-
-
-
-
 //        $em = $this->getDoctrine()->getManager();
 //        $sql = "SELECT * FROM ctl_cliente";
 //        $query = $em->createQuery($sql);
@@ -216,9 +242,10 @@ class HerramientasController extends Controller {
 //        $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         return $this->render('BundlesCatalogosBundle:HerramientasController:copia_respaldo.html.twig', array(
-            'base_template' => $this->getBaseTemplate(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool')
-        )
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin_pool' => $this->container->get('sonata.admin.pool')
+                        )
         );
     }
+
 }
