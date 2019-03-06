@@ -96,7 +96,7 @@ class CxcCobroReporteRepository extends EntityRepository {
     public function clienteDepartamento($id_departamento=null, $id_municipio=null){
         if ($id_departamento && $id_municipio)
         {
-            $cadenawhere = " AND t01.id_municipio = $id_municipio";
+            $cadenawhere = " AND t01.id_departamento = $id_departamento AND t01.id_municipio = $id_municipio";
         } else {
             $cadenawhere = "";
         }
@@ -110,7 +110,7 @@ class CxcCobroReporteRepository extends EntityRepository {
             LEFT JOIN ctl_zona	    t04 ON t04.id = t01.id_zona
             LEFT JOIN mnt_empleado_zona t05 ON t05.id_zona = t04.id
             LEFT JOIN ctl_empleado	    t06 ON t06.id = t05.id_empleado
-            WHERE t01.activo = true AND t01.id_departamento = $id_departamento$cadenawhere
+            WHERE t01.activo = true $cadenawhere
             ORDER BY t01.nombre, t01.id_municipio";
         return $em->getConnection()->executeQuery($sql);
     }

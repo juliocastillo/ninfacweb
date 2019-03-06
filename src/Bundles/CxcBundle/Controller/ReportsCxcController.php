@@ -136,8 +136,8 @@ class ReportsCxcController extends Controller {
         $id_municipio    = $request->get('id_municipio');        
         $empresa         = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
         $departamentos   = $em->getRepository('BundlesCatalogosBundle:CtlDepartamento')->findAll();
-        $municipios      = $em->getRepository('BundlesCatalogosBundle:CtlMunicipio')->findAll();
-           
+        $municipios      = $em->getRepository('BundlesCatalogosBundle:CtlMunicipio')->findBy(array('idDepartamento'=>$id_departamento));
+//        var_dump($municipios);exit();
         if (isset($_REQUEST['id_municipio'])){
              $clientes = $em
                 ->getRepository('BundlesCxcBundle:CxcCobro')
@@ -147,7 +147,6 @@ class ReportsCxcController extends Controller {
             $clientes = $em
                 ->getRepository('BundlesCxcBundle:CxcCobro')
                 ->clienteDepartamento($id_departamento);
-            $id_departamento    = 0;
             $id_municipio       = 0;
             $requestvalid       = FALSE;
             $clientes           = 0;
