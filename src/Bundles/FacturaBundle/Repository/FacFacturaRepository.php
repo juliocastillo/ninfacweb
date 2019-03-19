@@ -340,4 +340,47 @@ class FacFacturaRepository extends EntityRepository {
     }
 
 
+    /*
+     * DESCRIPCION: obtener listado de detalle de facturas
+     * Julio Castillo
+     * Analista programador
+     */
+    public function facturaDetalle($id_factura=null){
+        $em = $this->getEntityManager();
+       
+            $sql = "
+                SELECT
+                   *,
+                   t03.nombre as producto,
+                   t04.nombre as marca
+                FROM fac_facturadetalle     t01
+                LEFT JOIN inv_producto_mov  t02 ON t02.id = t01.id_inv_producto_mov
+                LEFT JOIN ctl_producto      t03 ON t03.id = t02.id_producto
+                LEFT JOIN ctl_marca         t04 ON t04.id = t03.id_marca
+                WHERE t01.id_factura = $id_factura
+                ";
+        
+        return $em->getConnection()->executeQuery($sql);
+    }
+
+    /*
+     * DESCRIPCION: obtener listado de detalle de facturas
+     * Julio Castillo
+     * Analista programador
+     */
+    public function getFactura($id_factura=null){
+        $em = $this->getEntityManager();
+       
+            $sql = "
+                SELECT
+                   *
+                FROM fac_factura            t01
+                LEFT JOIN ctl_cliente       t02 ON t02.id = t01.id_cliente
+                WHERE t01.id = $id_factura
+                ";
+        
+        return $em->getConnection()->executeQuery($sql);
+    }
+
+
 }

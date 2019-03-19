@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bundles\InventarioBundle\Entity\InvCierrePeriodo as cierrePeriodo;
+use Knp\Snappy\Pdf;
 
 class HerramientasController extends Controller {
     /*
@@ -101,7 +102,7 @@ class HerramientasController extends Controller {
     public function pedidos_bodega() {
         // instanciar el EntityManager
         $request = $this->getRequest();
-        if($request->get('dias') != NULL ){
+        if ($request->get('dias') != NULL) {
             $dias = $request->get('dias');
         } else {
             $dias = 5;
@@ -121,6 +122,40 @@ class HerramientasController extends Controller {
                     'dias' => $dias,
                     'facturas' => $facturas
                         )
+        );
+    }
+
+    /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/imprimir_pedido_bodega/{id_factura}", name="imprimir_pedido_bodega", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function imprimir_pedido_bodega($id_factura) {
+        // instanciar el EntityManager
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->getFactura($id_factura); //entrada
+        $facturaDetalle = $em->getRepository('BundlesFacturaBundle:FacFactura')->facturaDetalle($id_factura); //entrada
+
+        $vistaParaImpresion = $this->renderView('BundlesInventarioBundle:Default:imprimir_pedido_bodega.html.twig', array(
+            'id' => $id_factura,
+            'factura' => $factura,
+            'facturaDetalle' => $facturaDetalle,
+                )
+        );
+        // invocar la libreria knp_snappy para generar el PDF
+        return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($vistaParaImpresion, array(
+                    'print-media-type' => true,
+                    'title' => 'Factura_ccf',
+                    'enable-javascript' => true,
+                    'javascript-delay' => 500,
+                    'no-pdf-compression' => true)), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline'
+                )
         );
     }
 
