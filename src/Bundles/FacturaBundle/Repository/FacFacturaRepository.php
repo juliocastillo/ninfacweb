@@ -373,7 +373,10 @@ class FacFacturaRepository extends EntityRepository {
        
             $sql = "
                 SELECT
-                   *
+                   to_char(t01.date_add,'DD/MM/YYYY HH12:MI:SS') as fecha_digitada,
+				   to_char(t01.fecha,'DD/MM/YYYY') as fecha,
+				   t01.numero,
+				   t02.nombre
                 FROM fac_factura            t01
                 LEFT JOIN ctl_cliente       t02 ON t02.id = t01.id_cliente
                 WHERE t01.id = $id_factura

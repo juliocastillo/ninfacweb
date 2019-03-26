@@ -1,10 +1,11 @@
 {% block show %}
     <h2>Pedidos a bodega</h2>
     {% for fac in factura %}
-        <label>Fecha:</label> {{ fac.date_add | date('d-m-Y h:m:s') }}<br>
+        <label>Fecha factura:</label> {{ fac.fecha }}<br>
         <label>Factura:</label> {{ fac.numero }}<br>
-        <label>Nombre del cliente: {{ fac.nombre }}</label>
-    {% endfor %}
+        <label>Nombre del cliente: {{ fac.nombre }}</label> <br>
+        <label>Digitada: {{ fac.fecha_digitada }}</label>
+	{% endfor %}
     <br>
     <table  id="myTable" class="display" style="border-style: dotted;">
         <thead>
@@ -19,14 +20,14 @@
         <tbody>
 
             {% set i = 0 %}
-            {% for fac in facturaDetalle %}
+            {% for facd in facturaDetalle %}
                 {% set i = i + 1 %}
                 <tr>
                     <td>{{ i }}</td>
-                    <td>{{ fac.producto }}</td>
-                    <td>{{ fac.marca }}</td>
-                    <td>{{ fac.lote }}</td>
-                    <td style="text-align: right">{{ fac.cantidad }}</td>
+                    <td>{{ facd.producto }}</td>
+                    <td>{{ facd.marca }}</td>
+                    <td>{{ facd.lote }}</td>
+                    <td style="text-align: right">{{ facd.cantidad }}</td>
                 </tr>
             {% endfor %}
         </tbody>
