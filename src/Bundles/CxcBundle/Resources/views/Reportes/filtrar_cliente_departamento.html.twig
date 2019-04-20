@@ -57,6 +57,13 @@
         <b>MUNICIPIO:</b>
         <select id="id_municipio" name="id_municipio" required="required" style="width: 250px">
             <option value="0">...Todos...</option>
+            {% for municipio in municipios %}
+                {% if id_municipio == municipio.id %}
+                    <option value="{{ municipio.id }}" selected="{{ id_municipio }}">{{ municipio.nombre }}</option>
+                {% else %}
+                    <option value="{{ municipio.id }}">{{ municipio.nombre }}</option>
+                {% endif %}
+            {% endfor %}
         </select>
         <input class="btn btn-small btn-primary" type="submit" value="Generar reporte">
 

@@ -66,9 +66,13 @@ class CtlProductoRepository extends EntityRepository {
         UPDATE inv_entradadetalle SET
             fecha_cierre = '$fini',
             historial = TRUE
-    	FROM inv_entrada e, inv_entradadetalle d
-        WHERE
-            e.id = d.id_entrada AND e.fecha <='$fini' AND d.historial is null
+    	        WHERE
+            id_entrada IN (select e.id from  inv_entrada e, inv_entradadetalle d
+                            WHERE e.id = d.id_entrada AND e.fecha <='$fini' AND d.historial is null
+                            GROUP BY e.id
+                            order by e.id)
+            AND historial is null
+
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -81,11 +85,15 @@ class CtlProductoRepository extends EntityRepository {
     public function enviarHistorialMovimientosSalidas($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
-        UPDATE fac_facturadetalle SET
-            fecha_cierre = '$fini',
-            historial = TRUE 
-        FROM fac_factura e, fac_facturadetalle d
-        WHERE e.id = d.id_factura AND e.fecha <='$fini' AND d.historial is null
+                    UPDATE fac_facturadetalle SET
+                                fecha_cierre = '$fini',
+                                historial = TRUE         
+                            WHERE id_factura in (
+                                select e.id from  fac_factura e, fac_facturadetalle d
+                                WHERE e.id = d.id_factura AND e.fecha <='$fini' AND d.historial is null
+                                GROUP BY e.id
+                                order by e.id)
+                    AND historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -100,11 +108,17 @@ class CtlProductoRepository extends EntityRepository {
         $sql    = "
         UPDATE inv_producto_mov SET precio_cif =
 		(CASE WHEN
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null GROUP BY id_inv_producto_mov limit 1) IS NULL THEN 0
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
+                        WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
+                        inv_entradadetalle.costo_adicional > 0 AND 
+                        historial is null and inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id) IS NULL THEN 0
 		 ELSE
-			(SELECT AVG(costo_adicional) FROM inv_entradadetalle WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND inv_entradadetalle.costo_adicional > 0 AND historial is null  GROUP BY id_inv_producto_mov limit 1)
+			(SELECT AVG(costo_adicional) FROM inv_entradadetalle 
+                        WHERE inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id AND 
+                        inv_entradadetalle.costo_adicional > 0 AND 
+                        historial is null and inv_entradadetalle.id_inv_producto_mov = inv_producto_mov.id)
 		 END)
-		 WHERE precio_cif = 0
+		 WHERE precio_cif = 0;   
         ";
         $em->getConnection()->executeQuery($sql);
         return;
@@ -114,14 +128,43 @@ class CtlProductoRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
+    public function actualizarPrecioCosto($fini=null){
+        $em = $this->getEntityManager();
+        $sql    = "
+        UPDATE ctl_producto SET precio_costo =
+		(CASE WHEN
+			(SELECT precio_cif FROM inv_producto_mov 
+                        WHERE inv_producto_mov.id_producto = ctl_producto.id AND 
+                        inv_producto_mov.precio_cif > 0 AND 
+                        inv_producto_mov.tipo_mov = 'E'  ORDER BY id DESC LIMIT 1) IS NULL THEN 0
+		 ELSE
+			(SELECT precio_cif FROM inv_producto_mov 
+                        WHERE inv_producto_mov.id_producto = ctl_producto.id AND 
+                        inv_producto_mov.precio_cif > 0 AND 
+                        inv_producto_mov.tipo_mov = 'E' ORDER BY id DESC LIMIT 1)
+		 END)
+		 WHERE precio_costo = 0;    
+        ";
+        $em->getConnection()->executeQuery($sql);
+        return;
+    }
+    /*
+     * DESCRIPCION: Devolver el listado de notas de credito del periodo
+     * Julio Castillo
+     * Analista programador
+     */
     public function enviarHistorialDevoluciones($fini=null){
         $em = $this->getEntityManager();
         $sql    = "
-        UPDATE fac_notacreditodetalle SET
+       UPDATE fac_notacreditodetalle SET
             fecha_cierre = '$fini',
             historial = TRUE
-        FROM fac_notacredito e, fac_notacreditodetalle d
-        WHERE e.id = d.id_notacredito AND e.fecha <='$fini' AND d.historial is null
+        WHERE id_notacredito in (
+                                select e.id from  fac_notacredito e, fac_notacreditodetalle d
+                                WHERE e.id = d.id_notacredito AND e.fecha <='$fini' AND d.historial is null
+                                GROUP BY e.id
+                                order by e.id)
+                    AND historial is null
         ";
         $em->getConnection()->executeQuery($sql);
         return;

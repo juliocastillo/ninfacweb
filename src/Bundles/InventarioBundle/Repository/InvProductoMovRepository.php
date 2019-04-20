@@ -12,15 +12,15 @@ namespace Bundles\InventarioBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-
 class InvProductoMovRepository extends EntityRepository {
-     /*
+    /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programadors
      */
-    public function actualizarEntradas($fecha=null){
-        /*verifica que los registros aún no hayan sido enviados al historico
+
+    public function actualizarEntradas($fecha = null) {
+        /* verifica que los registros aún no hayan sido enviados al historico
          * por cierre de periodo funcion COALESCE para evitar problemas con
          * datos sin ningún valor
          */
@@ -37,13 +37,15 @@ class InvProductoMovRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
-     /*
+
+    /*
      * DESCRIPCION: Actualizar saldo de entrada de producto en base a las devoluciones
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarEntradasNotaCredito($fecha=null){
-        /*verifica que los registros aún no hayan sido enviados al historico
+
+    public function actualizarEntradasNotaCredito($fecha = null) {
+        /* verifica que los registros aún no hayan sido enviados al historico
          * por cierre de periodo funcion COALESCE para evitar problemas con
          * datos sin ningún valor
          */
@@ -61,12 +63,14 @@ class InvProductoMovRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
-     /*
+
+    /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarEntradasCero(){
+
+    public function actualizarEntradasCero() {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET cantidad_entrada = 0 WHERE cantidad_entrada is null
@@ -75,12 +79,13 @@ class InvProductoMovRepository extends EntityRepository {
         return;
     }
 
-/*
+    /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarSalidas($fecha=null){
+
+    public function actualizarSalidas($fecha = null) {
         $em = $this->getEntityManager();
         $sql = "
                 UPDATE inv_producto_mov SET cantidad_salida = (
@@ -94,12 +99,14 @@ class InvProductoMovRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
-     /*
+
+    /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarSalidasCero(){
+
+    public function actualizarSalidasCero() {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET cantidad_salida = 0 WHERE cantidad_salida is null
@@ -113,7 +120,8 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function actualizarSaldos(){
+
+    public function actualizarSaldos() {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET saldo = COALESCE(cantidad_inicial,0) +
@@ -123,13 +131,13 @@ class InvProductoMovRepository extends EntityRepository {
         return;
     }
 
-
     /*
      * DESCRIPCION: inactivar producto saldo cero true.
      * Julio Castillo
      * Analista programador
      */
-    public function inactivarProductoSaldoCero(){
+
+    public function inactivarProductoSaldoCero() {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET activo = FALSE WHERE saldo = 0
@@ -143,7 +151,8 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function activarProducto(){
+
+    public function activarProducto() {
         $em = $this->getEntityManager();
         $sql = "
             UPDATE inv_producto_mov SET activo = TRUE WHERE saldo > 0
@@ -151,12 +160,14 @@ class InvProductoMovRepository extends EntityRepository {
         $em->getConnection()->executeQuery($sql);
         return;
     }
+
     /*
      * DESCRIPCION: inactivar producto saldo cero true.
      * Julio Castillo
      * Analista programador
      */
-    public function recalcularEstadoFacturas(){
+
+    public function recalcularEstadoFacturas() {
         $em = $this->getEntityManager();
         // recalculando facturas para clientes no agentes de retención
         // para clientes no agentes de retencion
@@ -178,16 +189,16 @@ class InvProductoMovRepository extends EntityRepository {
         return;
     }
 
-         /*
+    /*
      * DESCRIPCION: Reporte Auxiliar de producto (kardex).
      * Julio Castillo
      * Analista programador
      */
-    public function AuxiliarProducto($id, $fini = null, $ffin = null){
+
+    public function AuxiliarProducto($id, $fini = null, $ffin = null) {
         $em = $this->getEntityManager();
-        if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
-            $sql =
-            "SELECT * FROM (
+        if (isset($fini)) { //filtra todos los movimientos de un producto por fechas
+            $sql = "SELECT * FROM (
                 SELECT
                 m.fecha AS fecha,
                 '1' AS tipo_movimiento,
@@ -253,10 +264,8 @@ class InvProductoMovRepository extends EntityRepository {
                 WHERE i.id = e.id_factura AND i.estado != 'ANULADO' AND COALESCE(e.historial,false) != true
                 ) d
             ORDER BY fecha, lote, tipo_movimiento";
-        }
-        else { // devuelve todos los registros de un producto sin importar fecha
-            $sql =
-            "SELECT * FROM (
+        } else { // devuelve todos los registros de un producto sin importar fecha
+            $sql = "SELECT * FROM (
                 SELECT
                 m.fecha AS fecha,
                 '1' AS tipo_movimiento,
@@ -327,17 +336,16 @@ class InvProductoMovRepository extends EntityRepository {
         return $result;
     }
 
-
-         /*
+    /*
      * DESCRIPCION: Reporte Historial Auxiliar de producto (kardex).
      * Julio Castillo
      * Analista programador
      */
-    public function HistorialAuxiliarProducto($id, $fini = null){
+
+    public function HistorialAuxiliarProducto($id, $fini = null) {
         $em = $this->getEntityManager();
-        if (isset($fini)){ //filtra todos los movimientos de un producto por fechas
-            $sql =
-            "SELECT * FROM (
+        if (isset($fini)) { //filtra todos los movimientos de un producto por fechas
+            $sql = "SELECT * FROM (
                 SELECT
                 m.fecha AS fecha,
                 '1' AS tipo_movimiento,
@@ -388,10 +396,8 @@ class InvProductoMovRepository extends EntityRepository {
                 e.fecha_cierre = '$fini'
                 ) d
             ORDER BY lote, tipo_movimiento, fecha";
-        }
-        else { // devuelve todos los registros de un producto sin importar fecha
-            $sql =
-            "SELECT * FROM (
+        } else { // devuelve todos los registros de un producto sin importar fecha
+            $sql = "SELECT * FROM (
                 SELECT
                 m.fecha AS fecha,
                 '1' AS tipo_movimiento,
@@ -445,20 +451,20 @@ class InvProductoMovRepository extends EntityRepository {
         return $result;
     }
 
-
-
-
-
-	/*
+    /*
      * DESCRIPCION: Reporte Auxiliar de producto (kardex).
      * Julio Castillo
      * Analista programador
      */
-    public function VentaProducto($id, $fini = null, $ffin = null, $id_cliente = null){
+
+    public function VentaProducto($id, $fini = null, $ffin = null, $id_cliente = null) {
         $em = $this->getEntityManager();
-        if ($id_cliente != NULL ){ $where = " AND i.id_cliente = '$id_cliente'"; } else {$where = ""; }
-        $sql =
-        "SELECT
+        if ($id_cliente != NULL) {
+            $where = " AND i.id_cliente = '$id_cliente'";
+        } else {
+            $where = "";
+        }
+        $sql = "SELECT
             i.fecha AS fecha,
             '3' AS tipo_movimiento,
             t.nombre AS tipo,
@@ -481,14 +487,44 @@ class InvProductoMovRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function InventarioAldia($ffin = null, $id_marca = null){
+
+    public function pedidosBodega($dias) {
+        $em = $this->getEntityManager();
+        $sql = "
+            SELECT
+                t01.id as id_factura,
+                t01.numero,
+                to_char(t01.fecha,'DD/MM/YYYY') as fecha,
+                t02.nombre as nombre_cliente,
+                t01.estado_pedido_bodega as estado
+            FROM
+                fac_factura t01
+                LEFT JOIN ctl_cliente t02 ON t02.id = t01.id_cliente
+            WHERE 
+                t01.fecha > current_date - $dias
+            ORDER BY t01.id DESC, t01.fecha DESC
+            ";
+        $result = $em->getConnection()->executeQuery($sql)->fetchAll();
+        return $result;
+    }
+
+    /*
+     * DESCRIPCION: Reporte Auxiliar de producto (kardex).
+     * Julio Castillo
+     * Analista programador
+     */
+
+    public function InventarioAldia($ffin = null, $id_marca = null) {
         $em = $this->getEntityManager();
         $fini = null;
-        if ($id_marca!='000'){ $where = "WHERE t02.id_marca = '$id_marca'"; } else {$where = ""; }
+        if ($id_marca != '000') {
+            $where = "WHERE t02.id_marca = '$id_marca'";
+        } else {
+            $where = "";
+        }
 
-        if (isset($ffin)){ //filtra todos los movimientos de un producto por fechas
-            $sql =
-            "SELECT
+        if (isset($ffin)) { //filtra todos los movimientos de un producto por fechas
+            $sql = "SELECT
                     t02.nombre,
                     t02.precio_costo,
                     t01.lote,
@@ -508,10 +544,8 @@ class InvProductoMovRepository extends EntityRepository {
                     LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
-        }
-        else { // devuelve todos los registros de un producto sin importar fecha
-            $sql =
-            "SELECT
+        } else { // devuelve todos los registros de un producto sin importar fecha
+            $sql = "SELECT
                     t02.nombre,
                     t02.precio_costo,
                     t01.lote,

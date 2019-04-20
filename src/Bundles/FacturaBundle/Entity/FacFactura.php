@@ -107,6 +107,13 @@ class FacFactura
     /**
      * @var string
      *
+     * @ORM\Column(name="estado_pedido_bodega", type="string", length=10, nullable=true)
+     */
+    private $estadoPedidoBodega;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="sumas", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $sumas;
@@ -241,6 +248,13 @@ class FacFactura
      *
      */
     private $facturaDetalle;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="excepcion_retencion_iva", type="boolean", nullable=true)
+     */
+    private $excepcionRetencionIva;
 
 
 
@@ -505,6 +519,29 @@ class FacFactura
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set estadoPedidoBodega
+     *
+     * @param string $estadoPedidoBodega
+     * @return FacFactura
+     */
+    public function setEstadoPedidoBodega($estadoPedidoBodega)
+    {
+        $this->estadoPedidoBodega = $estadoPedidoBodega;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoPedidoBodega
+     *
+     * @return string
+     */
+    public function getEstadoPedidoBodega()
+    {
+        return $this->estadoPedidoBodega;
     }
 
     /**
@@ -858,6 +895,7 @@ class FacFactura
     {
         $this->facturaDetalle->removeElement($facturaDetalle);
     }
+    
     /**
      * Set sinDetalle
      *
@@ -879,6 +917,30 @@ class FacFactura
     public function getSinDetalle()
     {
         return $this->sinDetalle;
+    }
+
+    
+    /**
+     * Set excepcionRetencionIva
+     *
+     * @param boolean $excepcionRetencionIva
+     * @return FacFactura
+     */
+    public function setExcepcionRetencionIva($excepcionRetencionIva)
+    {
+        $this->excepcionRetencionIva = $excepcionRetencionIva;
+
+        return $this;
+    }
+
+    /**
+     * Get excepcionRetencionIva
+     *
+     * @return boolean
+     */
+    public function getExcepcionRetencionIva()
+    {
+        return $this->excepcionRetencionIva;
     }
 
     /**
