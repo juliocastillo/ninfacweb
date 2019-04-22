@@ -93,6 +93,7 @@ class FacFacturaAnuladaAdmin extends Admin
         $data->setDateAdd(new \DateTime());
         
         $data->getIdFactura()->setEstado('ANULADO');
+        $data->getIdFactura()->setEstadoPedidoBodega('ANULADO');
     }
 
     public function preUpdate($data) {
@@ -102,6 +103,7 @@ class FacFacturaAnuladaAdmin extends Admin
         $data->setDateMod(new \DateTime());
         
         $data->getIdFactura()->setEstado('ANULADO');
+        $data->getIdFactura()->setEstadoPedidoBodega('ANULADO');
     }
     
     

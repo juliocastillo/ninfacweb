@@ -14,7 +14,7 @@
         <meta http-equiv="refresh" content="{{ sec }};URL=''">
         <input type="submit" value="Query refresh">
         <label>Dias transcurridos despues de la creacion:</label>
-        <input type="text" style="width:25px" value="{{ dias }}" name="dias">
+        <input type="text" style="width:50px" value="{{ dias }}" name="dias">
     </form>
     <table  id="myTable" class="display">
         <thead>
@@ -28,15 +28,23 @@
         </thead>
         <tbody>
             {% for fac in facturas %}
+                {% if fac.estado == 'DIGITADO' %}
+                    {% set color = 'yellow' %}
+                {% elseif fac.estado == 'DESPACHADO' %}
+                    {% set color = 'green' %}
+                {% else %}
+                    {% set color = 'grey' %}
+                {% endif %}
+
                 <tr>
                     <td>{{ fac.id_factura }}</td>
                     <td>{{ fac.fecha }}</td>
                     <td>{{ fac.nombre_cliente }}</td>
-                    <td>{{ fac.estado }}</td>
+                    <td style="background-color: {{color}}">{{ fac.estado }}</td>
                     <td>
-                        <a id = "imprimir" target="_blank" href="{{ path('imprimir_pedido_bodega', { 'id_factura': fac.id_factura }) }}" class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-print"></i></a>
-                        <a class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-ok"></i></a>
-                        <a class="btn btn-sm btn-default view_link"><i class="glyphicon glyphicon-remove"></i></a>
+                        <a id = "imprimir" target="_blank" href="{{ path('imprimir_pedido_bodega', { 'id_factura': fac.id_factura }) }}" class="btn btn-sm btn-default view_link" title="Imprimir"><i class="glyphicon glyphicon-print"></i></a>
+                        <a id = "despachar"  href="{{ path('despachar_pedido_bodega', { 'id_factura': fac.id_factura }) }}" class="btn btn-sm btn-default view_link" title="Despachar"><i class="glyphicon glyphicon-ok" alt="DESPACHAR"></i></a>
+                        <a id = "cancelar"  href="{{ path('cancelar_pedido_bodega', { 'id_factura': fac.id_factura }) }}" class="btn btn-sm btn-default view_link" title="Cancelar"><i class="glyphicon glyphicon-remove" alt="CANCELAR"></i></a>
                     </td>
                 </tr>
             {% endfor %}
