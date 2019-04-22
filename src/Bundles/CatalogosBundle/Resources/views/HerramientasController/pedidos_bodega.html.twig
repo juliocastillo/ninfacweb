@@ -19,8 +19,8 @@
     <table  id="myTable" class="display">
         <thead>
             <tr>
-                <th>#ID_PEDIDO</th>
                 <th>Fecha</th>
+                <th>#ID_PEDIDO</th>
                 <th>Cliente</th>
                 <th>Estado</th>
                 <th>Accion</th>
@@ -37,8 +37,8 @@
                 {% endif %}
 
                 <tr>
-                    <td>{{ fac.id_factura }}</td>
                     <td>{{ fac.fecha }}</td>
+                    <td>{{ fac.id_factura }}</td>
                     <td>{{ fac.nombre_cliente }}</td>
                     <td style="background-color: {{color}}">{{ fac.estado }}</td>
                     <td>
