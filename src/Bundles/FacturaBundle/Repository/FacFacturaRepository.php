@@ -358,6 +358,7 @@ class FacFacturaRepository extends EntityRepository {
                 LEFT JOIN ctl_producto      t03 ON t03.id = t02.id_producto
                 LEFT JOIN ctl_marca         t04 ON t04.id = t03.id_marca
                 WHERE t01.id_factura = $id_factura
+                ORDER BY t01.id DESC
                 ";
         
         return $em->getConnection()->executeQuery($sql);
