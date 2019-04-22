@@ -51,14 +51,14 @@ class FacFactura
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_add", type="date", nullable=false)
+     * @ORM\Column(name="date_add", type="datetime", nullable=false)
      */
     private $dateAdd;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_mod", type="date", nullable=true)
+     * @ORM\Column(name="date_mod", type="datetime", nullable=true)
      */
     private $dateMod;
 

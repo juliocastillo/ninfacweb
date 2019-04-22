@@ -159,6 +159,46 @@ class HerramientasController extends Controller {
         );
     }
 
+    /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/despachar_pedido_bodega/{id_factura}", name="despachar_pedido_bodega", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function despachar_pedido_bodega($id_factura) {
+        // instanciar el EntityManager
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->find($id_factura); //entrada
+        //var_dump($factura); exit();
+        $factura->setEstadoPedidoBodega('DESPACHADO');
+        $em->persist($factura);
+        $em->flush();
+        // invocar la libreria knp_snappy para generar el PDF
+        return $this->redirectToRoute('pedidos_bodega');
+    }
+
+    /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/cancelar_pedido_bodega/{id_factura}", name="cancelar_pedido_bodega", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function cancelar_pedido_bodega($id_factura) {
+        // instanciar el EntityManager
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $factura = $em->getRepository('BundlesFacturaBundle:FacFactura')->find($id_factura); //entrada
+        //var_dump($factura); exit();
+        $factura->setEstadoPedidoBodega('CANCELADO');
+        $em->persist($factura);
+        $em->flush();
+        // invocar la libreria knp_snappy para generar el PDF
+        return $this->redirectToRoute('pedidos_bodega');
+    }
+
     /*
      * ANALISTA PROGRAMADOR: Julio Castillo
      */
