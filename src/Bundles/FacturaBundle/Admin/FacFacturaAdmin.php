@@ -251,7 +251,7 @@ class FacFacturaAdmin extends Admin {
          * para retener el iva correspondiente
          * al momento del desarrollo es 1%
          */
-        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
+        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && ($sumas - ($sumas*0.13)) > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
             //$factura->setSubtotal(null); // no aplica cuando sea credito fiscal
@@ -262,7 +262,7 @@ class FacFacturaAdmin extends Admin {
 			}
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
-        } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
+        } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && ($sumas - ($sumas*0.13)) > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
 //            $factura->setSubtotal(null);
@@ -355,7 +355,7 @@ class FacFacturaAdmin extends Admin {
          * para retener el iva correspondiente
          * al momento del desarrollo es 1%, aplica para modificacion y agregar
          */
-        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && $sumas > 100){ //calculo para Credito fiscal
+        if ($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==2 && ($sumas - ($sumas*0.13)) > 100){ //calculo para Credito fiscal
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumas * 0.01;  // calculando el iva retenido
             //$factura->setSubtotal(null); // no aplica cuando sea credito fiscal segun solicitud de 09-07-2018
@@ -366,9 +366,10 @@ class FacFacturaAdmin extends Admin {
 			}
             $factura->setIvaRetenido($ivaretenido);
             $factura->setVentaTotal($sumas+$iva-$ivaretenido);
-	} elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $sumas > 100){ // calculo para consumidor final
+	    } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && ($sumas - ($sumas*0.13)) > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
+           
             $factura->setSubtotal($sumas); //se imcorporo calculo de sumas en base a solicitud 02-12-2017
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
@@ -380,6 +381,7 @@ class FacFacturaAdmin extends Admin {
         } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $factura->getExcepcionRetencionIva() == TRUE ){ // calculo para consumidor final menor de $100
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
+            
 //            $factura->setSubtotal(null);
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
