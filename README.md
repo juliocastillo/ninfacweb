@@ -30,3 +30,13 @@ app/config/parameters.yml
  
 #Carpeta de configuración del proyecto de NetBeans
 nbproject/
+
+
+
+apt install php-pear php-soap
+
+
+php app/console cache:clear; php app/console cache:clear --env=prod; php app/console assets:install web --symlink; php app/console assets:install web --symlink --env=prod
+
+
+apt-get install php5.6-xml
