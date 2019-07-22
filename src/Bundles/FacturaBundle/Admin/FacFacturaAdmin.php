@@ -132,11 +132,11 @@ class FacFacturaAdmin extends Admin {
 //                            'class' => 'bootstrap-datepicker',
 //                            'style' => 'width:300px', 'maxlength' => '25'
 //                        )))
-                ->add('idEmpleado', NULL, array(
-                    'empty_value' => '...Seleccione...',
-                    'label' => 'Venta a cuenta',
-                    'attr' => array('style'=>'width:300px'),
-                ))
+                // ->add('idEmpleado', NULL, array(
+                //     'empty_value' => '...Seleccione...',
+                //     'label' => 'Venta a cuenta',
+                //     'attr' => array('style'=>'width:300px'),
+                // ))
                 ->add('idNotaremision','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nota de remisión',
                     'btn_add' => NULL,
@@ -323,6 +323,18 @@ class FacFacturaAdmin extends Admin {
         $sumas = 0;
         $iva = 0;
 
+        /*
+        *  buscar zona de cliente para asignar el vendedor correspondiente
+        */
+
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+
+        $cliente        = $factura->getIdCliente();
+        $zona           = $cliente->getIdZona();
+        $vendedorZona   = $em->getRepository('BundlesCatalogosBundle:MntEmpleadoZona')->findOneBy(array('idZona' => $zona->getId()));
+        $empleado       = $vendedorZona->getIdEmpleado();
+        $factura->setIdEmpleado($empleado);
+        //var_dump($vendedorZona->getIdEmpleado()->getId()); exit();
 
         // calcular campos de factura
         foreach ($factura->getFacturaDetalle() as $facturaDetalle) {
@@ -503,6 +515,7 @@ class FacFacturaAdmin extends Admin {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
+
     }
 
 }

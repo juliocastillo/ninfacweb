@@ -1,0 +1,69 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/css/select2.min.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/datatable/css/jquery.dataTables.min.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bundlescatalogos/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('bundles/bundlescatalogos/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/bundlescatalogos/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_vendedor').select2();
+        });
+        $(document).ready(function () {
+            $('#id_cliente').select2();
+        });
+    </script>
+{% endblock %}
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>ASIGNAR CLIENTES A VENDEDOR</center></b> <br>
+            <b>VENDEDOR:</b>
+            <select id="id_vendedor" name="id" required="required" >
+                <option value="" selected="{{ id }}">...Seleccione...</option>
+                {% for vendedor in vendedores %}
+                    {% if id == vendedor.id %}
+                        <option value="{{ vendedor.id }}" selected="{{ id }}">{{ vendedor.nombres }} {{vendedor.apellidos}}</option>
+                    {% else %}
+                        <option value="{{ vendedor.id }}">{{ vendedor.nombres }} {{vendedor.apellidos}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <b>CLIENTE:</b>
+            <select id="id_cliente" name="id_cliente" required="required" style="width: 250px">
+                <option value="">...Seleccione...</option>
+                {% for cliente in clientes %}
+                    {% if id_cliente == cliente.id %}
+                        <option value="{{ cliente.id }}" selected="{{ id_cliente }}">{{ cliente.nombre ~ ' ' ~ cliente.nombrecomercial }}</option>
+                    {% else %}
+                        <option value="{{ cliente.id }}">{{ cliente.nombre ~ ' ' ~ cliente.nombrecomercial }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input class="btn btn-small btn-primary" type="submit" value="Asignar cliente seleccionado">
+            <br>
+            </br>
+            </form>
+            <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+            {%if id != FALSE %}
+                {% include 'BundlesCatalogosBundle:HerramientasController:resultado_asignar_cliente_vendedor.html.twig' %}
+            {% endif %}
+            </div>
+{% endblock %}

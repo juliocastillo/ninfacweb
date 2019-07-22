@@ -79,7 +79,7 @@ class HerramientasController extends Controller {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos(); //factura y entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->inactivarProductoSaldoCero(); //entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->activarProducto(); //entrada
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas(); //factura
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();//factura
 
         return $this->render('BundlesCatalogosBundle:HerramientasController:actualizar_saldos.html.twig', array(
                     'base_template' => $this->getBaseTemplate(),
@@ -124,6 +124,45 @@ class HerramientasController extends Controller {
                         )
         );
     }
+
+    /*
+     * ANALISTA PROGRAMADOR: Julio Castillo
+     */
+
+    /**
+     * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
+     * por cliente.
+     *
+     * @Route("/asignar_cliente_vendedor", name="asignar_cliente_vendedor", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function asignar_cliente_vendedor() {
+        // instanciar el EntityManager
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        if ($request->get('id') != NULL) {
+            $id = $request->get('id');
+        } else {
+            $id = NULL;
+        }
+        if ($request->get('id_cliente') != NULL) {
+            $id_cliente = $request->get('id_cliente');
+        } else {
+            $id_cliente = NULL;
+        }
+        $clientes   = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+        $vendedores = $em->getRepository('BundlesCatalogosBundle:CtlEmpleado')->findBY(array('idCargofuncional' => 1, 'autorizarVenta' => TRUE)); //entrada
+        return $this->render('BundlesCatalogosBundle:HerramientasController:filtrar_asignar_cliente_vendedor.html.twig', array(
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin_pool'    => $this->container->get('sonata.admin.pool'),
+                    'id'            => $id,
+                    'id_cliente'    => $id_cliente,
+                    'vendedores'    => $vendedores,
+                    'clientes'      => $clientes
+                        )
+        );
+    }
+
 
     /**
      * Funcion que actualiza saldos del inventario y a la vez inactiva y activa productos-lote
