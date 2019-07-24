@@ -140,24 +140,33 @@ class HerramientasController extends Controller {
         // instanciar el EntityManager
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
-        if ($request->get('id') != NULL) {
+        if ($request->get('id') != NULL) { //id empleado
             $id = $request->get('id');
         } else {
             $id = NULL;
+        }if ($request->get('id_zona') != NULL) {
+            $id_zona = $request->get('id_zona');
+        } else {
+            $id_zona = NULL;
         }
         if ($request->get('id_cliente') != NULL) {
             $id_cliente = $request->get('id_cliente');
         } else {
             $id_cliente = NULL;
         }
-        $clientes   = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->findAll();
+
+
+        $clientes   = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->getClienteVendedor($id, $id_zona);
         $vendedores = $em->getRepository('BundlesCatalogosBundle:CtlEmpleado')->findBY(array('idCargofuncional' => 1, 'autorizarVenta' => TRUE)); //entrada
+        $zonas      = $em->getRepository('BundlesCatalogosBundle:CtlZona')->findBY(array('activo' => TRUE)); //Zonas activas
         return $this->render('BundlesCatalogosBundle:HerramientasController:filtrar_asignar_cliente_vendedor.html.twig', array(
                     'base_template' => $this->getBaseTemplate(),
                     'admin_pool'    => $this->container->get('sonata.admin.pool'),
                     'id'            => $id,
                     'id_cliente'    => $id_cliente,
+                    'id_zona'       => $id_zona,
                     'vendedores'    => $vendedores,
+                    'zonas'         => $zonas,
                     'clientes'      => $clientes
                         )
         );

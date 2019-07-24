@@ -28,5 +28,32 @@
     </head>
     <body>
         
+
+<table  id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>CLIENTE</th>
+                <th>VENDEDOR</th>
+                <th>ZONA</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                
+
+                <tr>
+                    <td>{{ cliente.nombre_cliente }}</td>
+                    <td>{{ cliente.nombre_vendedor }}</td>
+                    <td>{{ cliente.nombre_zona }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
     </body>
 </html>
