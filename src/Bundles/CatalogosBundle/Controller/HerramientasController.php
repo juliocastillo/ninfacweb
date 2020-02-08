@@ -73,7 +73,7 @@ class HerramientasController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradas($fecha); //entrada
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasCero(); //entrada
-        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha); //nota de credito 
+        $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarEntradasNotaCredito($fecha); //nota de credito
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidas($fecha); //factoras
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero(); //facturas
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos(); //factura y entrada
@@ -157,7 +157,7 @@ class HerramientasController extends Controller {
 
 
         $clientes   = $em->getRepository('BundlesCatalogosBundle:CtlCliente')->getClienteVendedor($id, $id_zona);
-        $vendedores = $em->getRepository('BundlesCatalogosBundle:CtlEmpleado')->findBY(array('idCargofuncional' => 1, 'autorizarVenta' => TRUE)); //entrada
+        $vendedores = $em->getRepository('BundlesCatalogosBundle:CtlEmpleado')->findBY(array('idCargofuncional' => 1, 'autorizarVenta' => TRUE, 'activo' => TRUE)); //entrada
         $zonas      = $em->getRepository('BundlesCatalogosBundle:CtlZona')->findBY(array('activo' => TRUE)); //Zonas activas
         return $this->render('BundlesCatalogosBundle:HerramientasController:filtrar_asignar_cliente_vendedor.html.twig', array(
                     'base_template' => $this->getBaseTemplate(),
