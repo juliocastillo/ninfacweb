@@ -1,0 +1,79 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/css/select2.min.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/bundlescatalogos/datatable/css/jquery.dataTables.min.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bundlescatalogos/js/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/bundlescatalogos/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_vendedor').select2();
+        });
+        $(document).ready(function () {
+            $('#id_zona').select2();
+        });
+
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+
+    </script>
+{% endblock %}
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>ASIGNAR CLIENTES A VENDEDOR</center></b> 
+
+<b>Para asignar clientes a un vendedor de manera mas eficiente.<b><br>
+
+1) Cree las zonas correspondientes. Ej. Zona 1 para vendedor 1, use el catalogo de Zonas<br>
+2) Asignar cada cliente a una zona segun le corresponda, use el catalogos de Clientes.<br>
+3) Asigne la zona completa al vendedor indicado, use el catalogo de Empleados<br>
+Nota: al momento de facturar y se elija el cliente, el sistema ubicara a que zona pertenece y luego que vendedor tiene asignada esa zona para obtener el ID del vendedor, considere que un cliente solo puede pertenecer a una zona.<br><br>
+
+            <b>VENDEDOR:</b>
+            <select id="id_vendedor" name="id" >
+                <option value="" selected="{{ id }}">...Todos...</option>
+                {% for vendedor in vendedores %}
+                    {% if id == vendedor.id %}
+                        <option value="{{ vendedor.id }}" selected="{{ id }}">{{ vendedor.nombres }} {{vendedor.apellidos}}</option>
+                    {% else %}
+                        <option value="{{ vendedor.id }}">{{ vendedor.nombres }} {{vendedor.apellidos}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <b>ZONAS:</b>
+            <select id="id_zona" name="id_zona" style="width: 250px">
+                <option value="">...Todas...</option>
+                {% for zona in zonas %}
+                    {% if id_zona == zona.id %}
+                        <option value="{{ zona.id }}" selected="{{ id_zona }}">{{ zona.nombre }}</option>
+                    {% else %}
+                        <option value="{{ zona.id }}">{{ zona.nombre }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input class="btn btn-small btn-primary" type="submit" value="Buscar clientes">
+            <br>
+            </br>
+        </form>
+            <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+                {% include 'BundlesCatalogosBundle:HerramientasController:resultado_asignar_cliente_vendedor.html.twig' %}
+            </div>
+{% endblock %}

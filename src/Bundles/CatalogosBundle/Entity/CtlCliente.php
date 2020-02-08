@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CtlCliente
  *
  * @ORM\Table(name="ctl_cliente", indexes={@ORM\Index(name="IDX_232B3B66325E299", columns={"id_departamento"}), @ORM\Index(name="IDX_232B3B67EAD49C7", columns={"id_municipio"}), @ORM\Index(name="IDX_232B3B646D7FEF9", columns={"id_user_add"}), @ORM\Index(name="IDX_232B3B6AC39DE56", columns={"id_user_mod"}), @ORM\Index(name="IDX_232B3B62CA6181C", columns={"id_zona"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bundles\CatalogosBundle\Repository\CtlClienteRepository")
  */
 class CtlCliente
 {

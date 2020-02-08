@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <style type="text/css">
+
+            html,body {overflow: visible !important; color: black !important; border-style: none !important; border-color:black !important;font-size: 12px!important;}
+            div .table-responsive {overflow: visible !important; border-style: none !important}
+
+            .panel{ margin: 8px;}
+            .panel-info > .panel-heading,.titulo_vista {
+                background-color: white;
+                font-size: 12px;
+                border-color: black;
+                color: black;
+                font-weight: bold;
+                border-style: none !important;
+                padding: 2px 5px;
+            }
+            table{font-size: 10px!important;}
+            .panel-body, .vista_paciente{font-size: 10px; border-style: none !important;}
+            td,th {padding: 2px 5px;}
+            .panel-info{border-color:black}
+            table {width: 100%}
+
+        </style>
+    </head>
+    <body>
+        
+
+<table  id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>CLIENTE</th>
+                <th>VENDEDOR</th>
+                <th>ZONA</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                
+
+                <tr>
+                    <td>{{ cliente.nombre_cliente }}</td>
+                    <td>{{ cliente.nombre_vendedor }}</td>
+                    <td>{{ cliente.nombre_zona }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    </body>
+</html>
