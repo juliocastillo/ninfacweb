@@ -132,11 +132,11 @@ class FacFacturaAdmin extends Admin {
 //                            'class' => 'bootstrap-datepicker',
 //                            'style' => 'width:300px', 'maxlength' => '25'
 //                        )))
-                ->add('idEmpleado', NULL, array(
-                    'empty_value' => '...Seleccione...',
-                    'label' => 'Venta a cuenta',
-                    'attr' => array('style'=>'width:300px'),
-                ))
+                // ->add('idEmpleado', NULL, array(
+                //     'empty_value' => '...Seleccione...',
+                //     'label' => 'Venta a cuenta',
+                //     'attr' => array('style'=>'width:300px'),
+                // ))
                 ->add('idNotaremision','sonata_type_model_list', array(    // permitir buscar un item de un catalogo
                     'label'=>'Nota de remisión',
                     'btn_add' => NULL,
@@ -222,6 +222,19 @@ class FacFacturaAdmin extends Admin {
         $sumas = 0;
         $iva = 0;
 
+        /*
+        *  buscar zona de cliente para asignar el vendedor correspondiente
+        */
+
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+
+        $cliente        = $factura->getIdCliente();
+        $zona           = $cliente->getIdZona();
+        $vendedorZona   = $em->getRepository('BundlesCatalogosBundle:MntEmpleadoZona')->findOneBy(array('idZona' => $zona->getId()));
+        $empleado       = $vendedorZona->getIdEmpleado();
+        $factura->setIdEmpleado($empleado);
+
+
         // calcular campos de factura
         foreach ($factura->getFacturaDetalle() as $facturaDetalle) {
             $facturaDetalle->setIdFactura($factura);
@@ -272,7 +285,7 @@ class FacFacturaAdmin extends Admin {
 				$factura->setVentasExentas(0);
 			}
             $factura->setIvaRetenido($ivaretenido);
-            $factura->setVentaTotal($sumas+$iva-$ivaretenido);       
+            $factura->setVentaTotal($sumas+$iva-$ivaretenido);
         } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $factura->getExcepcionRetencionIva() == TRUE ){ // calculo para consumidor final menor de $100
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
@@ -323,6 +336,18 @@ class FacFacturaAdmin extends Admin {
         $sumas = 0;
         $iva = 0;
 
+        /*
+        *  buscar zona de cliente para asignar el vendedor correspondiente
+        */
+
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+
+        $cliente        = $factura->getIdCliente();
+        $zona           = $cliente->getIdZona();
+        $vendedorZona   = $em->getRepository('BundlesCatalogosBundle:MntEmpleadoZona')->findOneBy(array('idZona' => $zona->getId()));
+        $empleado       = $vendedorZona->getIdEmpleado();
+        $factura->setIdEmpleado($empleado);
+        //var_dump($vendedorZona->getIdEmpleado()->getId()); exit();
 
         // calcular campos de factura
         foreach ($factura->getFacturaDetalle() as $facturaDetalle) {
@@ -369,7 +394,7 @@ class FacFacturaAdmin extends Admin {
 	    } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && ($sumas - ($sumas*0.13)) > 100){ // calculo para consumidor final
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
-           
+
             $factura->setSubtotal($sumas); //se imcorporo calculo de sumas en base a solicitud 02-12-2017
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
@@ -381,7 +406,7 @@ class FacFacturaAdmin extends Admin {
         } elseif($factura->getIdCliente()->getAgenteRetencion() == TRUE && $factura->getIdTipofactura()->getId()==1 && $factura->getExcepcionRetencionIva() == TRUE ){ // calculo para consumidor final menor de $100
             $sumasmenosiva = $sumas / 1.13; // Calculando iva de total menos iva
             $ivaretenido = $sumasmenosiva * 0.01;  // calculando el iva retenido
-            
+
 //            $factura->setSubtotal(null);
 			if ($factura->getIdCliente()->getExento()==TRUE){
 				$factura->setVentasExentas($sumas);
@@ -503,6 +528,7 @@ class FacFacturaAdmin extends Admin {
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSalidasCero();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->actualizarSaldos();
         $em->getRepository('BundlesInventarioBundle:InvProductoMov')->recalcularEstadoFacturas();
+
     }
 
 }

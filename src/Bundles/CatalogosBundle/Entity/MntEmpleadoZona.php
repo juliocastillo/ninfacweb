@@ -5,12 +5,12 @@ namespace Bundles\CatalogosBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MntEmpleadoMmZona
+ * MntEmpleadoZona
  *
- * @ORM\Table(name="mnt_empleado_MM_zona", indexes={@ORM\Index(name="IDX_F8CA0DFD2CA6181C", columns={"id_zona"}), @ORM\Index(name="IDX_F8CA0DFD890253C7", columns={"id_empleado"})})
+ * @ORM\Table(name="mnt_empleado_zona", indexes={@ORM\Index(name="IDX_F8CA0DFD2CA6181C", columns={"id_zona"}), @ORM\Index(name="IDX_F8CA0DFD890253C7", columns={"id_empleado"})})
  * @ORM\Entity
  */
-class MntEmpleadoMmZona
+class MntEmpleadoZona
 {
     /**
      * @var integer
@@ -18,7 +18,7 @@ class MntEmpleadoMmZona
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="mnt_empleado_MM_zona_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="mnt_empleado_zona_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -58,7 +58,7 @@ class MntEmpleadoMmZona
      * Set idZona
      *
      * @param \Bundles\CatalogosBundle\Entity\CtlZona $idZona
-     * @return MntEmpleadoMmZona
+     * @return MntEmpleadoZona
      */
     public function setIdZona(\Bundles\CatalogosBundle\Entity\CtlZona $idZona = null)
     {
@@ -81,7 +81,7 @@ class MntEmpleadoMmZona
      * Set idEmpleado
      *
      * @param \Bundles\CatalogosBundle\Entity\CtlEmpleado $idEmpleado
-     * @return MntEmpleadoMmZona
+     * @return MntEmpleadoZona
      */
     public function setIdEmpleado(\Bundles\CatalogosBundle\Entity\CtlEmpleado $idEmpleado = null)
     {
