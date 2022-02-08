@@ -160,7 +160,15 @@ class CxcCobro
      */
     private $estado;
 
-
+    /**
+     * @var \CxcRemesa
+     *
+     * @ORM\ManyToOne(targetEntity="CxcRemesa", inversedBy="remesaCobro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_remesa", referencedColumnName="id")
+     * })
+     */
+    private $idRemesa;
 
 
 
@@ -523,5 +531,27 @@ class CxcCobro
         return $this->estado;
     }
 
-    
+    /**
+     * Set idRemesa
+     *
+     * @param \Bundles\CxcBundle\Entity\FacRemesa $idRemesa
+     * @return CxcCobro
+     */
+    public function setIdRemesa(\Bundles\CxcBundle\Entity\CxcRemesa $idRemesa = null)
+    {
+        $this->idRemesa = $idRemesa;
+
+        return $this;
+    }
+
+    /**
+     * Get idRemesa
+     *
+     * @return \Bundles\CxcBundle\Entity\CxcRemesa 
+     */
+    public function getIdRemesa()
+    {
+        return $this->idRemesa;
+    }
+
 }

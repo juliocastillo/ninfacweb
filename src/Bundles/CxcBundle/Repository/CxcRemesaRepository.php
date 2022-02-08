@@ -1,9 +1,9 @@
 <?php
 
-// src/Bundles/CxcBundle/Repository/CxcCobrosRepository.php
+// src/Bundles/CxcBundle/Repository/CxcRemesasRepository.php
 
 /**
- * Description of CxcCobroReporteRepository
+ * Description of CxcRemesaReporteRepository
  *
  * @author julio castillo
  */
@@ -13,13 +13,13 @@ namespace Bundles\CxcBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 
-class CxcCobroReporteRepository extends EntityRepository {
+class CxcRemesaRepository extends EntityRepository {
      /*
      * DESCRIPCION: Calculo de cobros diarios.
      * Julio Castillo
      * Analista programador
      */
-    public function sumaCobrosDia($fecha){
+    public function sumaRemesasDia($fecha){
         $fecha = date_format($fecha,'Y-m-d');
         $em = $this->getEntityManager();
         $sql = "SELECT SUM(c.monto) AS monto FROM cxc_cobro c WHERE c.fecha = '$fecha' AND c.activo=TRUE";
@@ -32,7 +32,7 @@ class CxcCobroReporteRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function cierreCobrosDia($fecha){
+    public function cierreRemesasDia($fecha){
         $fecha = date_format($fecha,'Y-m-d');
         $em = $this->getEntityManager();
         $sql = "UPDATE cxc_cobro SET estado = 'PAGADO' WHERE fecha = '$fecha'";
@@ -149,7 +149,7 @@ class CxcCobroReporteRepository extends EntityRepository {
      * Julio Castillo
      * Analista programador
      */
-    public function recibosCobro($fini=null,$ffin=null){
+    public function recibosRemesa($fini=null,$ffin=null){
         $em = $this->getEntityManager();
         if ($ffin){
             $sql = "

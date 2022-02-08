@@ -11,6 +11,12 @@ services:
         tags:
             - {name: sonata.admin, manager_type: orm, group: CXC, label: Cobros}
 
+    bundles_cxc.admin.cxc_remesa:
+        class: Bundles\CxcBundle\Admin\CxcRemesaAdmin
+        arguments: [~, Bundles\CxcBundle\Entity\CxcRemesa, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: CXC, label: Remesas}
+
     bundles_cxc.admin.cxc_cobro_reporte:
         class: Bundles\CxcBundle\Admin\CxcCobroReporteAdmin
         arguments: [~, Bundles\CxcBundle\Entity\CxcCobroReporte, BundlesCxcBundle:CxcCobroReporteAdmin]
