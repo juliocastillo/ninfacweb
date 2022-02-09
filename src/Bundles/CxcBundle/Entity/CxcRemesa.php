@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 /**
  * CxcRemesa
@@ -67,6 +68,13 @@ class CxcRemesa
      * )
      */
     private $monto;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sumas", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    private $sumas;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\User
@@ -269,6 +277,29 @@ class CxcRemesa
     public function getMonto()
     {
         return $this->monto;
+    }
+
+    /**
+     * Set sumas
+     *
+     * @param string $sumas
+     * @return CxcRemesa
+     */
+    public function setSumas($sumas)
+    {
+        $this->sumas = $sumas;
+
+        return $this;
+    }
+
+    /**
+     * Get sumas
+     *
+     * @return string
+     */
+    public function getSumas()
+    {
+        return $this->sumas;
     }
 
     /**
