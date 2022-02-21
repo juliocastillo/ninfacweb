@@ -59,6 +59,7 @@ class FacFacturaAdmin extends Admin {
                     ))
                 ->add('idCliente')
                 ->add('ventaTotal')
+                ->add('cobroTotal')
                 ->add('estado')
                 ->add('_action', 'actions', array(
                     'actions' => array(

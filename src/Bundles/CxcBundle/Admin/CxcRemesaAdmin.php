@@ -41,11 +41,14 @@ class CxcRemesaAdmin extends Admin {
                     'attr' => array(
                         'style' => 'width:100px'
             )))
-                ->add('fecha', 'date', array(
-                    'widget' => 'single_text',
-                    'attr' => array('style' => 'width:100px', 'maxlength' => '10',
-                        'format' => 'Y-m-d'),
-                ))
+                ->add('fecha', null, array(
+                    'label' => 'Fecha  (dd/mm/aaaa)',
+                    'disabled' => false,
+                    'widget' => 'single_text', // un sólo input para la fecha, no tres.
+                    'format' => 'd/m/Y',
+                    'attr' => array('class' => 'bootstrap-datepicker now',
+                        'style' => 'width:300px', 'maxlength' => '25'
+            )))
                 ->add('monto')
                 ->add('estado')
                 ->add('_action', 'actions', array(
