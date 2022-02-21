@@ -31,6 +31,7 @@ class FacFacturaAdmin extends Admin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
+                ->add('idCliente')
                 ->add('idTipofactura', NULL, array(
                     'label' => 'Tipo de factura'
                     ))
@@ -58,6 +59,7 @@ class FacFacturaAdmin extends Admin {
                     ))
                 ->add('idCliente')
                 ->add('ventaTotal')
+                ->add('cobroTotal')
                 ->add('estado')
                 ->add('_action', 'actions', array(
                     'actions' => array(
