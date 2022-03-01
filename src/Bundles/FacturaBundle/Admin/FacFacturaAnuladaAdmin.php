@@ -63,7 +63,18 @@ class FacFacturaAnuladaAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('idFactura',null,array('label'=>'Número y tipo de factura'))
+                ->with('Anular', array('class' => 'col-md-6'))->end();
+        
+        $formMapper
+            ->with('Anular')
+            ->add('idFactura', 'sonata_type_model_list', array(// permitir buscar un item de un catalogo
+                    'label' => 'Número y tipo de factura',
+                    'btn_add' => FALSE,
+                    'btn_list' => 'Buscar',
+                    'btn_delete' => FALSE,
+                    'btn_catalogue' => 'SonataNewBundle'
+                        ), array(
+                    'placeholder' => ''))
             ->add('idMotivoAnulacion',null,array('label'=>'Motivo de anulación'))    
             ->add('fecha', null, array(
                     'label' => 'Fecha de anulación de la factura',
@@ -73,6 +84,7 @@ class FacFacturaAnuladaAdmin extends Admin
                         'class' => 'bootstrap-datepicker',
                         'style' => 'width:200px', 'maxlength' => '25'
                     )))
+            ->end()
             ;
     }
 
