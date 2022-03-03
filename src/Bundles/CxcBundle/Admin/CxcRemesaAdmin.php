@@ -19,7 +19,14 @@ class CxcRemesaAdmin extends Admin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('idBanco')
+                ->add('idRemesa', null, array(
+                    'label' => 'Id remesa',
+                    'attr' => array(
+                        'style' => 'width:100px'
+            )))
+                ->add('idBanco', null, array(
+                    'empty_value' => '...ninguno...',
+                    'label' => 'Nombre del banco'))
                 ->add('fecha', null, array(
                     'label' => 'Fecha',
                     'disabled' => false,
@@ -238,12 +245,12 @@ class CxcRemesaAdmin extends Admin {
      */
 
     public function validate(ErrorElement $errorElement, $remesa) {
-        $sumas = 0;
+        $sumas = 0.00;
         if ($remesa->getRemesaCobro()) {
             foreach ($remesa->getRemesaCobro() as $remesaCobro) {
                 $sumas = $sumas + $remesaCobro->getMonto();
             }
-            if ($sumas != $remesa->getMonto()) {
+            if (round($sumas, 2) != round($remesa->getMonto(), 2)) {
                 $errorElement->with('estado')
                         ->addViolation('la remesa no pudo guardarse al calcular nuevamente la sumatoria')
                         ->end();
