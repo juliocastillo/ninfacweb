@@ -100,8 +100,8 @@ DATE: 9/4/16
                         <td align="right">{{ mov.cantidad_entrada }}</td>
                         <td align="right">{{ mov.cantidad_salida }}</td>
                         <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
-                        <td align="right">{{ mov.preciocif  | number_format(2, '.', ',')}}</td>
-                        <td align="right">{{ importe  | number_format(2, '.', ',')}}</td>
+                        <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
+                        <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -114,7 +114,7 @@ DATE: 9/4/16
                     <td align="right"></td>
                     <td align="right"></td>
                     <td align="right"></td>
-                    <td align="right">{{ total_importe | number_format(2, '.', ',')}}</td>
+                    <td align="right">{{ (total_importe) | number_format(4, '.', ',')}}</td>
                 </tr>
 
         </table>
