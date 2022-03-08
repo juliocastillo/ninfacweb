@@ -9,7 +9,7 @@ services:
         class: Bundles\CxcBundle\Admin\CxcCobroAdmin
         arguments: [~, Bundles\CxcBundle\Entity\CxcCobro, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: CXC, label: Cobros}
+            - {name: sonata.admin, manager_type: orm, group: CXC, label: Cobros, show_in_dashboard: false}
 
     bundles_cxc.admin.cxc_remesa:
         class: Bundles\CxcBundle\Admin\CxcRemesaAdmin
