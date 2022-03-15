@@ -69,7 +69,7 @@ DATE: 9/4/16
             </tr>
         </table>
         <table width="100%" style="border-collapse: collapse;">
-            <tr>
+            <tr style="background-color: gainsboro;">
                 <td>PRODUCTO</td>
                 <td>LOTE</td>
                 <td>VENCE</td>
@@ -81,40 +81,108 @@ DATE: 9/4/16
                 <td align="right">IMPORTE</td>
             </tr>
             {% set total_importe = 0 %}
+            {% set total_importe_marca = 0 %}
+            {% set saldo_marca = 0 %}
+            {% set fila = 0 %}            
             {% for mov in movimientos %}
+                {% set fila = fila + 1 %}
+                {% if fila == 1 %}
+                    <tr>
+                        <td style="font-weight: bold; font-size: 14px;" >{{ mov.marca }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% set marca_anterior = mov.marca %}
+                    {% set marca_actual = mov.marca %} 
+                {% else %}
+                    {% set marca_actual = mov.marca %}
+                {% endif %}
                 {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
                 {% set importe = total * mov.preciocif %}
                 {% set total_importe = total_importe + importe %}
                 {% if ocultarsaldoscero == TRUE and total == 0 %}
                     {# evitar fila#}
                 {% else %}
-                    <tr>
-                        <td>{{ mov.nombre }}</td>
-                        <td>{{ mov.lote }}</td>
-                        <td>
-                            {% if mov.vence != "" %}
-                                {{ mov.vence | date('d/m/Y')}}
-                            {% endif %}
-                        </td>
-                        <td align="right">{{ mov.cantidad_inicial }}</td>
-                        <td align="right">{{ mov.cantidad_entrada }}</td>
-                        <td align="right">{{ mov.cantidad_salida }}</td>
-                        <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
-                        <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
-                        <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
-                    </tr>
+                    {% if marca_anterior == marca_actual %}
+                        {% set saldo_marca = saldo_marca + total%}
+                        {% set total_importe_marca = total_importe_marca + importe %}
+                        <tr>
+                            <td>{{ mov.nombre }}</td>
+                            <td>{{ mov.lote }}</td>
+                            <td>
+                                {% if mov.vence != "" %}
+                                    {{ mov.vence | date('d/m/Y')}}
+                                {% endif %}
+                            </td>
+                            <td align="right">{{ mov.cantidad_inicial }}</td>
+                            <td align="right">{{ mov.cantidad_entrada }}</td>
+                            <td align="right">{{ mov.cantidad_salida }}</td>
+                            <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                            <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
+                            <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td align="right" style="font-weight: bold;">{{ (saldo_marca)  | number_format(2, '.', ',')}}</td>
+                            <td></td>
+                            <td align="right" style="font-weight: bold;">{{ (total_importe_marca)  | number_format(4, '.', ',')}}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px;" >{{ mov.marca }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% set marca_anterior = mov.marca %}
+                        {% set total_importe_marca = 0 %}
+                        {% set saldo_marca = 0 %}
+                        <tr>
+                            <td>{{ mov.nombre }}</td>
+                            <td>{{ mov.lote }}</td>
+                            <td>
+                                {% if mov.vence != "" %}
+                                    {{ mov.vence | date('d/m/Y')}}
+                                {% endif %}
+                            </td>
+                            <td align="right">{{ mov.cantidad_inicial }}</td>
+                            <td align="right">{{ mov.cantidad_entrada }}</td>
+                            <td align="right">{{ mov.cantidad_salida }}</td>
+                            <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                            <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
+                            <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
+                        </tr>
+                        {% set saldo_marca = saldo_marca + total%}
+                        {% set total_importe_marca = total_importe_marca + importe %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
                 <tr>
-                    <td>TOTAL</td>
+                    <td style="font-weight: bold;">TOTAL</td>
                     <td></td>
                     <td></td>
                     <td align="right"></td>
                     <td align="right"></td>
                     <td align="right"></td>
+                    <td align="right" style="font-weight: bold;">{{ (saldo_marca)  | number_format(2, '.', ',')}}</td>
                     <td align="right"></td>
-                    <td align="right"></td>
-                    <td align="right">{{ (total_importe) | number_format(4, '.', ',')}}</td>
+                    <td align="right" style="font-weight: bold;">{{ (total_importe) | number_format(4, '.', ',')}}</td>
                 </tr>
 
         </table>

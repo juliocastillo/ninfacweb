@@ -273,7 +273,10 @@ class ReportsInventarioController extends Controller {
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
-        $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(array('activo'=>TRUE));
+        $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(
+                            array('activo'=>TRUE), 
+                            array('nombre' => 'ASC')
+                        );
 
         if (isset($_REQUEST['ffin'])){
             // $fini = $_REQUEST['fini'];

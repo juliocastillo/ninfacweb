@@ -525,6 +525,7 @@ class InvProductoMovRepository extends EntityRepository {
 
         if (isset($ffin)) { //filtra todos los movimientos de un producto por fechas
             $sql = "SELECT
+                    t05.nombre as marca,
                     t02.nombre,
                     t02.precio_costo,
                     t01.lote,
@@ -540,12 +541,14 @@ class InvProductoMovRepository extends EntityRepository {
                         END AS preciocif
             FROM    inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
+                    LEFT JOIN ctl_marca        t05 ON t05.id = t02.id_marca
                     LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad, avg(costo_adicional) AS preciocif_entrada FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha <= '$ffin'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
                     LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO'  AND COALESCE(d.historial,false) != true GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
-            ORDER BY t02.nombre,t02.id_categoria,t01.lote";
+            ORDER BY t05.nombre, t02.nombre,t02.id_categoria,t01.lote";
         } else { // devuelve todos los registros de un producto sin importar fecha
             $sql = "SELECT
+                    t05.nombre as marca,
                     t02.nombre,
                     t02.precio_costo,
                     t01.lote,
@@ -555,6 +558,7 @@ class InvProductoMovRepository extends EntityRepository {
             FROM
                     inv_producto_mov 	t01
                     LEFT JOIN ctl_producto	t02 ON t02.id = t01.id_producto
+                    LEFT JOIN ctl_marca        t05 ON t05.id = t02.id_marca
                     LEFT JOIN (SELECT id_inv_producto_mov, sum(cantidad) AS cantidad FROM inv_entradadetalle d, inv_entrada e WHERE d.id_entrada = e.id AND e.fecha <= '$ffin' GROUP BY id_inv_producto_mov) t03 ON t03.id_inv_producto_mov = t01.id
                     LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
