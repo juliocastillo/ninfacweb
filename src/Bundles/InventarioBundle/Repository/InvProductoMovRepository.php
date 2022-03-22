@@ -514,7 +514,7 @@ class InvProductoMovRepository extends EntityRepository {
      * Analista programador
      */
 
-    public function InventarioAldia($ffin = null, $id_marca = null) {
+    public function InventarioAldia($ffin = null, $id_marca = null, $id_almacen = null) {
         $em = $this->getEntityManager();
         $fini = null;
         if ($id_marca != '000') {
@@ -563,6 +563,25 @@ class InvProductoMovRepository extends EntityRepository {
                     LEFT JOIN (SELECT id_inv_producto_mov, SUM(cantidad) AS cantidad FROM fac_facturadetalle d, fac_factura f WHERE d.id_factura = f.id AND f.fecha <= '$ffin' AND f.estado != 'ANULADO' GROUP BY id_inv_producto_mov) t04 ON t04.id_inv_producto_mov = t01.id
             $where
             ORDER BY t02.nombre,t02.id_categoria,t01.lote";
+        }
+        $result = $em->getConnection()->executeQuery($sql)->fetchAll();
+        return $result;
+    }
+    public function getMarcasPorAlmacen($id_almacen = null) {
+        $em = $this->getEntityManager();
+        if ($id_almacen == null) {
+        $sql = "select * from ctl_marca ORDER BY nombre";
+        } else {
+            $sql = "select t05.id, t05.nombre 
+                    from 
+                        inv_entrada t01
+                        inner join inv_entradadetalle t02 on t02.id_entrada = t01.id
+                        inner join inv_producto_mov t03 on t02.id_inv_producto_mov = t03.id
+                        inner join ctl_producto t04 on t03.id_producto = t04.id
+                        inner join ctl_marca t05 on t04.id_marca = t05.id
+                where t01.id_almacen = $id_almacen
+                group by t05.id, t05.nombre 
+                order by t05.nombre";
         }
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;

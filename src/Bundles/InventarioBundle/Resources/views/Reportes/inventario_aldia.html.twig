@@ -10,36 +10,108 @@ DATE: 9/4/16
 
 
 {% block show %}
-        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
-            <b><center>REPORTE DE INVENTARIO AL DIA</center></b> <br>
-            <script type="text/javascript">
-            $(function() {
-              $('#fini').datetimepicker({
-                pickTime: false,
-                format: "YYYY-MM-DD"
-              });
-               $('#ffin').datetimepicker({
-                pickTime: false,
-                format: "YYYY-MM-DD"
-              });
+    <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+        <b><center>REPORTE DE INVENTARIO AL DIA</center></b> <br>
+        <script type="text/javascript">
+            $(function () {
+                $('#fini').datetimepicker({
+                    pickTime: false,
+                    format: "YYYY-MM-DD"
+                });
+                $('#ffin').datetimepicker({
+                    pickTime: false,
+                    format: "YYYY-MM-DD"
+                });
             });
-            </script>
-            <table style="width: 60%; margin: 10px">
-                <tr>
-                    <td>Rango de fecha:</td>
 
-                    <td>desde</td>
-                    <td>
-                        <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
-                    </td>
-                    <td>
-                        <input type="checkbox" name="ocultarsaldoscero" id="ocultarsaldoscero" {{ (ocultarsaldoscero) ? "checked" : '' }} >
-                        <label for="ocultarsaldoscero">Ocultar saldos a cero</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                    <p>Marca de producto:</p>
+            function exportTableToExcel(tableID, filename = '') {
+                var downloadLink;
+                var dataType = 'application/vnd.ms-excel';
+                var tableSelect = document.getElementById(tableID);
+                var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+                // Specify file name
+                filename = filename ? filename + '.xls' : 'repo_inv_aldia.xls';
+
+                // Create download link element
+                downloadLink = document.createElement("a");
+
+                document.body.appendChild(downloadLink);
+
+                if (navigator.msSaveOrOpenBlob) {
+                    var blob = new Blob(['ufeff', tableHTML], {
+                        type: dataType
+                    });
+                    navigator.msSaveOrOpenBlob(blob, filename);
+                } else {
+                    // Create a link to the file
+                    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                    // Setting the file name
+                    downloadLink.download = filename;
+
+                    //triggering the function
+                    downloadLink.click();
+            }
+            }
+
+            function llenarmarcas(val) {
+                var params = {
+                    id_almacen: val
+                };
+                var url = "{{ path('lista_llenaralmacen') }}";
+                $(function () {
+                    $('#productoseleccionado').empty();
+                    var newOption = new Option("...Seleccione..", "", false, false);
+                    $('#productoseleccionado').append(newOption).trigger('change');
+                    var newOption = new Option("Todas", "000", false, false);
+                    $('#productoseleccionado').append(newOption).trigger('change');
+                    $.getJSON(url, params, function (data) {
+                        $.each(data, function (index) {
+                            console.log(data[index]);
+                            var newOption = new Option(data[index].text, data[index].id, false, false);
+                            $('#productoseleccionado').append(newOption).trigger('change');
+                        });
+                    });
+                });
+            }
+
+
+        </script>
+        <table style="width: 60%; margin: 10px">
+            <tr>
+                <td>Rango de fecha:</td>
+
+                <td>desde</td>
+                <td>
+                    <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                </td>
+                <td>
+                    <input type="checkbox" name="ocultarsaldoscero" id="ocultarsaldoscero" {{ (ocultarsaldoscero) ? "checked" : '' }} >
+                    <label for="ocultarsaldoscero">Ocultar saldos a cero</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="form-group">
+                        <label for="id_almacen">Almacen:</label>
+                        <select id="id_almacen" name="id_almacen" required="required" onchange="llenarmarcas(this.value)">
+                            <option value="">Todas</option>
+                            {% for almacen in almacenes %}
+                                {% if id_almacen == almacen.id %}
+                                    <option value="{{ almacen.id }}" selected="{{ id_almacen }}">{{ almacen.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ almacen.id }}">{{ almacen.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="form-group">
+                        <label for="productoseleccionado">Marca de producto:</label>
                         <select id="productoseleccionado" name="id_marca" required="required">
                             <option value="" selected="{{ id_marca }}">...Seleccione...</option>
                             <option value="000">Todas</option>
@@ -51,94 +123,43 @@ DATE: 9/4/16
                                 {% endif %}
                             {% endfor %}
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
-                </tr>
-            </table>
-        </form>
-        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
-        {%if requestvalid == TRUE %}
-                    <table width="100%" style="border-collapse: collapse;">
-            <tr>
-                <td colspan="2" align="center">{{ empresa.nombre }}</td>
+                    </div>
+                </td>
             </tr>
             <tr>
-                <td colspan="2" align="center">Reporte de Inventario al día</td>
+                <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
             </tr>
         </table>
-        <table width="100%" style="border-collapse: collapse;">
-            <tr style="background-color: gainsboro;">
-                <td>PRODUCTO</td>
-                <td>LOTE</td>
-                <td>VENCE</td>
-                <td align="right">INICIAL</td>
-                <td align="right">ENTRADA</td>
-                <td align="right">SALIDA</td>
-                <td align="right">SALDO</td>
-                <td align="right">PRECIO CIF</td>
-                <td align="right">IMPORTE</td>
-            </tr>
-            {% set total_importe = 0 %}
-            {% set total_importe_marca = 0 %}
-            {% set saldo_marca = 0 %}
-            {% set fila = 0 %}            
-            {% for mov in movimientos %}
-                {% set fila = fila + 1 %}
-                {% if fila == 1 %}
-                    <tr>
-                        <td style="font-weight: bold; font-size: 14px;" >{{ mov.marca }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% set marca_anterior = mov.marca %}
-                    {% set marca_actual = mov.marca %} 
-                {% else %}
-                    {% set marca_actual = mov.marca %}
-                {% endif %}
-                {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
-                {% set importe = total * mov.preciocif %}
-                {% set total_importe = total_importe + importe %}
-                {% if ocultarsaldoscero == TRUE and total == 0 %}
-                    {# evitar fila#}
-                {% else %}
-                    {% if marca_anterior == marca_actual %}
-                        {% set saldo_marca = saldo_marca + total%}
-                        {% set total_importe_marca = total_importe_marca + importe %}
-                        <tr>
-                            <td>{{ mov.nombre }}</td>
-                            <td>{{ mov.lote }}</td>
-                            <td>
-                                {% if mov.vence != "" %}
-                                    {{ mov.vence | date('d/m/Y')}}
-                                {% endif %}
-                            </td>
-                            <td align="right">{{ mov.cantidad_inicial }}</td>
-                            <td align="right">{{ mov.cantidad_entrada }}</td>
-                            <td align="right">{{ mov.cantidad_salida }}</td>
-                            <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
-                            <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
-                            <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td align="right" style="font-weight: bold;">{{ (saldo_marca)  | number_format(2, '.', ',')}}</td>
-                            <td></td>
-                            <td align="right" style="font-weight: bold;">{{ (total_importe_marca)  | number_format(4, '.', ',')}}</td>
-                        </tr>
+    </form>
+    <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+            <table width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td colspan="2" align="center">{{ empresa.nombre }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">Reporte de Inventario al día</td>
+                </tr>
+            </table>
+            <table width="100%" style="border-collapse: collapse;"  id="tblData">
+                <tr style="background-color: gainsboro;">
+                    <td>PRODUCTO</td>
+                    <td>LOTE</td>
+                    <td>VENCE</td>
+                    <td align="right">INICIAL</td>
+                    <td align="right">ENTRADA</td>
+                    <td align="right">SALIDA</td>
+                    <td align="right">SALDO</td>
+                    <td align="right">PRECIO CIF</td>
+                    <td align="right">IMPORTE</td>
+                </tr>
+                {% set total_importe = 0 %}
+                {% set total_importe_marca = 0 %}
+                {% set saldo_marca = 0 %}
+                {% set fila = 0 %}            
+                {% for mov in movimientos %}
+                    {% set fila = fila + 1 %}
+                    {% if fila == 1 %}
                         <tr>
                             <td style="font-weight: bold; font-size: 14px;" >{{ mov.marca }}</td>
                             <td></td>
@@ -151,28 +172,80 @@ DATE: 9/4/16
                             <td></td>
                         </tr>
                         {% set marca_anterior = mov.marca %}
-                        {% set total_importe_marca = 0 %}
-                        {% set saldo_marca = 0 %}
-                        <tr>
-                            <td>{{ mov.nombre }}</td>
-                            <td>{{ mov.lote }}</td>
-                            <td>
-                                {% if mov.vence != "" %}
-                                    {{ mov.vence | date('d/m/Y')}}
-                                {% endif %}
-                            </td>
-                            <td align="right">{{ mov.cantidad_inicial }}</td>
-                            <td align="right">{{ mov.cantidad_entrada }}</td>
-                            <td align="right">{{ mov.cantidad_salida }}</td>
-                            <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
-                            <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
-                            <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
-                        </tr>
-                        {% set saldo_marca = saldo_marca + total%}
-                        {% set total_importe_marca = total_importe_marca + importe %}
+                        {% set marca_actual = mov.marca %} 
+                    {% else %}
+                        {% set marca_actual = mov.marca %}
                     {% endif %}
-                {% endif %}
-            {% endfor %}
+                    {% set total = mov.cantidad_inicial + mov.cantidad_entrada - mov.cantidad_salida %}
+                    {% set importe = total * mov.preciocif %}
+                    {% set total_importe = total_importe + importe %}
+                    {% if ocultarsaldoscero == TRUE and total == 0 %}
+                        {# evitar fila#}
+                    {% else %}
+                        {% if marca_anterior == marca_actual %}
+                            {% set saldo_marca = saldo_marca + total%}
+                            {% set total_importe_marca = total_importe_marca + importe %}
+                            <tr>
+                                <td>{{ mov.nombre }}</td>
+                                <td>{{ mov.lote }}</td>
+                                <td>
+                                    {% if mov.vence != "" %}
+                                        {{ mov.vence | date('d/m/Y')}}
+                                    {% endif %}
+                                </td>
+                                <td align="right">{{ mov.cantidad_inicial }}</td>
+                                <td align="right">{{ mov.cantidad_entrada }}</td>
+                                <td align="right">{{ mov.cantidad_salida }}</td>
+                                <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                                <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
+                                <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right" style="font-weight: bold;">{{ (saldo_marca)  | number_format(2, '.', ',')}}</td>
+                                <td></td>
+                                <td align="right" style="font-weight: bold;">{{ (total_importe_marca)  | number_format(4, '.', ',')}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; font-size: 14px;" >{{ mov.marca }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% set marca_anterior = mov.marca %}
+                            {% set total_importe_marca = 0 %}
+                            {% set saldo_marca = 0 %}
+                            <tr>
+                                <td>{{ mov.nombre }}</td>
+                                <td>{{ mov.lote }}</td>
+                                <td>
+                                    {% if mov.vence != "" %}
+                                        {{ mov.vence | date('d/m/Y')}}
+                                    {% endif %}
+                                </td>
+                                <td align="right">{{ mov.cantidad_inicial }}</td>
+                                <td align="right">{{ mov.cantidad_entrada }}</td>
+                                <td align="right">{{ mov.cantidad_salida }}</td>
+                                <td align="right">{{ total  | number_format(2, '.', ',')}}</td>
+                                <td align="right">{{ mov.preciocif  | number_format(4, '.', ',')}}</td>
+                                <td align="right">{{ (importe)  | number_format(4, '.', ',')}}</td>
+                            </tr>
+                            {% set saldo_marca = saldo_marca + total%}
+                            {% set total_importe_marca = total_importe_marca + importe %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
                 <tr>
                     <td style="font-weight: bold;">TOTAL</td>
                     <td></td>
@@ -185,8 +258,8 @@ DATE: 9/4/16
                     <td align="right" style="font-weight: bold;">{{ (total_importe) | number_format(4, '.', ',')}}</td>
                 </tr>
 
-        </table>
-
+            </table>
+            <button  class="btn btn-small btn-success" onclick="exportTableToExcel('tblData')">Exportar table a Excel</button>
         {% endif %}
-        </div>
+    </div>
 {% endblock %}

@@ -269,11 +269,17 @@ class ReportsInventarioController extends Controller {
     public function inventario_aldiaAction() {
         // instanciar el EntityManager
         $em = $this->getDoctrine()->getManager();
-
+        $request = $this->getRequest();
+        !is_null($request->get('id_almacen')) ? $id_almacen = $request->get('id_almacen'): $id_almacen = null ;
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
 
         $marcas = $em->getRepository('BundlesCatalogosBundle:CtlMarca')->findBy(
+                            array('activo'=>TRUE), 
+                            array('nombre' => 'ASC')
+                        );
+
+        $almacenes = $em->getRepository('BundlesCatalogosBundle:CtlAlmacen')->findBy(
                             array('activo'=>TRUE), 
                             array('nombre' => 'ASC')
                         );
@@ -283,7 +289,7 @@ class ReportsInventarioController extends Controller {
             $ffin = $_REQUEST['ffin'];
             isset($_REQUEST['ocultarsaldoscero']) ? $ocultarsaldoscero = $_REQUEST['ocultarsaldoscero'] : $ocultarsaldoscero=false;
             $id_marca = $_REQUEST['id_marca'];
-            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($ffin,$id_marca);
+            $movimientos = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->InventarioAldia($ffin,$id_marca,$id_almacen);
             $requestvalid = TRUE;
         } else {
             $id_marca = '';
@@ -298,6 +304,8 @@ class ReportsInventarioController extends Controller {
         return $this->render('BundlesInventarioBundle:Reportes:inventario_aldia.html.twig', array(
             'id_marca'=>$id_marca,
             'marcas'=>$marcas,
+            'id_almacen'=>$id_almacen,
+            'almacenes'=>$almacenes,
             'movimientos'=>$movimientos,
             'empresa' => $empresa,
             // 'fini' => $fini,
@@ -344,6 +352,18 @@ class ReportsInventarioController extends Controller {
         return $response;
     }
 
-
+     /**
+     * @Route("/lista/llenaralmacen", name="lista_llenaralmacen", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function listaLlenaralmacen() {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $marcas = $em->getRepository('BundlesInventarioBundle:InvProductoMov')->getMarcasPorAlmacen($request->get('id_almacen'));
+        foreach ($marcas as $marca) {
+            $data[] = array('id' => $marca['id'], 'text' => $marca['nombre']);        
+        }
+       return new Response(json_encode($data));
+    }
 
 }
