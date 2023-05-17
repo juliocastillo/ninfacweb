@@ -81,7 +81,7 @@ class CxcRemesaAdmin extends Admin {
 
         $formMapper
                 ->with('Remesa')
-                ->add('idRemesa', 'integer', array(
+                ->add('idRemesa', 'text', array(
                     'attr' => array(
                         'style' => 'width:300px', 'maxlength' => '25'
             )))
@@ -150,22 +150,19 @@ class CxcRemesaAdmin extends Admin {
      * permitir cuztomizar las acciones edit, create o show
      */
 
-//     public function getTemplate($name) {
-//         switch ($name) {
-//             case 'create':
-//                 return 'BundlesCxcBundle:CRUD:CxcRemesaAdmin/create.html.twig';
-//                 break;
-//             case 'edit':
-//                 return 'BundlesCxcBundle:CRUD:CxcRemesaAdmin/edit.html.twig';
-//                 break;
+     public function getTemplate($name) {
+         switch ($name) {
+            case 'edit':
+                return 'BundlesCxcBundle:CRUD:CxcRemesaAdmin/edit.html.twig';
+                break;
 // //            case 'show':
 // //                return 'MinsalCatalogosBundle:CtlDiagnosticoHistopatologicoAdmin:show.html.twig';
 // //                break;
-//             default:
-//                 return parent::getTemplate($name);
-//                 break;
-//         }
-//     }
+             default:
+                 return parent::getTemplate($name);
+                 break;
+         }
+     }
 
     public function prePersist($remesa) {
         $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
