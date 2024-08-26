@@ -1,0 +1,112 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+
+{% block show %}
+        <form method="GET" style="border-width: 1px; border-style: solid; border-color: blue blue blue blue;">
+            <b><center>RECIBOS DE COBROS</center></b> <br>
+            <script type="text/javascript">
+            $(function() {
+              $('#fini').datetimepicker({
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+               $('#ffin').datetimepicker({
+                pickTime: false,
+                format: "YYYY-MM-DD"
+              });
+            });
+            </script>
+            <table style="width: 80%; margin: 10px">
+                <tr>
+                    <td colspan="4">B&uacute;squeda por Rango de fecha:</td>
+                    <td colspan="2">B&uacute;squeda por factura:</td>
+                <tr>                    
+                    <td>desde</td>
+                    <td>
+                        <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
+                    </td>
+                    <td>hasta</td>
+                    <td>
+                            <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
+                    </td>
+                    <td style="style=align: right;">N&uacute;mero de factura</td>
+                    <td>
+                            <input class=" form-control" id="numero_factura" type="text" value="{{ numero_factura }}" maxlength="25" style="width:120px" name="numero_factura">
+                    </td>
+                    <td style="align: right;">Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    <option value="{{ tipo.id }}" selected="{{ id_tipofactura }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
+                </tr>
+            </table>
+        </form>
+        <div style="border-width: 1px; border-style: solid; border-color: blue blue blue blue; background-color: white">
+        {%if requestvalid == TRUE %}
+            <table width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td colspan="2" align="center">{{ empresa.nombre }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">Rcibos de cobros</td>
+                </tr>
+            </table>
+        <table width="100%" style="border-collapse: collapse;">
+           <tr>
+                <td>#REC</td>
+                <td>FECHA</td>
+                <td align="center">COND.PAGO</td>
+                <td align="right">MONTO</td>
+                <td align="right">NOTA CREDITO</td>
+                <td align="center" style="background-color: gainsboro;">FACTURA</td>
+                <td align="center" style="background-color: gainsboro;">TIPO</td>
+                <td align="center" style="background-color: gainsboro;">CLIENTE</td>
+                <td align="center" style="background-color: gainsboro;">VENTA TOTAL</td>
+                <td align="center">SALDO</td>
+                <td style="background-color: gainsboro;">ESTADO</td>
+            </tr>
+            {% set monto = 0 %}
+            {% for mov in movimientos %}
+                {% set monto = monto + mov.monto %}
+                {% set saldo = mov.saldo - mov.total_notacredito %}
+
+                <tr>
+                    <td>{{ mov.numero_recibo }}</td>
+                    <td>{{ mov.fecha | date('d/m/Y')}}</td>
+                    <td align="right">{{ mov.condicion_pago }}</td>
+                    <td style="text-align: right;">{{ mov.monto }}</td>
+                    <td style="text-align: right;">{{ mov.total_notacredito }}</td>
+                    <td align="center" style="background-color: gainsboro;">{{ mov.factura }}</td>
+                    <td style="background-color: gainsboro;">{{ mov.tipo }}</td>
+                    <td style="background-color: gainsboro;">{{ mov.cliente }}</td>
+                    <td style="background-color: gainsboro; text-align: right;">{{ mov.venta_total | number_format(2, '.', ',') }}</td>
+                    <td style="text-align: right;">{{ saldo | number_format(2, '.', ',') }}</td>
+                    <td style="background-color: gainsboro;">{{ mov.estado }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        {% endif %}
+        </div>
+{% endblock %}

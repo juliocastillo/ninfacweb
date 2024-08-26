@@ -476,7 +476,7 @@ class InvProductoMovRepository extends EntityRepository {
             FROM
             fac_factura i, ctl_tipofactura t, ctl_cliente c, fac_facturadetalle e
             INNER JOIN inv_producto_mov m ON m.id = e.id_inv_producto_mov AND m.id_producto = '$id'
-            WHERE i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id AND
+            WHERE i.estado != 'ANULADO' and i.id = e.id_factura AND i.id_tipofactura = t.id AND i.id_cliente = c.id AND
                 i.fecha >= '$fini' AND i.fecha <= '$ffin' $where ";
         $result = $em->getConnection()->executeQuery($sql)->fetchAll();
         return $result;
