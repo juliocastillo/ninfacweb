@@ -27,9 +27,11 @@ file that was distributed with this source code.
               });
             });
             </script>
-            <table style="width: 50%; margin: 10px">
+            <table style="width: 80%; margin: 10px">
                 <tr>
-                    <td>Rango de fecha:</td>
+                    <td colspan="4">B&uacute;squeda por Rango de fecha:</td>
+                    <td colspan="2">B&uacute;squeda por factura:</td>
+                <tr>                    
                     <td>desde</td>
                     <td>
                         <input readonly class=" form-control" id="fini" type="text" value="{{ fini }}" maxlength="10" style="width:120px" required="required" name="fini">
@@ -38,8 +40,23 @@ file that was distributed with this source code.
                     <td>
                             <input readonly class=" form-control" id="ffin" type="text" value="{{ ffin }}" maxlength="10" style="width:120px" required="required" name="ffin">
                     </td>
+                    <td style="style=align: right;">N&uacute;mero de factura</td>
+                    <td>
+                            <input class=" form-control" id="numero_factura" type="text" value="{{ numero_factura }}" maxlength="25" style="width:120px" name="numero_factura">
+                    </td>
+                    <td style="align: right;">Tipo de factura:</td>
+                    <td>
+                        <select id="tipofacturaseleccionado" name="id_tipofactura">
+                            {% for tipo in tipos %}
+                                {% if id_tipofactura == tipo.id %}
+                                    <option value="{{ tipo.id }}" selected="{{ id_tipofactura }}">{{ tipo.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
                 </tr>
-
                 <tr>
                     <td><input class="btn btn-small btn-primary" type="submit" value="Generar reporte"></td>
                 </tr>

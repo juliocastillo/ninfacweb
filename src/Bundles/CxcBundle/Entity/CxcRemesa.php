@@ -36,9 +36,9 @@ class CxcRemesa
     private $fecha;
 
     /**
-     * @var integer
+     * @var bigint
      *
-     * @ORM\Column(name="id_remesa", type="integer", nullable=false)
+     * @ORM\Column(name="id_remesa", type="bigint", nullable=false)
      *
      * @Assert\Range(min="1")
      */

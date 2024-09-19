@@ -304,21 +304,28 @@ class ReportsCxcController extends Controller {
 
         /* buscar el registro padre a traves de id */
         $empresa = $em->getRepository('BundlesCatalogosBundle:CfgEmpresa')->findOneBy(array('activo'=>TRUE));
-
+        $tipos      = $em->getRepository('BundlesCatalogosBundle:CtlTipofactura')->findAll();
         if (isset($_REQUEST['fini'])){
             $fini = $_REQUEST['fini'];
             $ffin = $_REQUEST['ffin'];
-            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->recibosCobro($fini,$ffin);
+            $numero_factura = $_REQUEST['numero_factura'];
+            $id_tipofactura = $_REQUEST['id_tipofactura'];
+            $movimientos = $em->getRepository('BundlesCxcBundle:CxcCobro')->recibosCobro($fini,$ffin,$numero_factura,$id_tipofactura);
             $requestvalid = TRUE;
         } else {
             $movimientos = "";
             $requestvalid = FALSE;
             $fini = Date('Y-m-d');
             $ffin = Date('Y-m-d');
+            $numero_factura = '';
+            $id_tipofactura = "";
         }
 
 
         return $this->render('BundlesCxcBundle:Reportes:recibos_cobro.html.twig', array(
+            'numero_factura' => $numero_factura,
+            'id_tipofactura' => $id_tipofactura,
+            'tipos' => $tipos,
             'fini' => $fini,
             'ffin' => $ffin,
             'movimientos'=>$movimientos,

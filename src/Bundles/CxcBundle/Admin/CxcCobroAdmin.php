@@ -70,7 +70,11 @@ class CxcCobroAdmin extends Admin {
                 ->add('monto', 'number', array(
                     'required' => TRUE,
                     'label' => 'Monto',
-                    'attr' => array('style' => 'width:100px', 'maxlength' => '25'),
+                    'attr' => array(
+                        'style' => 'width:100px', 
+                        'maxlength' => '25',
+                        'class' => 'monto'
+                    ),
                 ))
                 ->add('idEmpleado', 'sonata_type_model', array(
                     'empty_value' => '...Seleccione...',
